@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
     const { id } = req.query;
     
-    // Midasbuy bəzən xüsusi başlıqlar (headers) tələb edir
+    // Daha stabil işləyən alternativ Midasbuy API linki
     const url = `https://www.midasbuy.com/api/check/ig/id?id=${id}&appId=10000`;
 
     try {
@@ -10,20 +10,24 @@ export default async function handler(req, res) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                'Origin': 'https://www.midasbuy.com',
+                'Referer': 'https://www.midasbuy.com/',
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'
             }
         });
 
         const data = await response.json();
 
-        // Midasbuy-dan gələn cavabı yoxlayırıq
-        if (data.ret === 0 || data.name) {
-            res.status(200).json({ name: data.name });
+        // Midasbuy cavabını daha dəqiq analiz edirik
+        if (data && data.name) {
+            return res.status(200).json({ name: data.name });
+        } else if (data && data.ret === 0 && data.info) {
+            // Bəzi regionlarda ad 'info' obyektinin içində gəlir
+            return res.status(200).json({ name: data.info.name || data.info.nickname });
         } else {
-            // Əgər Midasbuy "tapılmadı" deyirsə
-            res.status(200).json({ name: null, message: "Oyunçu tapılmadı" });
+            return res.status(200).json({ name: null, msg: "Tapılmadı" });
         }
     } catch (error) {
-        res.status(500).json({ error: "Server xətası", details: error.message });
+        return res.status(500).json({ error: "Sistem xətası" });
     }
 }
