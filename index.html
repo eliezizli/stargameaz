@@ -6,91 +6,34 @@
     <title>StarGameAze | Sürətli UC</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --gold: #FFD700; 
-            --red: #e31e24; 
-            --bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); 
-        }
-        
-        body { 
-            background: var(--bg); 
-            background-attachment: fixed; 
-            color: #fff; 
-            font-family: 'Poppins', sans-serif; 
-            margin: 0; 
-            padding: 15px; 
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        :root { --gold: #FFD700; --red: #e31e24; --bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); }
+        body { background: var(--bg); background-attachment: fixed; color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 15px; -webkit-tap-highlight-color: transparent; }
         .wrapper { max-width: 600px; margin: auto; }
-        
         .header { text-align: center; margin-bottom: 20px; }
         .header h1 { font-size: 2.2rem; color: #fff; text-shadow: 0 0 15px rgba(255,215,0,0.4); margin-bottom: 15px; font-weight: 700; }
 
-        /* Birbank Kart Dizaynı */
-        .bank-box { 
-            background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); 
-            padding: 22px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(227,30,36,0.3);
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-        }
+        /* Kart Dizaynı */
+        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 22px; border-radius: 20px; box-shadow: 0 10px 30px rgba(227,30,36,0.3); text-align: left; position: relative; border: 1px solid rgba(255,255,255,0.1); }
         .bank-title { font-size: 0.75rem; opacity: 0.9; letter-spacing: 1.5px; font-weight: 600; }
-        .card-num { 
-            font-size: 1.4rem; 
-            font-weight: 700; 
-            margin: 12px 0; 
-            display: block; 
-            letter-spacing: 2px;
-            font-family: 'Courier New', monospace;
-        }
-        .copy-btn {
-            background: #fff;
-            border: none;
-            color: var(--red);
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            float: right;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        .card-num { font-size: 1.4rem; font-weight: 700; margin: 12px 0; display: block; letter-spacing: 2px; font-family: 'Courier New', monospace; }
+        .copy-btn { background: #fff; border: none; color: var(--red); padding: 6px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; cursor: pointer; float: right; }
 
-        #pid { 
-            width: 100%; padding: 18px; margin-top: 20px; border-radius: 15px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); 
-            color: #fff; text-align: center; font-size: 1.1rem; box-sizing: border-box; outline: none;
-        }
-        #pid:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,215,0,0.2); }
+        /* ID Giriş və Yoxla Düyməsi */
+        .id-section { margin-top: 25px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .id-input-group { display: flex; gap: 10px; margin-bottom: 10px; }
+        #pid { flex: 1; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 1rem; outline: none; }
+        #check-btn { padding: 0 20px; border-radius: 12px; border: none; background: var(--gold); color: #000; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        #check-btn:active { transform: scale(0.95); }
+        #player-info { font-size: 0.9rem; min-height: 20px; text-align: left; padding-left: 5px; }
 
-        .instruction {
-            background: rgba(255,215,0,0.1);
-            border: 1px dashed var(--gold);
-            padding: 12px;
-            margin-top: 20px;
-            font-size: 0.85rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-
+        .instruction { background: rgba(255,215,0,0.1); border: 1px dashed var(--gold); padding: 12px; margin-top: 15px; font-size: 0.85rem; border-radius: 10px; text-align: center; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
-
-        .product { 
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
-            padding: 22px 10px; border-radius: 15px; text-align: center; transition: 0.2s;
-        }
-        .product:active { transform: scale(0.95); border-color: var(--gold); background: rgba(255,215,0,0.05); }
+        .product { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 22px 10px; border-radius: 15px; text-align: center; transition: 0.2s; cursor: pointer; }
+        .product:active { transform: scale(0.95); border-color: var(--gold); }
         .uc-name { font-weight: 700; font-size: 1.2rem; display: block; margin-bottom: 5px; }
         .price { color: var(--gold); font-size: 1rem; font-weight: 600; }
 
-        #loader { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); z-index: 999; justify-content: center; align-items: center; flex-direction: column; 
-            backdrop-filter: blur(5px);
-        }
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(5px); }
         .spinner { border: 4px solid #333; border-top: 4px solid var(--gold); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -99,7 +42,7 @@
 
 <div id="loader">
     <div class="spinner"></div>
-    <p style="margin-top: 20px; color: var(--gold); font-weight: 600;">WhatsApp açılır...</p>
+    <p style="margin-top: 20px; color: var(--gold); font-weight: 600;">Gözləyin...</p>
 </div>
 
 <div class="wrapper">
@@ -111,23 +54,58 @@
             <span class="card-num" id="cardNo">4169 7388 6262 7472</span>
         </div>
         
-        <div class="instruction">
-            ⚡ <b>Ödənişi edin və Çeki saxlayın.</b><br>
-            Sonra ID yazıb paketi seçin və çeki göndərin.
+        <div class="id-section">
+            <div class="id-input-group">
+                <input type="tel" id="pid" placeholder="Oyunçu ID-nizi yazın...">
+                <button id="check-btn" onclick="checkPlayer()">YOXLA</button>
+            </div>
+            <div id="player-info"></div>
         </div>
 
-        <input type="tel" id="pid" placeholder="Oyunçu ID-nizi daxil edin..." oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+        <div class="instruction">⚡ Ödəniş edin, ID yoxlayın və paketi seçin.</div>
     </div>
 
     <div class="grid" id="items"></div>
 </div>
 
 <script>
+    let currentPlayerName = "";
+
     function copyCard() {
         const cardText = document.getElementById('cardNo').innerText.replace(/\s/g, '');
-        navigator.clipboard.writeText(cardText).then(() => {
-            alert("Kart nömrəsi kopyalandı! Birbank-a keçid edə bilərsiniz.");
-        });
+        navigator.clipboard.writeText(cardText).then(() => alert("Kart nömrəsi kopyalandı!"));
+    }
+
+    async function checkPlayer() {
+        const id = document.getElementById('pid').value;
+        const info = document.getElementById('player-info');
+        const btn = document.getElementById('check-btn');
+
+        if(id.length < 5) { alert("ID daxil edin!"); return; }
+
+        btn.innerText = "...";
+        btn.disabled = true;
+        info.innerHTML = "🔍 Yoxlanılır...";
+        info.style.color = "var(--gold)";
+
+        try {
+            const res = await fetch(`/api/check-id?id=${id}`);
+            const data = await res.json();
+
+            if(data.name) {
+                currentPlayerName = data.name;
+                info.innerHTML = `✅ Oyunçu: <b>${data.name}</b>`;
+                info.style.color = "#2ecc71";
+            } else {
+                currentPlayerName = "";
+                info.innerHTML = "❌ Oyunçu tapılmadı!";
+                info.style.color = "#e74c3c";
+            }
+        } catch (e) {
+            info.innerHTML = "⚠️ Xəta baş verdi, yenidən yoxlayın.";
+        }
+        btn.innerText = "YOXLA";
+        btn.disabled = false;
     }
 
     const data = [
@@ -150,14 +128,14 @@
     });
 
     function sendOrder(u, p) {
-        let pid = document.getElementById('pid').value;
-        if(pid.length < 5) { alert("Zəhmət olmasa Oyunçu ID-nizi daxil edin!"); return; }
+        const id = document.getElementById('pid').value;
+        if(id.length < 5) { alert("Öncə ID daxil edin!"); return; }
         
         document.getElementById('loader').style.display = 'flex';
         
         setTimeout(() => {
-            // Mesajın sonuna ÇEK xatırlatması əlavə olundu
-            const msg = `Salam StarGameAze, ödəniş etdim.%0A%0A📦 Paket: ${u}%0A💰 Məbləğ: ${p}%0A🆔 ID: ${pid}%0A%0A📸 *Çeki bura əlavə edirəm:*`;
+            const playerMsg = currentPlayerName ? `%0A👤 Oyunçu: ${currentPlayerName}` : "";
+            const msg = `Salam StarGameAze, ödəniş etdim.%0A%0A📦 Paket: ${u}%0A💰 Məbləğ: ${p}%0A🆔 ID: ${id}${playerMsg}%0A%0A📸 *Çeki bura əlavə edirəm:*`;
             window.open(`https://wa.me/994503482470?text=${msg}`, '_blank');
             document.getElementById('loader').style.display = 'none';
         }, 1200);
