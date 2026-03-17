@@ -7,75 +7,72 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #FFD700; --red: #e31e24; --bg: #0a0a0a; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 10px; overflow-x: hidden; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 10px; }
         .wrapper { max-width: 500px; margin: auto; padding-bottom: 50px; }
 
         /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5px; }
-        .logo { font-weight: 700; font-size: 1.5rem; color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .logo { font-weight: 700; font-size: 1.5rem; color: var(--gold); }
         
-        .user-profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--gold); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
+        .login-btn { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .user-profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--gold); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        /* Kart */
-        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 25px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(227,30,36,0.2); position: relative; overflow: hidden; }
-        .bank-box::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: rgba(255,255,255,0.05); transform: rotate(30deg); }
-        .card-num { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; display: block; margin: 15px 0; position: relative; z-index: 1; }
-        .copy-btn { background: #fff; border: none; color: var(--red); padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; position: relative; z-index: 2; transition: 0.2s; }
-        .copy-btn:active { transform: scale(0.9); }
+        /* Bank Card */
+        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 25px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(227,30,36,0.2); }
+        .card-num { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; display: block; margin: 15px 0; }
+        .copy-btn { background: #fff; border: none; color: var(--red); padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-        /* ID Bölməsi */
+        /* ID Input */
         .id-section { background: #151515; padding: 25px; border-radius: 25px; border: 1px solid #222; margin-bottom: 25px; text-align: center; }
-        #pid { width: 100%; box-sizing: border-box; padding: 16px; border-radius: 15px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1.3rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
-        #pid:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,215,0,0.1); }
-        #check-btn { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 15px; font-weight: 700; cursor: pointer; color: #000; font-size: 1.1rem; transition: 0.2s; }
-        #check-btn:active { transform: scale(0.98); }
+        #pid { width: 100%; box-sizing: border-box; padding: 16px; border-radius: 15px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1.3rem; margin-bottom: 15px; outline: none; }
+        #check-btn { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 15px; font-weight: 700; cursor: pointer; color: #000; }
 
-        /* UC Grid */
+        /* Products */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .product { background: #1a1a1a; border: 1px solid #222; padding: 25px 10px; border-radius: 22px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; }
-        .product:hover { border-color: var(--gold); background: #222; }
         .product:active { transform: scale(0.95); }
-        .uc-name { font-weight: 700; font-size: 1.4rem; display: block; margin-bottom: 5px; }
+        .uc-name { font-weight: 700; font-size: 1.4rem; display: block; }
         .price { color: var(--gold); font-size: 1.1rem; font-weight: 600; }
-        .bonus-tag { position: absolute; top: -8px; right: -5px; background: var(--red); color: #fff; font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: 700; }
-
-        /* Notification */
-        #notify { position: fixed; top: 20px; right: -300px; background: #fff; color: #000; padding: 12px 20px; border-radius: 15px; display: flex; align-items: center; gap: 10px; transition: 0.5s; z-index: 9999; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        
+        /* Modal */
+        #loginModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center; }
+        .modal-content { background:#222; padding:30px; border-radius:25px; text-align:center; width:80%; max-width:350px; border:1px solid #333; }
     </style>
 </head>
 <body>
 
-<div id="notify">
-    <div style="background: #2ecc71; width: 10px; height: 10px; border-radius: 50%;"></div>
-    <span id="notify-text">User_7721 indicə 660 UC aldı!</span>
+<div id="loginModal">
+    <div class="modal-content">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_探_Logo.svg" width="40">
+        <h3>Google ilə daxil ol</h3>
+        <p style="font-size:0.8rem; color:#aaa;">StarGameAz-a davam etmək üçün hesab seçin</p>
+        <div id="loading" style="display:none; margin:20px 0;">⌛ Yoxlanılır...</div>
+        <button onclick="confirmLogin()" style="width:100%; background:#fff; color:#000; border:none; padding:12px; border-radius:10px; font-weight:700; cursor:pointer;">Hesabı təsdiqlə</button>
+    </div>
 </div>
 
 <div class="wrapper">
     <div class="navbar">
         <div class="logo">StarGameAz</div>
+        <button class="login-btn" id="loginBtn" onclick="openLogin()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_探_Logo.svg" width="16"> Giriş
+        </button>
         <div class="user-profile" id="userProfile">
-            <div class="avatar" id="userInitial">A</div>
-            <div style="font-size: 0.8rem;">
-                <b id="userName">Oyunçu</b><br>
-                <span style="color:var(--gold)">Bonus: <span id="bonusAmount">0.00</span> AZN</span>
-            </div>
+            <div class="avatar">AZ</div>
+            <div style="font-size: 0.8rem;"><b id="userName">Oyunçu</b><br><span style="color:var(--gold)">Bonus: 0.50 AZN</span></div>
         </div>
     </div>
 
     <div class="bank-box">
-        <button class="copy-btn" onclick="copyCard()">KART NÖMRƏSİNİ KOPYALA</button>
-        <div style="font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px;">M10 / BİNBANK</div>
+        <button class="copy-btn" onclick="copyCard()">KOPYALA</button>
+        <div style="font-size: 0.9rem; font-weight: 700;">M10 / BİNBANK</div>
         <span class="card-num" id="cardNo">4169 7388 6262 7472</span>
-        <div style="font-size: 0.75rem; opacity: 0.8;">StarGameAz Rəsmi Ödəniş Hesabı</div>
     </div>
 
     <div class="id-section">
-        <p style="margin-top: 0; font-size: 0.9rem; color: #aaa;">Sifariş üçün ID daxil edin</p>
-        <input type="tel" id="pid" placeholder="Məs: 512345678" maxlength="12">
-        <button id="check-btn" onclick="checkPlayer()">SİSTEMDƏ YOXLA</button>
+        <input type="tel" id="pid" placeholder="PUBG ID-nizi yazın...">
+        <button id="check-btn" onclick="checkPlayer()">ID YOXLA</button>
         <div id="player-info" style="margin-top: 15px; font-size: 0.9rem; font-weight: 600;"></div>
     </div>
 
@@ -83,84 +80,56 @@
 </div>
 
 <script>
+    function openLogin() {
+        document.getElementById('loginModal').style.display = 'flex';
+    }
+
+    function confirmLogin() {
+        const loading = document.getElementById('loading');
+        loading.style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('userProfile').style.display = 'flex';
+            alert("Uğurla giriş edildi!");
+        }, 1500);
+    }
+
     function copyCard() {
         const num = document.getElementById('cardNo').innerText.replace(/\s/g, '');
-        navigator.clipboard.writeText(num).then(() => {
-            alert("Kart nömrəsi kopyalandı! İndi m10 və ya Bank tətbiqindən ödəniş edə bilərsiniz.");
-        });
+        navigator.clipboard.writeText(num).then(() => alert("Kart kopyalandı!"));
     }
 
     let isVerified = false;
     function checkPlayer() {
         const id = document.getElementById('pid').value;
         const info = document.getElementById('player-info');
-        const profile = document.getElementById('userProfile');
-        
-        if(id.length < 7) {
-            alert("Zəhmət olmasa düzgün PUBG ID daxil edin!");
-            return;
-        }
-
-        info.innerHTML = "⌛ Sistemə bağlanılır...";
-        info.style.color = "#aaa";
-
+        if(id.length < 7) { alert("ID düzgün deyil!"); return; }
+        info.innerHTML = "🔍 Yoxlanılır...";
         setTimeout(() => {
             isVerified = true;
-            info.innerHTML = `✅ ID: ${id} — Təsdiqləndi`;
+            info.innerHTML = `✅ ID: ${id} (AKTİV)`;
             info.style.color = "#2ecc71";
-            
-            // Profili göstər
-            profile.style.display = 'flex';
-            document.getElementById('userInitial').innerText = "ID";
-            document.getElementById('userName').innerText = "Oyunçu: " + id;
-        }, 1500);
+        }, 1000);
     }
 
     const items = [
-        {u: "60 UC", p: "2.00 AZN", b: "0.10"},
-        {u: "325 UC", p: "8.50 AZN", b: "0.45"},
-        {u: "660 UC", p: "16.00 AZN", b: "1.00"},
-        {u: "1800 UC", p: "41.00 AZN", b: "2.50"},
-        {u: "3850 UC", p: "81.00 AZN", b: "5.00"},
-        {u: "8100 UC", p: "155.00 AZN", b: "10.00"}
+        {u: "60 UC", p: "2.00 AZN"}, {u: "325 UC", p: "8.50 AZN"},
+        {u: "660 UC", p: "16.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"},
+        {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "155.00 AZN"}
     ];
 
     const container = document.getElementById('items');
     items.forEach(i => {
-        container.innerHTML += `
-            <div class="product" onclick="sendOrder('${i.u}','${i.p}','${i.b}')">
-                <div class="bonus-tag">+${i.b} AZN Bonus</div>
-                <span class="uc-name">${i.u}</span>
-                <span class="price">${i.p}</span>
-            </div>
-        `;
+        container.innerHTML += `<div class="product" onclick="sendOrder('${i.u}','${i.p}')"><span class="uc-name">${i.u}</span><span class="price">${i.p}</span></div>`;
     });
 
-    function sendOrder(u, p, b) {
+    function sendOrder(u, p) {
         const id = document.getElementById('pid').value;
-        if(!isVerified) {
-            alert("Öncə ID-nizi daxil edib 'SİSTEMDƏ YOXLA' düyməsinə basın!");
-            return;
-        }
-        
-        const msg = `Salam StarGameAz, mən ödəniş etdim.%0A%0A📦 Paket: ${u}%0A💰 Qiymət: ${p}%0A🆔 ID: ${id}%0A🎁 Qazanılacaq Bonus: ${b} AZN%0A%0AÇeki bura göndərirəm, zəhmət olmasa yükləyin.`;
+        if(!isVerified) { alert("Öncə ID yoxlayın!"); return; }
+        const msg = `Salam StarGameAz, mən ödəniş etdim.%0A Paket: ${u}%0A Qiymət: ${p}%0A ID: ${id}`;
         window.open(`https://wa.me/994503482470?text=${msg}`, '_blank');
     }
-
-    // Canlı Bildirişlər
-    setInterval(() => {
-        const notify = document.getElementById('notify');
-        const text = document.getElementById('notify-text');
-        const randomID = Math.floor(Math.random() * 90000) + 10000;
-        const ucs = ["60", "325", "660", "1800"];
-        
-        text.innerText = `ID: ${randomID}*** indicə ${ucs[Math.floor(Math.random()*ucs.length)]} UC aldı! 🔥`;
-        notify.style.right = "20px";
-        
-        setTimeout(() => {
-            notify.style.right = "-400px";
-        }, 4000);
-    }, 12000);
 </script>
 </body>
 </html>
