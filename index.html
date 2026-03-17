@@ -3,55 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>StarGameAz | UC Mağazası</title>
+    <title>StarGameAz | UC Satışı</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #FFD700; --red: #e31e24; --bg: #0a0a0a; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 10px; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 10px; overflow-x: hidden; }
         .wrapper { max-width: 500px; margin: auto; padding-bottom: 60px; }
 
         /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5px; }
-        .logo { font-weight: 700; font-size: 1.6rem; color: var(--gold); text-transform: uppercase; }
+        .logo { font-weight: 700; font-size: 1.6rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
         
-        .login-btn { background: var(--gold); color: #000; border: none; padding: 10px 25px; border-radius: 25px; font-weight: 700; cursor: pointer; }
-        .user-profile { display: none; align-items: center; gap: 10px; background: rgba(255,215,0,0.1); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); }
+        .login-btn { background: var(--gold); color: #000; border: none; padding: 10px 25px; border-radius: 25px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2); }
+        .user-profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); }
         .avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--gold); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
         /* Kart Bölməsi */
-        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 25px; border-radius: 25px; margin-bottom: 25px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .card-num { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; display: block; margin: 15px 0; }
+        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 30px 20px; border-radius: 25px; margin-bottom: 25px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); }
+        .card-num { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; display: block; margin: 15px 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .copy-btn { background: #fff; border: none; color: var(--red); padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s; }
-        .copy-btn:active { transform: scale(0.98); }
+        .copy-btn:active { transform: scale(0.98); background: #eee; }
 
         /* ID Yoxlama */
         .id-section { background: #151515; padding: 25px; border-radius: 25px; border: 1px solid #222; margin-bottom: 25px; text-align: center; }
-        .input-style { width: 100%; box-sizing: border-box; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1.1rem; margin-bottom: 12px; outline: none; }
-        .btn-style { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 12px; font-weight: 700; cursor: pointer; color: #000; font-size: 1rem; }
+        .input-style { width: 100%; box-sizing: border-box; padding: 16px; border-radius: 15px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1.2rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        .input-style:focus { border-color: var(--gold); }
+        .btn-style { width: 100%; background: var(--gold); border: none; padding: 16px; border-radius: 15px; font-weight: 700; cursor: pointer; color: #000; font-size: 1.1rem; }
 
         /* UC Grid */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .product { background: #1a1a1a; border: 1px solid #222; padding: 20px 10px; border-radius: 22px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .product:active { transform: scale(0.95); border-color: var(--gold); }
-        .uc-name { font-weight: 700; font-size: 1.3rem; display: block; margin-bottom: 5px; }
+        .product { background: #1a1a1a; border: 1px solid #222; padding: 25px 10px; border-radius: 22px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .product:active { transform: scale(0.95); border-color: var(--gold); background: #222; }
+        .uc-name { font-weight: 700; font-size: 1.4rem; display: block; margin-bottom: 5px; }
         .price { color: var(--gold); font-size: 1.1rem; font-weight: 600; }
 
         /* Modal */
-        #loginModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.96); z-index:9999; align-items:center; justify-content:center; }
-        .modal-content { background:#1a1a1a; padding:35px; border-radius:30px; text-align:center; width:85%; max-width:380px; border: 1px solid var(--gold); }
+        #loginModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.97); z-index:9999; align-items:center; justify-content:center; }
+        .modal-content { background:#1a1a1a; padding:40px 30px; border-radius:30px; text-align:center; width:85%; max-width:380px; border: 1px solid var(--gold); }
     </style>
 </head>
 <body>
 
 <div id="loginModal">
     <div class="modal-content">
-        <h2 style="color:var(--gold); margin-bottom:5px;">Profilini Yarad</h2>
-        <p style="font-size:0.8rem; color:#888; margin-bottom:20px;">Sifarişləriniz bu adla qeydə alınacaq</p>
+        <h2 style="color:var(--gold); margin-bottom:10px;">Xoş Gəldiniz</h2>
+        <p style="font-size:0.9rem; color:#888; margin-bottom:25px;">Davam etmək üçün adınızı daxil edin</p>
         
-        <input type="text" id="userName" class="input-style" placeholder="Ad və Soyad">
-        <input type="tel" id="userPhone" class="input-style" placeholder="Mobil nömrə">
+        <input type="text" id="userFullName" class="input-style" placeholder="Ad və Soyad">
         
-        <button onclick="saveProfile()" class="btn-style">TƏSDİQLƏ</button>
+        <button onclick="saveProfile()" class="btn-style">SİSTEMƏ DAXİL OL</button>
     </div>
 </div>
 
@@ -61,19 +61,19 @@
         <button class="login-btn" id="loginBtn" onclick="openLogin()">GİRİŞ</button>
         <div class="user-profile" id="userProfile">
             <div class="avatar" id="avatarInitial">?</div>
-            <div style="font-size: 0.8rem;"><b id="profileName">Müştəri</b><br><span style="color:var(--gold)">Aktiv Hesab</span></div>
+            <div style="font-size: 0.8rem;"><b id="profileDisplayName">Oyunçu</b><br><span style="color:var(--gold)">Aktiv Hesab</span></div>
         </div>
     </div>
 
     <div class="bank-box">
-        <div style="font-size: 0.8rem; font-weight: 700; color: #fff; margin-bottom: 10px;">RƏSMİ ÖDƏNİŞ HESABI</div>
+        <div style="font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 10px; letter-spacing: 1px;">RƏSMİ ÖDƏNİŞ HESABI</div>
         <span class="card-num" id="cardNo">4169 7388 6262 7472</span>
         <button class="copy-btn" onclick="copyCard()">KART NÖMRƏSİNİ KOPYALA</button>
     </div>
 
     <div class="id-section">
         <input type="tel" id="pid" class="input-style" placeholder="PUBG ID daxil edin">
-        <button id="check-btn" onclick="checkPlayer()" class="btn-style">SİSTEMDƏ YOXLA</button>
+        <button id="check-btn" onclick="checkPlayer()" class="btn-style">ID YOXLA</button>
         <div id="player-info" style="margin-top: 15px; font-weight: 600;"></div>
     </div>
 
@@ -84,20 +84,19 @@
     function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
 
     function saveProfile() {
-        const name = document.getElementById('userName').value;
-        const phone = document.getElementById('userPhone').value;
+        const fullName = document.getElementById('userFullName').value;
         
-        if(name.length < 3 || phone.length < 10) {
-            alert("Zəhmət olmasa Ad, Soyad və Nömrəni tam doldurun!");
+        if(fullName.length < 3) {
+            alert("Zəhmət olmasa Ad və Soyadınızı daxil edin!");
             return;
         }
         
         document.getElementById('loginModal').style.display = 'none';
         document.getElementById('loginBtn').style.display = 'none';
         document.getElementById('userProfile').style.display = 'flex';
-        document.getElementById('profileName').innerText = name;
-        document.getElementById('avatarInitial').innerText = name.charAt(0).toUpperCase();
-        alert("Xoş gəldiniz, " + name + "!");
+        document.getElementById('profileDisplayName').innerText = fullName;
+        document.getElementById('avatarInitial').innerText = fullName.charAt(0).toUpperCase();
+        alert("Salam " + fullName + ", xoş gəldiniz!");
     }
 
     function copyCard() {
@@ -110,15 +109,15 @@
         const id = document.getElementById('pid').value;
         const info = document.getElementById('player-info');
         if(id.length < 7) { alert("ID düzgün deyil!"); return; }
-        info.innerHTML = "⌛ Yoxlanılır...";
+        info.innerHTML = "🔍 Yoxlanılır...";
         setTimeout(() => {
             isVerified = true;
             info.innerHTML = `✅ ID: ${id} (AKTİV)`;
             info.style.color = "#2ecc71";
-        }, 1000);
+        }, 800);
     }
 
-    // Şəkildəki bütün qiymətlər:
+    // Sənin verdiyin bütün qiymətlər:
     const products = [
         {u: "30 UC", p: "1.00 AZN"}, {u: "60 UC", p: "2.00 AZN"},
         {u: "90 UC", p: "3.00 AZN"}, {u: "120 UC", p: "4.00 AZN"},
@@ -143,13 +142,12 @@
 
     function sendOrder(u, p) {
         const id = document.getElementById('pid').value;
-        const name = document.getElementById('profileName').innerText;
-        const phone = document.getElementById('userPhone').value;
+        const name = document.getElementById('profileDisplayName').innerText;
         
         if(!isVerified) { alert("Öncə ID yoxlayın!"); return; }
-        if(name === "Müştəri") { alert("Öncə 'GİRİŞ' edib profilinizi yaradın!"); openLogin(); return; }
+        if(name === "Oyunçu") { alert("Öncə giriş edin!"); openLogin(); return; }
 
-        const msg = `Salam StarGameAz,%0A%0AÖdəniş etdim.%0A👤 Müştəri: ${name}%0A📱 Əlaqə: ${phone}%0A📦 Paket: ${u}%0A💰 Qiymət: ${p}%0A🆔 PUBG ID: ${id}`;
+        const msg = `Salam StarGameAz,%0A%0AÖdəniş etdim.%0A👤 Müştəri: ${name}%0A📦 Paket: ${u}%0A💰 Qiymət: ${p}%0A🆔 PUBG ID: ${id}`;
         window.open(`https://wa.me/994503482470?text=${msg}`, '_blank');
     }
 </script>
