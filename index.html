@@ -8,126 +8,126 @@
     <style>
         :root { --gold: #FFD700; --red: #e31e24; --bg: #0a0a0a; }
         body { background-color: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 10px; }
-        .wrapper { max-width: 500px; margin: auto; padding-bottom: 50px; }
+        .wrapper { max-width: 500px; margin: auto; padding-bottom: 60px; }
 
-        /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5px; }
-        .logo { font-weight: 700; font-size: 1.5rem; color: var(--gold); }
+        .logo { font-weight: 700; font-size: 1.6rem; color: var(--gold); }
         
-        .login-btn { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .login-btn { background: var(--gold); color: #000; border: none; padding: 8px 20px; border-radius: 25px; font-weight: 700; cursor: pointer; }
         .user-profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--gold); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; background: #333; color: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid var(--gold); }
 
-        /* Bank Card */
-        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 25px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(227,30,36,0.2); }
-        .card-num { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; display: block; margin: 15px 0; }
-        .copy-btn { background: #fff; border: none; color: var(--red); padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 20px; border-radius: 25px; margin-bottom: 25px; text-align: center; }
+        .card-num { font-size: 1.3rem; font-weight: 700; letter-spacing: 1px; font-family: monospace; display: block; margin: 10px 0; }
+        .copy-btn { background: #fff; border: none; color: var(--red); padding: 10px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; }
 
-        /* ID Input */
-        .id-section { background: #151515; padding: 25px; border-radius: 25px; border: 1px solid #222; margin-bottom: 25px; text-align: center; }
-        #pid { width: 100%; box-sizing: border-box; padding: 16px; border-radius: 15px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1.3rem; margin-bottom: 15px; outline: none; }
-        #check-btn { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 15px; font-weight: 700; cursor: pointer; color: #000; }
+        .id-section { background: #151515; padding: 20px; border-radius: 25px; border: 1px solid #222; margin-bottom: 25px; text-align: center; }
+        .input-style { width: 100%; box-sizing: border-box; padding: 14px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1.1rem; margin-bottom: 12px; outline: none; }
+        .btn-style { width: 100%; background: var(--gold); border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; color: #000; }
 
-        /* Products */
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .product { background: #1a1a1a; border: 1px solid #222; padding: 25px 10px; border-radius: 22px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; }
-        .product:active { transform: scale(0.95); }
-        .uc-name { font-weight: 700; font-size: 1.4rem; display: block; }
-        .price { color: var(--gold); font-size: 1.1rem; font-weight: 600; }
-        
-        /* Modal */
-        #loginModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center; }
-        .modal-content { background:#222; padding:30px; border-radius:25px; text-align:center; width:80%; max-width:350px; border:1px solid #333; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .product { background: #1a1a1a; border: 1px solid #222; padding: 15px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .product:active { transform: scale(0.95); border-color: var(--gold); }
+        .uc-name { font-weight: 700; font-size: 1.1rem; display: block; color: #fff; }
+        .price { color: var(--gold); font-size: 1rem; font-weight: 600; }
+
+        #loginModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; align-items:center; justify-content:center; }
+        .modal-content { background:#1a1a1a; padding:30px; border-radius:25px; text-align:center; width:85%; max-width:350px; border:1px solid var(--gold); }
     </style>
 </head>
 <body>
 
 <div id="loginModal">
     <div class="modal-content">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_探_Logo.svg" width="40">
-        <h3>Google ilə daxil ol</h3>
-        <p style="font-size:0.8rem; color:#aaa;">StarGameAz-a davam etmək üçün hesab seçin</p>
-        <div id="loading" style="display:none; margin:20px 0;">⌛ Yoxlanılır...</div>
-        <button onclick="confirmLogin()" style="width:100%; background:#fff; color:#000; border:none; padding:12px; border-radius:10px; font-weight:700; cursor:pointer;">Hesabı təsdiqlə</button>
+        <h2 style="color:var(--gold); margin-bottom:10px;">Giriş</h2>
+        <p style="font-size:0.8rem; color:#ccc; margin-bottom:20px;">Hesab açmaq üçün nömrənizi daxil edin</p>
+        <input type="tel" id="userPhone" class="input-style" placeholder="050-000-00-00">
+        <button onclick="createAccount()" class="btn-style">HESAB AÇ</button>
     </div>
 </div>
 
 <div class="wrapper">
     <div class="navbar">
         <div class="logo">StarGameAz</div>
-        <button class="login-btn" id="loginBtn" onclick="openLogin()">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_探_Logo.svg" width="16"> Giriş
-        </button>
+        <button class="login-btn" id="loginBtn" onclick="openLogin()">GİRİŞ</button>
         <div class="user-profile" id="userProfile">
-            <div class="avatar">AZ</div>
-            <div style="font-size: 0.8rem;"><b id="userName">Oyunçu</b><br><span style="color:var(--gold)">Bonus: 0.50 AZN</span></div>
+            <div class="avatar">S</div>
+            <div style="font-size: 0.75rem;"><b id="displayPhone">Nömrə</b><br><span style="color:var(--gold)">Aktiv Hesab</span></div>
         </div>
     </div>
 
     <div class="bank-box">
-        <button class="copy-btn" onclick="copyCard()">KOPYALA</button>
-        <div style="font-size: 0.9rem; font-weight: 700;">M10 / BİNBANK</div>
+        <div style="font-size: 0.7rem; font-weight: 700; color: #fff;">M10 / KART</div>
         <span class="card-num" id="cardNo">4169 7388 6262 7472</span>
+        <button class="copy-btn" onclick="copyCard()">KOPYALA</button>
     </div>
 
     <div class="id-section">
-        <input type="tel" id="pid" placeholder="PUBG ID-nizi yazın...">
-        <button id="check-btn" onclick="checkPlayer()">ID YOXLA</button>
-        <div id="player-info" style="margin-top: 15px; font-size: 0.9rem; font-weight: 600;"></div>
+        <input type="tel" id="pid" class="input-style" placeholder="PUBG ID daxil edin">
+        <button id="check-btn" onclick="checkPlayer()" class="btn-style">ID YOXLA</button>
+        <div id="player-info" style="margin-top: 10px; font-size: 0.8rem;"></div>
     </div>
 
     <div class="grid" id="items"></div>
 </div>
 
 <script>
-    function openLogin() {
-        document.getElementById('loginModal').style.display = 'flex';
+    function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+    function createAccount() {
+        const phone = document.getElementById('userPhone').value;
+        if(phone.length < 10) { alert("Nömrəni düzgün yazın!"); return; }
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('loginBtn').style.display = 'none';
+        document.getElementById('userProfile').style.display = 'flex';
+        document.getElementById('displayPhone').innerText = phone;
     }
-
-    function confirmLogin() {
-        const loading = document.getElementById('loading');
-        loading.style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('loginBtn').style.display = 'none';
-            document.getElementById('userProfile').style.display = 'flex';
-            alert("Uğurla giriş edildi!");
-        }, 1500);
-    }
-
     function copyCard() {
         const num = document.getElementById('cardNo').innerText.replace(/\s/g, '');
-        navigator.clipboard.writeText(num).then(() => alert("Kart kopyalandı!"));
+        navigator.clipboard.writeText(num).then(() => alert("Kopyalandı!"));
     }
 
     let isVerified = false;
     function checkPlayer() {
         const id = document.getElementById('pid').value;
         const info = document.getElementById('player-info');
-        if(id.length < 7) { alert("ID düzgün deyil!"); return; }
-        info.innerHTML = "🔍 Yoxlanılır...";
+        if(id.length < 7) { alert("ID daxil edin!"); return; }
+        info.innerHTML = "⌛ Yoxlanılır...";
         setTimeout(() => {
             isVerified = true;
-            info.innerHTML = `✅ ID: ${id} (AKTİV)`;
+            info.innerHTML = `✅ ID: ${id} (Təsdiqləndi)`;
             info.style.color = "#2ecc71";
-        }, 1000);
+        }, 800);
     }
 
-    const items = [
-        {u: "60 UC", p: "2.00 AZN"}, {u: "325 UC", p: "8.50 AZN"},
-        {u: "660 UC", p: "16.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"},
-        {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "155.00 AZN"}
+    // ŞƏKİLDƏKİ BÜTÜN QİYMƏTLƏR
+    const products = [
+        {u: "30 UC", p: "1.00 AZN"}, {u: "60 UC", p: "2.00 AZN"},
+        {u: "90 UC", p: "3.00 AZN"}, {u: "120 UC", p: "4.00 AZN"},
+        {u: "180 UC", p: "5.00 AZN"}, {u: "270 UC", p: "8.00 AZN"},
+        {u: "325 UC", p: "8.50 AZN"}, {u: "355 UC", p: "9.50 AZN"},
+        {u: "385 UC", p: "10.50 AZN"}, {u: "660 UC", p: "16.00 AZN"},
+        {u: "720 UC", p: "18.00 AZN"}, {u: "780 UC", p: "20.00 AZN"},
+        {u: "985 UC", p: "24.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"},
+        {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "155.00 AZN"},
+        {u: "16200 UC", p: "310.00 AZN"}
     ];
 
     const container = document.getElementById('items');
-    items.forEach(i => {
-        container.innerHTML += `<div class="product" onclick="sendOrder('${i.u}','${i.p}')"><span class="uc-name">${i.u}</span><span class="price">${i.p}</span></div>`;
+    products.forEach(i => {
+        container.innerHTML += `
+            <div class="product" onclick="sendOrder('${i.u}','${i.p}')">
+                <span class="uc-name">${i.u}</span>
+                <span class="price">${i.p}</span>
+            </div>
+        `;
     });
 
     function sendOrder(u, p) {
         const id = document.getElementById('pid').value;
+        const phone = document.getElementById('displayPhone').innerText;
         if(!isVerified) { alert("Öncə ID yoxlayın!"); return; }
-        const msg = `Salam StarGameAz, mən ödəniş etdim.%0A Paket: ${u}%0A Qiymət: ${p}%0A ID: ${id}`;
+        if(phone === "Nömrə") { alert("Öncə GİRİŞ edin!"); openLogin(); return; }
+        const msg = `Salam StarGameAz,%0A%0AÖdəniş etdim.%0A📦 Paket: ${u}%0A💰 Qiymət: ${p}%0A🆔 ID: ${id}%0A📱 Hesab: ${phone}`;
         window.open(`https://wa.me/994503482470?text=${msg}`, '_blank');
     }
 </script>
