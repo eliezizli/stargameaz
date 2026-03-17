@@ -10,32 +10,24 @@
     <style>
         :root { --gold: #FFD700; --red: #e31e24; --bg: #0a0a0a; }
         body { background-color: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 10px; }
-        .wrapper { max-width: 600px; margin: auto; padding-bottom: 30px; }
-
+        .wrapper { max-width: 600px; margin: auto; padding-bottom: 50px; }
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5px; }
         .logo { font-weight: 700; font-size: 1.4rem; color: var(--gold); }
-        
-        .login-btn { 
-            background: #fff; color: #000; border: none; padding: 8px 15px; 
-            border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;
-        }
-
-        .user-profile { display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 30px; border: 1px solid var(--gold); }
-        .avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--gold); }
-
-        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 22px; border-radius: 22px; margin-bottom: 20px; }
-        .card-num { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; display: block; margin: 15px 0; }
-        .copy-btn { background: #fff; border: none; color: var(--red); padding: 8px 16px; border-radius: 12px; font-weight: 700; float: right; cursor: pointer; }
-
-        .id-section { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; border: 1px solid #333; margin-bottom: 20px; }
-        #pid { width: 100%; box-sizing: border-box; padding: 15px; border-radius: 12px; border: 1px solid #444; background: #000; color: #fff; text-align: center; font-size: 1.1rem; margin-bottom: 10px; outline: none; }
-        #check-btn { width: 100%; background: var(--gold); border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; color: #000; }
-
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .product { background: #151515; border: 1px solid #222; padding: 20px 10px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .login-btn { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255,255,255,0.1); }
+        .user-profile { display: none; align-items: center; gap: 10px; background: rgba(255,215,0,0.15); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--gold); }
+        .bank-box { background: linear-gradient(135deg, var(--red) 0%, #9b1317 100%); padding: 25px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(227,30,36,0.2); }
+        .card-num { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; display: block; margin: 15px 0; }
+        .copy-btn { background: #fff; border: none; color: var(--red); padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .id-section { background: #1a1a1a; padding: 25px; border-radius: 25px; border: 1px solid #333; margin-bottom: 25px; }
+        #pid { width: 100%; box-sizing: border-box; padding: 15px; border-radius: 15px; border: 1px solid #444; background: #000; color: #fff; text-align: center; font-size: 1.2rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        #pid:focus { border-color: var(--gold); }
+        #check-btn { width: 100%; background: var(--gold); border: none; padding: 15px; border-radius: 15px; font-weight: 700; cursor: pointer; color: #000; font-size: 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .product { background: #1a1a1a; border: 1px solid #222; padding: 25px 10px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.2s; }
         .product:active { transform: scale(0.95); border-color: var(--gold); }
-        .uc-name { font-weight: 700; font-size: 1.2rem; display: block; margin-bottom: 5px; }
-        .price { color: var(--gold); font-size: 1rem; font-weight: 600; }
+        .uc-name { font-weight: 700; font-size: 1.4rem; display: block; margin-bottom: 5px; }
+        .price { color: var(--gold); font-size: 1.1rem; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -43,32 +35,31 @@
 <div class="wrapper">
     <div class="navbar">
         <div class="logo">StarGameAz</div>
-        <button class="login-btn" id="loginBtn" onclick="signIn()">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_探_Logo.svg" width="16"> Giriş
+        <button class="login-btn" id="loginBtn" onclick="googleLogin()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_探_Logo.svg" width="18"> Giriş
         </button>
         <div class="user-profile" id="userProfile">
             <img src="" class="avatar" id="userPhoto">
-            <div style="font-size: 0.75rem;"><b id="userName">Yüklənir...</b><br><span style="color:var(--gold)">Bonus: 0.00 AZN</span></div>
+            <div style="font-size: 0.8rem;"><b id="userName">Oyunçu</b><br><span style="color:var(--gold)">Bonus: 0.50 AZN</span></div>
         </div>
     </div>
 
     <div class="bank-box">
         <button class="copy-btn" onclick="copyCard()">KOPYALA</button>
-        <div style="font-size: 0.8rem; font-weight: 700; opacity: 0.9;">BİNBANK</div>
+        <div style="font-size: 0.9rem; font-weight: 700;">BİNBANK</div>
         <span class="card-num" id="cardNo">4169 7388 6262 7472</span>
     </div>
 
     <div class="id-section">
-        <input type="tel" id="pid" placeholder="Oyunçu ID-nizi yazın...">
+        <input type="tel" id="pid" placeholder="Oyunçu ID...">
         <button id="check-btn" onclick="checkPlayer()">ID YOXLA</button>
-        <div id="player-info" style="text-align: center; margin-top: 10px; font-size: 0.85rem; font-weight: 600;"></div>
+        <div id="player-info" style="text-align: center; margin-top: 15px; font-weight: 600;"></div>
     </div>
 
     <div class="grid" id="items"></div>
 </div>
 
 <script>
-    // SƏNİN FİREBASE MƏLUMATLARIN
     const firebaseConfig = {
         apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHJosgtgcHQLg",
         authDomain: "stargameaz.firebaseapp.com",
@@ -78,22 +69,18 @@
         appId: "1:929443246287:web:59a2f842455111194047ba"
     };
 
-    // Firebase başlat
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Giriş Funksiyası (Redirect üsulu - Daha asan)
-    function signIn() {
+    function googleLogin() {
         const provider = new firebase.auth.GoogleAuthProvider();
+        // Redirect üsulu hər zaman daha stabil işləyir
         auth.signInWithRedirect(provider);
     }
 
-    // Giriş edilib-edilmədiyini yoxla
     auth.getRedirectResult().then((result) => {
-        if (result.user) {
-            updateUI(result.user);
-        }
-    }).catch((error) => console.log("Giriş gözlənilir..."));
+        if (result.user) updateUI(result.user);
+    }).catch((e) => console.log("Giriş gözlənilir..."));
 
     auth.onAuthStateChanged((user) => {
         if (user) updateUI(user);
@@ -103,51 +90,43 @@
         document.getElementById('loginBtn').style.display = 'none';
         document.getElementById('userProfile').style.display = 'flex';
         document.getElementById('userName').innerText = user.displayName;
-        document.getElementById('userPhoto').src = user.photoURL || "https://via.placeholder.com/32";
+        document.getElementById('userPhoto').src = user.photoURL;
     }
 
-    // Kart Kopyalama
     function copyCard() {
         const num = document.getElementById('cardNo').innerText.replace(/\s/g, '');
-        navigator.clipboard.writeText(num).then(() => alert("Kart nömrəsi kopyalandı!"));
+        navigator.clipboard.writeText(num).then(() => alert("Kopyalandı!"));
     }
 
-    // ID Yoxlama
     let isVerified = false;
     function checkPlayer() {
         const id = document.getElementById('pid').value;
         const info = document.getElementById('player-info');
-        if(id.length < 7) { alert("Xahiş olunur ID-nizi düzgün yazın!"); return; }
-        info.innerHTML = "🔍 Sistem yoxlayır...";
+        if(id.length < 7) { alert("ID-ni daxil et!"); return; }
+        info.innerHTML = "🔍 Yoxlanılır...";
         setTimeout(() => {
             isVerified = true;
             info.innerHTML = `✅ ID: ${id} (AKTİV)`;
             info.style.color = "#2ecc71";
-        }, 1500);
+        }, 1200);
     }
 
-    // Paketlər
-    const products = [
+    const items = [
         {u: "60 UC", p: "2.00 AZN"}, {u: "325 UC", p: "8.50 AZN"},
         {u: "660 UC", p: "16.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"},
         {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "155.00 AZN"}
     ];
 
     const container = document.getElementById('items');
-    products.forEach(i => {
-        container.innerHTML += `
-            <div class="product" onclick="sendOrder('${i.u}', '${i.p}')">
-                <span class="uc-name">${i.u}</span>
-                <span class="price">${i.p}</span>
-            </div>
-        `;
+    items.forEach(i => {
+        container.innerHTML += `<div class="product" onclick="send('${i.u}','${i.p}')"><span class="uc-name">${i.u}</span><span class="price">${i.p}</span></div>`;
     });
 
-    // WhatsApp Sifariş
-    function sendOrder(u, p) {
+    function send(u, p) {
         const id = document.getElementById('pid').value;
-        if(!isVerified) { alert("Zəhmət olmasa əvvəlcə ID-ni yoxlayın!"); return; }
-        const msg = `Salam StarGameAz, ödəniş etdim.%0A📦 Paket: ${u}%0A💰 Məbləğ: ${p}%0A🆔 ID: ${id}`;
+        if(!isVerified) { alert("ID yoxlayın!"); return; }
+        const bonus = (parseFloat(p) * 0.05).toFixed(2); // 5% bonus göstərək maraqlı olsun
+        const msg = `Salam StarGameAz, ödəniş etdim.%0A Paket: ${u}%0A Qiymət: ${p}%0A ID: ${id}%0A Bonus qazancım: ${bonus} AZN 🎁`;
         window.open(`https://wa.me/994503482470?text=${msg}`, '_blank');
     }
 </script>
