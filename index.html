@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>StarGameAz | Premium UC Store</title>
+    <title>StarGameAz | Birbank Ödənişli UC</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #FFD700; --red: #ff4b2b; --dark: #0f0f0f; --glass: rgba(255, 255, 255, 0.05); }
+        :root { --gold: #FFD700; --red: #e31e24; --dark: #0f0f0f; --glass: rgba(255, 255, 255, 0.05); }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -22,64 +22,59 @@
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%);
             z-index: -1;
         }
 
         .container { max-width: 480px; margin: auto; padding: 20px; }
 
-        /* Professional Navbar */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; margin-bottom: 20px; }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); letter-spacing: 2px; }
 
-        .auth-section { display: flex; align-items: center; }
-        .user-chip { display: none; background: var(--glass); border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px; backdrop-filter: blur(10px); align-items: center; gap: 10px; animation: slideIn 0.5s ease; }
+        .user-chip { display: none; background: var(--glass); border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px; backdrop-filter: blur(10px); align-items: center; gap: 10px; }
         .avatar-circle { width: 30px; height: 30px; background: var(--gold); border-radius: 50%; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-        .btn-premium { background: linear-gradient(45deg, var(--gold), #ffaa00); color: #000; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: 'Orbitron', sans-serif; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-        .btn-premium:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5); }
+        .btn-premium { background: linear-gradient(45deg, var(--gold), #ffaa00); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
 
-        /* Card Section */
-        .payment-card { background: linear-gradient(135deg, #ff4b2b, #ff416c); padding: 30px 20px; border-radius: 25px; margin-bottom: 25px; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(255, 75, 43, 0.3); }
-        .card-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; opacity: 0.8; margin-bottom: 10px; }
-        .card-number { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; letter-spacing: 3px; margin: 15px 0; display: block; }
-        .btn-copy-card { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: #fff; padding: 10px; border-radius: 12px; width: 100%; cursor: pointer; backdrop-filter: blur(5px); font-weight: 600; }
+        /* Birbank Style Card */
+        .payment-card { 
+            background: linear-gradient(135deg, #1a1a1a 0%, #e31e24 100%); 
+            padding: 30px 20px; 
+            border-radius: 20px; 
+            margin: 20px 0; 
+            box-shadow: 0 10px 30px rgba(227, 30, 36, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
+        .card-number { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; letter-spacing: 3px; margin: 15px 0; display: block; color: #fff; }
+        .btn-copy-card { background: #fff; border: none; color: #e31e24; padding: 12px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: 700; text-transform: uppercase; }
 
-        /* Input Styles */
-        .glass-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 25px; backdrop-filter: blur(15px); margin-bottom: 25px; }
-        .main-input { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); color: #fff; text-align: center; font-size: 1.1rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
-        .main-input:focus { border-color: var(--gold); background: rgba(0,0,0,0.6); }
+        .glass-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; backdrop-filter: blur(15px); margin-bottom: 25px; }
+        .main-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-size: 1.1rem; margin-bottom: 15px; outline: none; }
 
-        /* Products Grid */
-        .uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .uc-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 20px 10px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); }
-        .uc-card:hover { border-color: var(--gold); background: rgba(255, 215, 0, 0.05); transform: translateY(-5px); }
-        .uc-card:active { transform: scale(0.95); }
-        .uc-title { font-weight: 700; font-size: 1.3rem; color: #fff; display: block; margin-bottom: 5px; }
-        .uc-price { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 600; }
+        .uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px 10px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .uc-card:active { transform: scale(0.95); border-color: var(--gold); }
+        .uc-title { font-weight: 700; font-size: 1.3rem; display: block; margin-bottom: 5px; }
+        .uc-price { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.85rem; }
 
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-box { background: #1a1a1a; width: 85%; max-width: 380px; padding: 40px 30px; border-radius: 30px; border: 1px solid var(--gold); text-align: center; animation: zoomIn 0.3s ease; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .modal-box { background: #111; width: 85%; max-width: 350px; padding: 35px; border-radius: 25px; border: 1px solid var(--gold); text-align: center; }
     </style>
 </head>
 <body>
 
 <div id="loginModal" class="modal">
     <div class="modal-box">
-        <h2 style="font-family: 'Orbitron'; color: var(--gold); margin-bottom: 15px;">GİRİŞ</h2>
-        <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 25px;">Sifarişləri izləmək üçün adınızı yazın</p>
+        <h2 style="font-family: 'Orbitron'; color: var(--gold); margin-bottom: 15px;">Xoş Gəldiniz</h2>
         <input type="text" id="fullName" class="main-input" placeholder="Ad və Soyad">
-        <button onclick="login()" class="btn-premium" style="width: 100%;">TƏSDİQLƏ</button>
+        <button onclick="login()" class="btn-premium" style="width: 100%;">DAXİL OL</button>
     </div>
 </div>
 
 <div class="container">
     <div class="header">
-        <div class="logo">STARGAME</div>
+        <div class="logo">STARGAMEAZ</div>
         <div class="auth-section">
             <button id="loginBtn" class="btn-premium" onclick="showLogin()">GİRİŞ</button>
             <div id="userChip" class="user-chip">
@@ -90,16 +85,15 @@
     </div>
 
     <div class="payment-card">
-        <div class="card-label">RƏSMİ ÖDƏNİŞ HESABI</div>
+        <div class="card-label">Birbank / Kart Hesabı</div>
         <div class="card-number" id="cardNum">4169 7388 6262 7472</div>
-        <button class="btn-copy-card" onclick="copyCard()">NÖMRƏNİ KOPYALA</button>
+        <button class="btn-copy-card" onclick="copyCard()">KART NÖMRƏSİNİ KOPYALA</button>
     </div>
 
     <div class="glass-panel">
-        <p style="font-size: 0.8rem; text-align: center; margin-bottom: 10px; opacity: 0.7;">PUBG MOBİLE PLAYER ID</p>
-        <input type="tel" id="playerID" class="main-input" placeholder="Məs: 5123456789">
+        <input type="tel" id="playerID" class="main-input" placeholder="PUBG ID-nizi yazın">
         <button id="verifyBtn" class="btn-premium" style="width: 100%; background: #fff; color: #000;" onclick="verifyID()">ID YOXLA</button>
-        <div id="idStatus" style="margin-top: 15px; text-align: center; font-weight: 700; font-size: 0.9rem;"></div>
+        <div id="idStatus" style="margin-top: 15px; text-align: center; font-weight: 700;"></div>
     </div>
 
     <div class="uc-grid" id="productGrid"></div>
@@ -134,20 +128,19 @@
     function copyCard() {
         const num = document.getElementById('cardNum').innerText.replace(/\s/g, '');
         navigator.clipboard.writeText(num);
-        alert("Kart kopyalandı! m10 ilə ödəniş edin.");
+        alert("Kart nömrəsi kopyalandı! Birbank ilə ödəniş edə bilərsiniz.");
     }
 
     let verified = false;
     function verifyID() {
         const id = document.getElementById('playerID').value;
-        if(id.length < 7) return alert("ID yanlışdır");
+        if(id.length < 7) return alert("ID daxil edin");
         const status = document.getElementById('idStatus');
         status.innerHTML = "🔍 YOXLAYIR...";
         setTimeout(() => {
             verified = true;
-            status.innerHTML = "✅ SİSTEMDƏ TAPILDI: " + id;
+            status.innerHTML = "✅ TƏSDİQLƏNDİ: " + id;
             status.style.color = "#2ecc71";
-            document.getElementById('verifyBtn').style.opacity = "0.5";
         }, 1000);
     }
 
@@ -167,7 +160,7 @@
         if(!verified) return alert("Öncə ID yoxlayın");
         if(name === "Oyunçu") { showLogin(); return; }
         
-        const text = `Salam StarGameAz!%0A%0A📦 Paket: ${uc}%0A💰 Qiymət: ${price}%0A🆔 PUBG ID: ${id}%0A👤 Müştəri: ${name}`;
+        const text = `Salam StarGameAz!%0A%0A📦 Paket: ${uc}%0A💰 Qiymət: ${price}%0A🆔 PUBG ID: ${id}%0A👤 Müştəri: ${name}%0A💳 Ödəniş: Birbank`;
         window.open(`https://wa.me/994503482470?text=${text}`, '_blank');
     }
 </script>
