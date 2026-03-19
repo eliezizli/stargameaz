@@ -22,15 +22,24 @@
         
         /* Düymələr */
         .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        button { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.75rem; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; }
         .btn-approve { background: #2ecc71; color: #000; }
         .btn-reject { background: #e74c3c; color: #fff; }
+        .btn-receipt { background: #3498db; color: #fff; }
         .btn-delete { background: #444; color: #fff; flex: 0.4; }
         
-        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: #000; }
+
+        /* Şəkil Baxış Modalı */
+        #imgModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        #imgModal img { max-width: 100%; max-height: 90vh; border-radius: 10px; border: 2px solid #FFD700; }
     </style>
 </head>
 <body>
+
+<div id="imgModal" onclick="this.style.display='none'">
+    <img id="modalImg" src="">
+</div>
 
 <div id="adminAuth">
     <h3 style="color:#FFD700;">ADMIN GİRİŞ</h3>
@@ -61,10 +70,9 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // PAROL YOXLAMA
     function checkPass() {
         const pass = document.getElementById('adminPass').value;
-        if (pass === "eliezizli") { // PAROL BURADADIR
+        if (pass === "eliezizli") {
             document.getElementById('adminAuth').style.display = 'none';
             loadAllOrders();
         } else {
@@ -73,6 +81,7 @@
     }
 
     function loadAllOrders() {
+        // onSnapshot istifadə edirik ki, yeni sifariş gələndə səhifəni yeniləmədən düşsün
         db.collection("orders").orderBy("date", "desc").onSnapshot(snap => {
             const list = document.getElementById('adminOrders');
             document.getElementById('stats').innerText = `Cəmi: ${snap.size} sifariş`;
@@ -85,17 +94,19 @@
                 list.innerHTML += `
                     <div class="order-card">
                         <div class="order-info">
-                            <b>Paket:</b> ${d.uc}<br>
-                            <b>Qiymət:</b> ${d.price}<br>
-                            <b>PUBG ID:</b> ${d.playerID}<br>
-                            <b>İstifadəçi:</b> ${d.email}<br>
-                            <b>Tarix:</b> ${d.date}<br>
-                            <b>Status:</b> <span class="status-badge" style="background:${getStatusColor(d.status)}">${d.status}</span>
+                            <b>📦 Paket:</b> ${d.uc}<br>
+                            <b>💰 Qiymət:</b> ${d.price}<br>
+                            <b>🆔 PUBG ID:</b> <span style="font-size: 1.1rem; letter-spacing: 1px;">${d.playerID}</span><br>
+                            <b>👤 Müştəri:</b> ${d.userName || d.email}<br>
+                            <b>📧 Email:</b> ${d.email}<br>
+                            <b>📅 Tarix:</b> ${d.date}<br>
+                            <b>🔔 Status:</b> <span class="status-badge" style="background:${getStatusColor(d.status)}">${d.status}</span>
                         </div>
                         <div class="btn-group">
-                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">Təsdiqlə</button>
-                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">İnkar et</button>
-                            <button class="btn-delete" onclick="deleteOrder('${id}')">Sil</button>
+                            ${d.receipt ? `<button class="btn-receipt" onclick="viewReceipt('${d.receipt}')">🖼️ Çekə Bax</button>` : ''}
+                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">✅ Təsdiqlə</button>
+                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">❌ İnkar et</button>
+                            <button class="btn-delete" onclick="deleteOrder('${id}')">🗑️ Sil</button>
                         </div>
                     </div>
                 `;
@@ -103,12 +114,20 @@
         });
     }
 
+    // Şəkli göstərmək üçün funksiya
+    function viewReceipt(src) {
+        document.getElementById('modalImg').src = src;
+        document.getElementById('imgModal').style.display = 'flex';
+    }
+
     function updateStatus(docId, newStatus) {
-        db.collection("orders").doc(docId).update({ status: newStatus });
+        db.collection("orders").doc(docId).update({ status: newStatus }).then(() => {
+            console.log("Status yeniləndi");
+        });
     }
 
     function deleteOrder(docId) {
-        if(confirm("Bu sifarişi silmək istəyirsən?")) {
+        if(confirm("Bu sifarişi silmək istəyirsən? (Geri qaytarmaq olmur)")) {
             db.collection("orders").doc(docId).delete();
         }
     }
@@ -116,7 +135,7 @@
     function getStatusColor(s) {
         if(s === "Təsdiqləndi") return "#2ecc71";
         if(s === "İnkar edildi") return "#e74c3c";
-        return "#FFD700";
+        return "#FFD700"; // Gözlənilir statusu üçün sarı
     }
 </script>
 </body>
