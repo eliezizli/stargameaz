@@ -8,13 +8,13 @@
     <meta name="description" content="StarGameAze - Azərbaycanda ən sürətli PUBG UC yükləmə mərkəzi. Birbank və m10 ilə 7/24 təhlükəsiz ödəniş, anında təslim və sərfəli qiymətlər!">
     <meta name="keywords" content="pubg uc al, stargameaz, ucuz uc azerbaycan, uc yukleme, stargameaze">
     
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/zVjKm7k5/Standard-6.png">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/HJLz7PTz/Standard.png">
     
     <meta property="og:title" content="StarGameAze | Ucuz UC Satışı">
     <meta property="og:description" content="PUBG ID-ni yaz, ödənişini et və UC anında hesabına gəlsin!">
-    <meta property="og:image" content="https://i.postimg.cc/zVjKm7k5/Standard-6.png">
+    <meta property="og:image" content="https://i.postimg.cc/HJLz7PTz/Standard.png">
     <meta property="og:type" content="website">
-    <meta name="thumbnail" content="https://i.postimg.cc/zVjKm7k5/Standard-6.png">
+    <meta name="thumbnail" content="https://i.postimg.cc/HJLz7PTz/Standard.png">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
@@ -47,6 +47,7 @@
 
         .btn-premium { background: linear-gradient(45deg, var(--gold), #ffaa00); color: #000; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; transition: 0.2s; }
         .btn-premium:active { transform: scale(0.96); opacity: 0.9; }
+        
         .btn-orders-toggle { display: none; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 9px 12px; border-radius: 9px; font-size: 0.7rem; cursor: pointer; text-transform: uppercase; font-weight: 600; }
 
         .payment-card { 
@@ -60,10 +61,12 @@
 
         .glass-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; backdrop-filter: blur(15px); margin-bottom: 20px; }
         .main-input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-size: 1rem; margin-bottom: 12px; outline: none; }
+        .main-input::placeholder { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+
         .file-upload-label { display: block; padding: 14px; background: rgba(255,255,255,0.05); border: 1px dashed var(--gold); border-radius: 10px; text-align: center; cursor: pointer; margin-bottom: 12px; font-size: 0.8rem; transition: 0.3s; color: #fff; }
 
         .uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
+        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.2s; -webkit-user-select: none; user-select: none; }
         .uc-card:active { transform: scale(0.95); border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
         .uc-title { font-weight: 700; font-size: 1.1rem; display: block; margin-bottom: 4px; color: #fff; }
         .uc-price { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; }
@@ -75,21 +78,37 @@
             box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
         }
         .order-panel.active { bottom: 0; }
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px); }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
         
         .order-item { background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--gold); font-size: 0.8rem; }
         .status-badge { font-size: 0.6rem; padding: 4px 8px; border-radius: 5px; font-weight: 700; text-transform: uppercase; }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 15px; }
-        .modal-box { background: #111; width: 100%; max-width: 340px; padding: 30px 20px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; }
+        .modal-box { background: #111; width: 100%; max-width: 340px; padding: 30px 20px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; box-shadow: 0 10px 40px rgba(255, 215, 0, 0.2); }
         .modal-box h2 { font-family: 'Orbitron'; color: var(--gold); margin-bottom: 20px; font-size: 1.3rem; }
+        .modal-box p { font-size: 0.8rem; color: #bbb; margin-top: 15px; line-height: 1.4; }
 
         .whatsapp-float {
-            position: fixed; bottom: 20px; right: 15px; background-color: #25d366;
-            color: #fff; border-radius: 50px; display: flex; align-items: center;
-            padding: 10px 16px; gap: 8px; z-index: 999; text-decoration: none;
-            font-weight: 600; font-size: 0.8rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            position: fixed;
+            bottom: 20px;
+            right: 15px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            gap: 8px;
+            z-index: 999;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
+        .whatsapp-float:active { transform: scale(0.9) translateY(2px); }
+        .whatsapp-float img { width: 22px; height: 22px; }
 
         @media screen and (max-width: 400px) {
             .logo { font-size: 1.1rem; }
@@ -101,25 +120,29 @@
 <body>
 
 <a href="https://wa.me/994503482470?text=Salam,%20StarGameAz%20saytından%20yazıram." class="whatsapp-float" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:22px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     <span>Canlı Dəstək</span>
 </a>
 
 <div class="overlay" id="overlay" onclick="toggleOrders()"></div>
 <div class="order-panel" id="orderPanel">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1);">
         <h3 style="font-family: 'Orbitron'; color: var(--gold); font-size: 0.9rem;">📋 SİFARİŞLƏRİM</h3>
-        <span onclick="toggleOrders()" style="cursor:pointer; font-size: 1.8rem; color: #fff;">&times;</span>
+        <span onclick="toggleOrders()" style="cursor:pointer; font-size: 1.8rem; color: #fff; line-height:1;">&times;</span>
     </div>
-    <div id="ordersList" style="overflow-y: auto; height: calc(100% - 50px);"></div>
+    <div id="ordersList" style="overflow-y: auto; height: calc(100% - 50px); padding-right:5px;"></div>
 </div>
 
 <div id="loginModal" class="modal">
     <div class="modal-box">
         <h2>🔑 GİRİŞ</h2>
-        <div id="g_id_onload" data-client_id="512841497901-215itq61u0rv1e1ho8fin2jceestn0am.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
-        <div class="g_id_signin" data-type="standard"></div>
-        <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline;">Bağla</button>
+        <div id="g_id_onload"
+             data-client_id="512841497901-215itq61u0rv1e1ho8fin2jceestn0am.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-theme="filled_blue" data-shape="rectangular" data-logo_alignment="left"></div>
+        <p>Sifarişlərinizi izləmək üçün daxil olun.</p>
+        <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline; font-size:0.8rem;">Bağla</button>
     </div>
 </div>
 
@@ -144,9 +167,11 @@
 
     <div class="glass-panel">
         <input type="tel" id="playerID" class="main-input" placeholder="🆔 PUBG ID-nizi yazın" inputmode="numeric">
-        <label for="receiptInput" id="fileLabel" class="file-upload-label">📸 Ödəniş Çekini Yüklə (Mütləq!)</label>
+        <label for="receiptInput" id="fileLabel" class="file-upload-label">
+            📸 Ödəniş Çekini Yüklə (Mütləq!)
+        </label>
         <input type="file" id="receiptInput" accept="image/*" style="display:none;" onchange="handleFile(this)">
-        <button id="verifyBtn" class="btn-premium" style="width: 100%; background: #fff; color: #000;" onclick="verifyID()">🔍 ID YOXLA</button>
+        <button id="verifyBtn" class="btn-premium" style="width: 100%; background: #fff; color: #000; border-radius:10px;" onclick="verifyID()">🔍 ID YOXLA</button>
         <div id="idStatus" style="margin-top: 12px; text-align: center; font-weight: 700; font-size:0.85rem;"></div>
     </div>
 
@@ -172,12 +197,15 @@
     let verified = false;
 
     const products = [
-        {u: "30 UC", p: "1.00 AZN"}, {u: "60 UC", p: "2.00 AZN"}, {u: "90 UC", p: "3.00 AZN"},
-        {u: "120 UC", p: "4.00 AZN"}, {u: "180 UC", p: "5.00 AZN"}, {u: "270 UC", p: "8.00 AZN"},
-        {u: "325 UC", p: "9.00 AZN"}, {u: "355 UC", p: "10.00 AZN"}, {u: "385 UC", p: "11.00 AZN"},
-        {u: "660 UC", p: "16.00 AZN"}, {u: "720 UC", p: "18.00 AZN"}, {u: "780 UC", p: "20.00 AZN"},
-        {u: "985 UC", p: "25.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"}, {u: "3850 UC", p: "81.00 AZN"},
-        {u: "8100 UC", p: "155.00 AZN"}, {u: "16200 UC", p: "310.00 AZN"}
+        {u: "30 UC", p: "1.00 AZN"}, {u: "60 UC", p: "2.00 AZN"},
+        {u: "90 UC", p: "3.00 AZN"}, {u: "120 UC", p: "4.00 AZN"},
+        {u: "180 UC", p: "5.00 AZN"}, {u: "270 UC", p: "8.00 AZN"},
+        {u: "325 UC", p: "9.00 AZN"}, {u: "355 UC", p: "10.00 AZN"},
+        {u: "385 UC", p: "11.00 AZN"}, {u: "660 UC", p: "16.00 AZN"},
+        {u: "720 UC", p: "18.00 AZN"}, {u: "780 UC", p: "20.00 AZN"},
+        {u: "985 UC", p: "25.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"},
+        {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "155.00 AZN"},
+        {u: "16200 UC", p: "310.00 AZN"}
     ];
 
     window.onload = function() {
@@ -220,7 +248,7 @@
     function handleFile(input) {
         const file = input.files[0];
         const reader = new FileReader();
-        reader.onloadend = () => {
+        reader.onloadend = function() {
             receiptBase64 = reader.result;
             document.getElementById('fileLabel').innerHTML = "✅ Çek yükləndi!";
             document.getElementById('fileLabel').style.color = "#2ecc71";
@@ -259,11 +287,11 @@
         };
 
         db.collection("orders").add(orderData).then(() => {
-            alert("🚀 Sifarişiniz uğurla qəbul edildi! Admin təsdiqləyəndə bildiriş alacaqsınız.");
-            receiptBase64 = "";
+            alert("🚀 Sifariş qəbul edildi!");
+            receiptBase64 = ""; 
             document.getElementById('fileLabel').innerHTML = "📸 Ödəniş Çekini Yüklə (Mütləq!)";
             document.getElementById('fileLabel').style.color = "#fff";
-        }).catch(err => alert("Xəta: " + err));
+        });
     }
 
     function toggleOrders() {
@@ -295,8 +323,10 @@
         db.collection("orders").where("email", "==", currentUser.email).get().then(snap => {
             const list = document.getElementById('ordersList');
             let html = "";
-            snap.forEach(doc => {
-                const d = doc.data();
+            let items = [];
+            snap.forEach(doc => items.push(doc.data()));
+            items.sort((a,b) => new Date(b.date) - new Date(a.date));
+            items.forEach(d => {
                 let sColor = d.status === "Təsdiqləndi" ? "#2ecc71" : (d.status === "İnkar edildi" ? "#e74c3c" : "#FFD700");
                 html += `
                     <div class="order-item" style="border-left-color: ${sColor}">
@@ -304,7 +334,7 @@
                         <div class="status-badge" style="background:${sColor}">${d.status}</div>
                     </div>`;
             });
-            list.innerHTML = html || "<p style='text-align:center; padding:20px;'>Sifariş tapılmadı.</p>";
+            list.innerHTML = html || "<p style='text-align:center;'>Sifariş yoxdur.</p>";
         });
     }
 </script>
