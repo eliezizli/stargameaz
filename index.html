@@ -70,9 +70,42 @@
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .modal-box { background: #111; width: 85%; max-width: 350px; padding: 35px; border-radius: 25px; border: 1px solid var(--gold); text-align: center; }
+
+        /* WhatsApp Dəstək Düyməsi */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 20px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding: 10px 18px;
+            gap: 10px;
+            z-index: 1000;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            transition: 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .whatsapp-float:active { transform: scale(0.9); }
+        .whatsapp-float img { width: 25px; height: 25px; }
+
+        @media screen and (max-width: 480px) {
+            .whatsapp-float span { display: none; }
+            .whatsapp-float { padding: 12px; border-radius: 50%; }
+        }
     </style>
 </head>
 <body>
+
+<a href="https://wa.me/994503482470?text=Salam,%20StarGameAz%20saytından%20yazıram.%20Kömək%20lazımdır." class="whatsapp-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    <span>Canlı Dəstək</span>
+</a>
 
 <div class="overlay" id="overlay" onclick="toggleOrders()"></div>
 <div class="order-panel" id="orderPanel">
@@ -104,7 +137,7 @@
             <button id="loginBtn" class="btn-premium" onclick="showLogin()">👤 GİRİŞ</button>
             <div id="userChip" class="user-chip">
                 <div class="avatar-circle" id="userIcon">🎮</div>
-                <span id="userNameDisplay" style="font-weight: 600; font-size: 0.8rem;">Oyunçu</span>
+                <span id="userNameDisplay" style="font-weight: 600; font-size: 0.8rem; cursor:pointer;" onclick="logout()">Oyunçu ❌</span>
             </div>
         </div>
     </div>
@@ -159,9 +192,7 @@
         {u: "16200 UC", p: "310.00 AZN"}
     ];
 
-    // --- SESSION & AUTO-LOGIN ---
     window.onload = function() {
-        // LocalStorage-dan yoxla
         const savedUser = localStorage.getItem('stargame_user');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
@@ -173,13 +204,17 @@
     function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
     
+    function logout() {
+        if(confirm("Hesabdan çıxmaq istəyirsiniz?")) {
+            localStorage.removeItem('stargame_user');
+            location.reload();
+        }
+    }
+
     function handleCredentialResponse(response) {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
         currentUser = payload;
-        
-        // Brauzer yaddaşına yazırıq (Çıxıb girəndə qalması üçün)
         localStorage.setItem('stargame_user', JSON.stringify(payload));
-        
         closeModal();
         updateUserUI(payload);
         listenStatus();
@@ -189,7 +224,7 @@
         document.getElementById('loginBtn').style.display = 'none';
         document.getElementById('orderHistoryBtn').style.display = 'block';
         document.getElementById('userChip').style.display = 'flex';
-        document.getElementById('userNameDisplay').innerText = user.name;
+        document.getElementById('userNameDisplay').innerText = user.name + " ❌";
         
         const icon = document.getElementById('userIcon');
         if(user.picture) {
@@ -200,7 +235,6 @@
         }
     }
 
-    // --- FILE HANDLING ---
     function handleFile(input) {
         const file = input.files[0];
         if (file && file.size > 2 * 1024 * 1024) {
@@ -230,20 +264,27 @@
     }
 
     function verifyID() {
+        const btn = document.getElementById('verifyBtn');
         const id = document.getElementById('playerID').value;
         if(id.length < 5) return alert("❌ Düzgün ID daxil edin");
-        verified = true;
-        document.getElementById('idStatus').innerHTML = "✅ TƏSDİQLƏNDİ: " + id;
-        document.getElementById('idStatus').style.color = "#2ecc71";
+        
+        btn.innerText = "Yoxlanılır...";
+        btn.disabled = true;
+
+        setTimeout(() => {
+            verified = true;
+            btn.innerText = "🔍 ID YOXLA";
+            btn.disabled = false;
+            document.getElementById('idStatus').innerHTML = "✅ Oyunçu Tapıldı: " + id;
+            document.getElementById('idStatus').style.color = "#2ecc71";
+        }, 1200);
     }
 
-    // --- PRODUCT RENDER ---
     const grid = document.getElementById('productGrid');
     products.forEach(item => {
         grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
     });
 
-    // --- ORDER & FIREBASE ---
     function order(uc, price) {
         if(!verified) return alert("⚠️ Öncə ID yoxlayın");
         if(!currentUser) return showLogin();
@@ -262,8 +303,8 @@
         };
 
         db.collection("orders").add(orderData).then(() => {
-            alert("🚀 Sifariş qəbul edildi! Admin təsdiqləyəndə sizə anlıq bildiriş gələcək.");
-            const text = `Salam StarGameAz!%0A%0A🌟 Paket: ${uc}%0A💰 Qiymət: ${price}%0A🆔 PUBG ID: ${playerID}%0A👤 Müştəri: ${currentUser.name}%0A💳 Ödəniş: Birbank`;
+            alert("🚀 Sifariş qəbul edildi!");
+            const text = `Salam StarGameAz!%0A%0A🌟 Paket: ${uc}%0A💰 Qiymət: ${price}%0A🆔 PUBG ID: ${playerID}%0A👤 Müştəri: ${currentUser.name}`;
             window.open(`https://wa.me/994503482470?text=${text}`, '_blank');
         });
     }
@@ -276,9 +317,7 @@
                 if (change.type === "modified") {
                     const data = change.doc.data();
                     if(data.status === "Təsdiqləndi") {
-                        alert(`🎉 TƏBRİKLƏR!\n\n${data.uc} sifarişiniz uğurla tamamlandı! ✅`);
-                    } else if(data.status === "İnkar edildi") {
-                        alert(`❌ SİFARİŞ İNKAR EDİLDİ!\n\n${data.uc} paketi üçün ödənişiniz təsdiqlənmədi.`);
+                        alert(`🎉 TƏBRİKLƏR!\n\n${data.uc} sifarişiniz tamamlandı! ✅`);
                     }
                 }
             });
@@ -290,13 +329,11 @@
         if(!currentUser) return;
         db.collection("orders").where("email", "==", currentUser.email).get().then(snap => {
             const list = document.getElementById('ordersList');
-            if(snap.empty) { list.innerHTML = "<p style='text-align:center; opacity:0.5; margin-top:20px;'>Sifariş tapılmadı. 🏜️</p>"; return; }
+            if(snap.empty) { list.innerHTML = "<p style='text-align:center; opacity:0.5; margin-top:20px;'>Sifariş tapılmadı.</p>"; return; }
             
             let html = "";
             let items = [];
             snap.forEach(doc => items.push(doc.data()));
-            
-            // Tarixə görə sıralama
             items.sort((a,b) => new Date(b.date) - new Date(a.date));
 
             items.forEach(d => {
