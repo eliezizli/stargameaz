@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>StarGameAz | Birbank Ödənişli UC</title>
     
+    <title>StarGameAze | Ucuz PUBG Mobile UC Satışı (Birbank & m10)</title>
+    <meta name="description" content="StarGameAze - Azərbaycanda ən sürətli PUBG UC yükləmə mərkəzi. Birbank və m10 ilə 7/24 təhlükəsiz ödəniş, anında təslim və sərfəli qiymətlər!">
+    <meta name="keywords" content="pubg uc al, stargameaz, ucuz uc azerbaycan, uc yukleme, stargameaze">
+    
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/zVjKm7k5/Standard-6.png">
+    
+    <meta property="og:title" content="StarGameAze | Ucuz UC Satışı">
+    <meta property="og:description" content="PUBG ID-ni yaz, ödənişini et və UC anında hesabına gəlsin!">
+    <meta property="og:image" content="https://i.postimg.cc/zVjKm7k5/Standard-6.png">
+    <meta property="og:type" content="website">
+    <meta name="thumbnail" content="https://i.postimg.cc/zVjKm7k5/Standard-6.png">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
@@ -115,7 +125,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="logo">STARGAMEAZ</div>
+        <div class="logo">STARGAMEAZE</div>
         <div class="auth-section">
             <button id="orderHistoryBtn" class="btn-orders-toggle" onclick="toggleOrders()">🛒 Tarixçə</button>
             <button id="loginBtn" class="btn-premium" onclick="showLogin()">👤 GİRİŞ</button>
@@ -231,7 +241,6 @@
         grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
     });
 
-    // YENİLƏNMİŞ ORDER FUNKSİYASI (WP SİLİNDİ)
     function order(uc, price) {
         if(!verified) return alert("⚠️ Öncə ID yoxlayın");
         if(!currentUser) return showLogin();
@@ -251,7 +260,6 @@
 
         db.collection("orders").add(orderData).then(() => {
             alert("🚀 Sifarişiniz uğurla qəbul edildi! Admin təsdiqləyəndə bildiriş alacaqsınız.");
-            // Formu təmizləmək
             receiptBase64 = "";
             document.getElementById('fileLabel').innerHTML = "📸 Ödəniş Çekini Yüklə (Mütləq!)";
             document.getElementById('fileLabel').style.color = "#fff";
