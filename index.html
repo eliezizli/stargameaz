@@ -209,11 +209,19 @@
     ];
 
     window.onload = function() {
+        // İstifadəçi məlumatını yoxla
         const savedUser = localStorage.getItem('stargame_user');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
             updateUserUI(currentUser);
             listenStatus();
+        }
+
+        // PUBG ID-ni yaddaşdan gətir
+        const savedID = localStorage.getItem('stargame_player_id');
+        if (savedID) {
+            document.getElementById('playerID').value = savedID;
+            verifyID(); // Avtomatik yoxlanılmış kimi qeyd et
         }
     };
 
@@ -259,7 +267,11 @@
     function verifyID() {
         const id = document.getElementById('playerID').value;
         if(id.length < 5) return alert("❌ Düzgün ID daxil edin");
+        
         verified = true;
+        // ID-ni brauzer yaddaşına yaz
+        localStorage.setItem('stargame_player_id', id);
+        
         document.getElementById('idStatus').innerHTML = "✅ Oyunçu Tapıldı: " + id;
         document.getElementById('idStatus').style.color = "#2ecc71";
     }
