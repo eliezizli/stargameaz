@@ -27,6 +27,7 @@
 
         .container { max-width: 480px; margin: auto; padding: 20px; }
 
+        /* Header */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
         .logo { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); letter-spacing: 2px; }
 
@@ -37,6 +38,7 @@
         .btn-premium { background: linear-gradient(45deg, var(--gold), #ffaa00); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; }
         .btn-orders-toggle { display: none; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 10px; font-size: 0.7rem; cursor: pointer; text-transform: uppercase; font-weight: 600; }
 
+        /* Ödəniş Kartı */
         .payment-card { 
             background: linear-gradient(135deg, #1a1a1a 0%, #e31e24 100%); 
             padding: 30px 20px; border-radius: 20px; margin: 20px 0; 
@@ -46,18 +48,20 @@
         .card-number { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; letter-spacing: 3px; margin: 15px 0; display: block; color: #fff; }
         .btn-copy-card { background: #fff; border: none; color: #e31e24; padding: 12px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: 700; text-transform: uppercase; }
 
+        /* Input Paneli */
         .glass-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; backdrop-filter: blur(15px); margin-bottom: 25px; }
         .main-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-size: 1.1rem; margin-bottom: 15px; outline: none; }
 
+        /* UC Grid */
         .uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px 10px; border-radius: 15px; text-align: center; cursor: pointer; }
+        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px 10px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
         .uc-card:active { transform: scale(0.95); border-color: var(--gold); }
         .uc-title { font-weight: 700; font-size: 1.3rem; display: block; margin-bottom: 5px; }
         .uc-price { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.85rem; }
 
-        /* Sifariş Paneli (Alt tərəfdən açılan) */
+        /* Sifariş Tarixçəsi Paneli */
         .order-panel {
-            position: fixed; bottom: -100%; left: 0; width: 100%; height: 70vh;
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 75vh;
             background: #0f0f0f; border-radius: 25px 25px 0 0; z-index: 1001;
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px 20px; border-top: 2px solid var(--gold);
         }
@@ -67,6 +71,7 @@
         .order-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--gold); }
         .status-badge { font-size: 0.65rem; padding: 4px 10px; border-radius: 6px; font-weight: 700; text-transform: uppercase; }
 
+        /* Login Modal */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .modal-box { background: #111; width: 85%; max-width: 350px; padding: 35px; border-radius: 25px; border: 1px solid var(--gold); text-align: center; }
     </style>
@@ -74,10 +79,9 @@
 <body>
 
 <div class="overlay" id="overlay" onclick="toggleOrders()"></div>
-
 <div class="order-panel" id="orderPanel">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h3 style="font-family: 'Orbitron'; color: var(--gold); font-size: 1rem;">SİFARİŞ TARİXÇƏM</h3>
+        <h3 style="font-family: 'Orbitron'; color: var(--gold); font-size: 1rem;">SİFARİŞLƏRİM</h3>
         <span onclick="toggleOrders()" style="cursor:pointer; font-size: 2rem; color: #fff;">&times;</span>
     </div>
     <div id="ordersList" style="overflow-y: auto; height: calc(100% - 60px);"></div>
@@ -91,7 +95,7 @@
              data-callback="handleCredentialResponse">
         </div>
         <div class="g_id_signin" data-type="standard" data-theme="filled_blue"></div>
-        <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">Sifarişlərinizi izləmək üçün daxil olun.</p>
+        <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">Sifariş vermək və izləmək üçün daxil olun.</p>
         <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline;">Bağla</button>
     </div>
 </div>
@@ -125,7 +129,7 @@
 </div>
 
 <script>
-    // Firebase Konfiqurasiyası
+    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHjOsgtgcHQLg",
         authDomain: "stargameaz.firebaseapp.com",
@@ -162,7 +166,7 @@
     }
 
     function handleCredentialResponse(response) {
-        const payload = parseJwt(response.credential);
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
         currentUser = payload;
         
         closeModal();
@@ -175,16 +179,8 @@
         if(payload.picture) {
             icon.style.backgroundImage = `url('${payload.picture}')`;
             icon.innerText = "";
-        } else {
-            icon.innerText = payload.name[0].toUpperCase();
         }
         loadOrders();
-    }
-
-    function parseJwt(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        return JSON.parse(window.atob(base64));
     }
 
     function copyCard() {
@@ -195,11 +191,10 @@
     let verified = false;
     function verifyID() {
         const id = document.getElementById('playerID').value;
-        if(id.length < 5) return alert("ID daxil edin");
+        if(id.length < 5) return alert("Düzgün ID daxil edin");
         verified = true;
-        const status = document.getElementById('idStatus');
-        status.innerHTML = "✅ TƏSDİQLƏNDİ: " + id;
-        status.style.color = "#2ecc71";
+        document.getElementById('idStatus').innerHTML = "✅ TƏSDİQLƏNDİ: " + id;
+        document.getElementById('idStatus').style.color = "#2ecc71";
     }
 
     const grid = document.getElementById('productGrid');
@@ -207,6 +202,7 @@
         grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
     });
 
+    // SİFARİŞ VƏ SƏNİN İSTƏDİYİN WHATSAPP MESAJI
     function order(uc, price) {
         if(!verified) return alert("Öncə ID yoxlayın");
         if(!currentUser) return showLogin();
@@ -221,9 +217,9 @@
             status: "Gözlənilir"
         };
 
-        // Firebase-ə yazırıq
         db.collection("orders").add(orderData).then(() => {
-            const text = `Salam StarGameAz!%0A%0A📦 Paket: ${uc}%0A💰 Qiymət: ${price}%0A🆔 PUBG ID: ${playerID}%0A👤 Müştəri: ${currentUser.name}%0A💳 Ödəniş: Birbank`;
+            // Sənin istədiyin Mesaj Formatı
+            const text = `Salam StarGameAz!%0A%0A🌟 Paket: ${uc}%0A💰 Qiymət: ${price}%0A🆔 PUBG ID: ${playerID}%0A👤 Müştəri: ${currentUser.name}%0A💳 Ödəniş: Birbank`;
             window.open(`https://wa.me/994503482470?text=${text}`, '_blank');
         });
     }
@@ -231,7 +227,7 @@
     function loadOrders() {
         db.collection("orders").where("email", "==", currentUser.email).get().then(snap => {
             const list = document.getElementById('ordersList');
-            if(snap.empty) { list.innerHTML = "<p style='text-align:center; color:#666; margin-top:20px;'>Sifariş yoxdur.</p>"; return; }
+            if(snap.empty) { list.innerHTML = "<p style='text-align:center; opacity:0.5;'>Sifariş tapılmadı.</p>"; return; }
             
             let html = "";
             let items = [];
@@ -245,13 +241,8 @@
 
                 html += `
                     <div class="order-item" style="border-left-color: ${sColor}">
-                        <div>
-                            <b style="font-size:1.1rem">${d.uc}</b><br>
-                            <small style="opacity:0.6">${d.date}</small>
-                        </div>
-                        <div class="status-badge" style="background:${sColor}; color:${sColor==='#FFD700'?'#000':'#fff'}">
-                            ${d.status}
-                        </div>
+                        <div><b>${d.uc}</b><br><small style="opacity:0.5">${d.date}</small></div>
+                        <div class="status-badge" style="background:${sColor}; color:${sColor==='#FFD700'?'#000':'#fff'}">${d.status}</div>
                     </div>`;
             });
             list.innerHTML = html;
