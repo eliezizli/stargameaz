@@ -32,7 +32,7 @@
 
         .auth-section { display: flex; align-items: center; gap: 10px; }
         .user-chip { display: none; background: var(--glass); border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px; backdrop-filter: blur(10px); align-items: center; gap: 8px; }
-        .avatar-circle { width: 30px; height: 30px; background: var(--gold); border-radius: 50%; background-size: cover; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .avatar-circle { width: 30px; height: 30px; background: var(--gold); border-radius: 50%; background-size: cover; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background-position: center; }
 
         .btn-premium { background: linear-gradient(45deg, var(--gold), #ffaa00); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; }
         .btn-orders-toggle { display: none; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 10px; font-size: 0.7rem; cursor: pointer; text-transform: uppercase; font-weight: 600; }
@@ -49,13 +49,11 @@
         .glass-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; backdrop-filter: blur(15px); margin-bottom: 25px; }
         .main-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-size: 1.1rem; margin-bottom: 15px; outline: none; }
 
-        /* Yeni: Çek Yükləmə Dizaynı */
-        .file-upload-label { display: block; padding: 15px; background: rgba(255,255,255,0.05); border: 1px dashed var(--gold); border-radius: 12px; text-align: center; cursor: pointer; margin-bottom: 15px; font-size: 0.8rem; transition: 0.3s; }
-        .file-upload-label:hover { background: rgba(255,255,255,0.1); }
+        .file-upload-label { display: block; padding: 15px; background: rgba(255,255,255,0.05); border: 1px dashed var(--gold); border-radius: 12px; text-align: center; cursor: pointer; margin-bottom: 15px; font-size: 0.8rem; transition: 0.3s; color: #fff; }
 
         .uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px 10px; border-radius: 15px; text-align: center; cursor: pointer; }
-        .uc-card:active { transform: scale(0.95); border-color: var(--gold); }
+        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px 10px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .uc-card:active { transform: scale(0.95); border-color: var(--gold); background: rgba(255, 215, 0, 0.1); }
         .uc-title { font-weight: 700; font-size: 1.3rem; display: block; margin-bottom: 5px; }
         .uc-price { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.85rem; }
 
@@ -93,7 +91,7 @@
              data-callback="handleCredentialResponse">
         </div>
         <div class="g_id_signin" data-type="standard" data-theme="filled_blue"></div>
-        <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">Sifarişlərinizi izləmək üçün daxil olun.</p>
+        <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">Sifarişlərinizi izləmək və hesabı yadda saxlamaq üçün daxil olun.</p>
         <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline;">Bağla</button>
     </div>
 </div>
@@ -113,7 +111,7 @@
 
     <div class="payment-card">
         <div class="card-label">💳 Birbank / Kart Hesabı</div>
-        <div class="card-number" id="cardNum">4169 7388 6262 7472</div>
+        <div class="card-number">4169 7388 6262 7472</div>
         <button class="btn-copy-card" onclick="copyCard()">📄 KART NÖMRƏSİNİ KOPYALA</button>
     </div>
 
@@ -161,8 +159,9 @@
         {u: "16200 UC", p: "310.00 AZN"}
     ];
 
-    // --- SESSION MANAGEMENT (LocalStorage) ---
+    // --- SESSION & AUTO-LOGIN ---
     window.onload = function() {
+        // LocalStorage-dan yoxla
         const savedUser = localStorage.getItem('stargame_user');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
@@ -178,13 +177,12 @@
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
         currentUser = payload;
         
-        // Yaddaşa yazırıq ki, çıxsa da silinməsin
+        // Brauzer yaddaşına yazırıq (Çıxıb girəndə qalması üçün)
         localStorage.setItem('stargame_user', JSON.stringify(payload));
         
         closeModal();
         updateUserUI(payload);
         listenStatus();
-        loadOrders();
     }
 
     function updateUserUI(user) {
@@ -202,10 +200,10 @@
         }
     }
 
-    // --- IMAGE HANDLING ---
+    // --- FILE HANDLING ---
     function handleFile(input) {
         const file = input.files[0];
-        if (file.size > 2 * 1024 * 1024) {
+        if (file && file.size > 2 * 1024 * 1024) {
             alert("❌ Şəkil çox böyükdür (Max 2MB)!");
             return;
         }
@@ -216,7 +214,7 @@
             document.getElementById('fileLabel').style.borderColor = "#2ecc71";
             document.getElementById('fileLabel').style.color = "#2ecc71";
         }
-        reader.readAsDataURL(file);
+        if(file) reader.readAsDataURL(file);
     }
 
     function toggleOrders() {
@@ -245,7 +243,7 @@
         grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
     });
 
-    // --- ORDER & NOTIFICATION ---
+    // --- ORDER & FIREBASE ---
     function order(uc, price) {
         if(!verified) return alert("⚠️ Öncə ID yoxlayın");
         if(!currentUser) return showLogin();
@@ -271,6 +269,7 @@
     }
 
     function listenStatus() {
+        if(!currentUser) return;
         db.collection("orders").where("email", "==", currentUser.email)
           .onSnapshot(snap => {
             snap.docChanges().forEach(change => {
@@ -278,14 +277,17 @@
                     const data = change.doc.data();
                     if(data.status === "Təsdiqləndi") {
                         alert(`🎉 TƏBRİKLƏR!\n\n${data.uc} sifarişiniz uğurla tamamlandı! ✅`);
+                    } else if(data.status === "İnkar edildi") {
+                        alert(`❌ SİFARİŞ İNKAR EDİLDİ!\n\n${data.uc} paketi üçün ödənişiniz təsdiqlənmədi.`);
                     }
                 }
             });
-            loadOrders(); // Listi yenilə
+            if(document.getElementById('orderPanel').classList.contains('active')) loadOrders();
         });
     }
 
     function loadOrders() {
+        if(!currentUser) return;
         db.collection("orders").where("email", "==", currentUser.email).get().then(snap => {
             const list = document.getElementById('ordersList');
             if(snap.empty) { list.innerHTML = "<p style='text-align:center; opacity:0.5; margin-top:20px;'>Sifariş tapılmadı. 🏜️</p>"; return; }
@@ -293,6 +295,8 @@
             let html = "";
             let items = [];
             snap.forEach(doc => items.push(doc.data()));
+            
+            // Tarixə görə sıralama
             items.sort((a,b) => new Date(b.date) - new Date(a.date));
 
             items.forEach(d => {
