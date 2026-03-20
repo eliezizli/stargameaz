@@ -2,78 +2,234 @@
 <html lang="az">
 <head>
     <meta charset="UTF-8">
-    <title>StarGameAze | Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarGameAze | Admin Control</title>
+    
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/HJLz7PTz/Standard.png">
+
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Poppins', sans-serif; background: #0f0f0f; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .admin-card { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #FFD700; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 350px; }
-        h2 { color: #FFD700; margin-bottom: 20px; }
-        .status-box { margin: 20px 0; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); }
-        .btn { border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; width: 100%; margin: 10px 0; }
-        .btn-online { background: #2ecc71; color: white; }
-        .btn-offline { background: #e74c3c; color: white; }
-        .btn:hover { opacity: 0.8; transform: scale(1.02); }
-        #current-status { font-weight: bold; text-transform: uppercase; }
+        :root { --gold: #FFD700; --red: #e31e24; --dark: #0a0a0a; }
+        body { background: var(--dark); color: #fff; font-family: 'Poppins', sans-serif; padding: 15px; margin: 0; }
+        
+        /* Header Dizaynı */
+        .header { 
+            border-bottom: 2px solid var(--gold); 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .header h2 { font-family: 'Orbitron', sans-serif; color: var(--gold); margin: 0; font-size: 1.2rem; }
+        
+        /* Giriş Ekranı */
+        #adminAuth { 
+            position: fixed; 
+            inset: 0; 
+            background: #000; 
+            z-index: 9999; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        .auth-box {
+            background: #111;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--gold);
+            text-align: center;
+            width: 85%;
+            max-width: 350px;
+        }
+        .auth-input { 
+            width: 100%;
+            padding: 12px; 
+            border-radius: 10px; 
+            border: 1px solid #333; 
+            background: #050505; 
+            color: #fff; 
+            text-align: center; 
+            font-size: 1rem; 
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        
+        /* Kartlar */
+        .order-card { 
+            background: #151515; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border: 1px solid #222; 
+            transition: 0.3s;
+        }
+        .order-card:hover { border-color: var(--gold); }
+        .order-info { margin-bottom: 12px; font-size: 0.85rem; line-height: 1.7; }
+        .order-info b { color: var(--gold); }
+        
+        /* Düymələr */
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        button { 
+            flex: 1; 
+            padding: 10px; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            transition: 0.2s;
+        }
+        button:active { transform: scale(0.95); }
+        
+        .btn-approve { background: #2ecc71; color: #000; }
+        .btn-reject { background: var(--red); color: #fff; }
+        .btn-receipt { background: #3498db; color: #fff; }
+        .btn-delete { background: #333; color: #fff; flex: 0.3; }
+        .btn-logout { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; font-size: 0.6rem; }
+        
+        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; color: #000; }
+
+        /* Modal */
+        #imgModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 10px; }
+        #imgModal img { max-width: 100%; max-height: 85vh; border-radius: 10px; border: 1px solid var(--gold); }
+        .close-modal { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; }
+
+        #stats { color: #888; font-size: 0.75rem; }
     </style>
 </head>
 <body>
 
-<div class="admin-card">
-    <h2>StarGameAze Admin</h2>
-    <div class="status-box">
-        Hazırkı Status: <br>
-        <span id="current-status">Yoxlanılır...</span>
-    </div>
-    
-    <button class="btn btn-online" onclick="changeStatus('online')">Onlayn Ol</button>
-    <button class="btn btn-offline" onclick="changeStatus('offline')">Oflayn Ol</button>
-    
-    <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">
-        Statusu dəyişdikdə saytdakı "Canlı Dəstək" düyməsi anında yenilənəcək.
-    </p>
+<div id="imgModal">
+    <span class="close-modal" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
+    <img id="modalImg" src="">
 </div>
 
+<div id="adminAuth">
+    <div class="auth-box">
+        <img src="https://i.postimg.cc/HJLz7PTz/Standard.png" style="width: 60px; margin-bottom: 10px;">
+        <h3 style="color:var(--gold); font-family: 'Orbitron'; margin-bottom: 20px;">ADMIN PANEL</h3>
+        <input type="password" id="adminPass" class="auth-input" placeholder="Parol">
+        <button onclick="checkPass()" style="background:var(--gold); color:#000; width: 100%; border-radius: 10px;">GİRİŞ ET</button>
+    </div>
+</div>
+
+<div class="header">
+    <div>
+        <h2>STARGAMEAZE</h2>
+        <small id="stats">Məlumatlar yenilənir...</small>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <button onclick="location.reload()" style="background:#222; color:#fff; width: auto; font-size: 0.6rem;">🔄</button>
+        <button onclick="logoutAdmin()" class="btn-logout">ÇIXIŞ</button>
+    </div>
+</div>
+
+<div id="adminOrders"></div>
+
 <script>
-    // Firebase Konfiqurasiyası (Əsas saytdakı ilə eyni olmalıdır)
     const firebaseConfig = {
         apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHjOsgtgcHQLg",
         authDomain: "stargameaz.firebaseapp.com",
         projectId: "stargameaz",
-        databaseURL: "https://stargameaz-default-rtdb.firebaseio.com",
         storageBucket: "stargameaz.firebasestorage.app",
         messagingSenderId: "929443246287",
         appId: "1:929443246287:web:59a2f842455111194047ba"
     };
 
     firebase.initializeApp(firebaseConfig);
-    const rtdb = firebase.database();
+    const db = firebase.firestore();
 
-    // Statusu Firebase-dən oxu və ekranda göstər
-    rtdb.ref('admin_settings/status').on('value', (snapshot) => {
-        const status = snapshot.val();
-        const display = document.getElementById('current-status');
-        if(status === 'online') {
-            display.innerText = "Onlayndır 🟢";
-            display.style.color = "#2ecc71";
-        } else {
-            display.innerText = "Oflayndır 🔴";
-            display.style.color = "#e74c3c";
+    // AVTOMATİK GİRİŞ YOXLAMASI
+    window.onload = function() {
+        if (localStorage.getItem('admin_session') === 'active_stargame') {
+            document.getElementById('adminAuth').style.display = 'none';
+            loadAllOrders();
         }
-    });
+    }
 
-    // Statusu Firebase-də dəyiş
-    function changeStatus(newStatus) {
-        rtdb.ref('admin_settings/status').set(newStatus)
-        .then(() => {
-            console.log("Status yeniləndi: " + newStatus);
-        })
-        .catch((error) => {
-            alert("Xəta baş verdi: " + error.message);
+    function checkPass() {
+        const pass = document.getElementById('adminPass').value;
+        if (pass === "eliezizli") {
+            localStorage.setItem('admin_session', 'active_stargame');
+            document.getElementById('adminAuth').style.display = 'none';
+            loadAllOrders();
+        } else {
+            alert("❌ Parol yanlışdır!");
+        }
+    }
+
+    function logoutAdmin() {
+        if(confirm("Admin panelindən çıxmaq istəyirsən?")) {
+            localStorage.removeItem('admin_session');
+            location.reload();
+        }
+    }
+
+    function loadAllOrders() {
+        db.collection("orders").orderBy("date", "desc").onSnapshot(snap => {
+            const list = document.getElementById('adminOrders');
+            document.getElementById('stats').innerText = `📊 Cəmi ${snap.size} sifariş mövcuddur`;
+            list.innerHTML = "";
+
+            if(snap.empty) {
+                list.innerHTML = "<p style='text-align:center; color:#555; margin-top:50px;'>Hələlik sifariş yoxdur.</p>";
+                return;
+            }
+
+            snap.forEach(doc => {
+                const d = doc.data();
+                const id = doc.id;
+                const sColor = getStatusColor(d.status);
+                
+                list.innerHTML += `
+                    <div class="order-card" style="border-left: 4px solid ${sColor}">
+                        <div class="order-info">
+                            <b>📦 Paket:</b> ${d.uc}<br>
+                            <b>💰 Ödəniş:</b> ${d.price}<br>
+                            <b>🆔 PUBG ID:</b> <span style="font-size: 1.1rem; color:#fff; background:#222; padding:2px 6px; border-radius:4px;">${d.playerID}</span><br>
+                            <b>👤 Müştəri:</b> ${d.userName || 'Naməlum'}<br>
+                            <b>📅 Tarix:</b> ${d.date}<br>
+                            <b>🔔 Status:</b> <span class="status-badge" style="background:${sColor}">${d.status}</span>
+                        </div>
+                        <div class="btn-group">
+                            ${d.receipt ? `<button class="btn-receipt" onclick="viewReceipt('${d.receipt}')">🖼️ Çek</button>` : ''}
+                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">Təsdiq</button>
+                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">İnkar</button>
+                            <button class="btn-delete" onclick="deleteOrder('${id}')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
         });
     }
-</script>
 
+    function viewReceipt(src) {
+        document.getElementById('modalImg').src = src;
+        document.getElementById('imgModal').style.display = 'flex';
+    }
+
+    function updateStatus(docId, newStatus) {
+        db.collection("orders").doc(docId).update({ status: newStatus });
+    }
+
+    function deleteOrder(docId) {
+        if(confirm("Bu məlumatı tamamilə silmək istəyirsən?")) {
+            db.collection("orders").doc(docId).delete();
+        }
+    }
+
+    function getStatusColor(s) {
+        if(s === "Təsdiqləndi") return "#2ecc71";
+        if(s === "İnkar edildi") return "#e74c3c";
+        return "#FFD700";
+    }
+</script>
 </body>
 </html>
