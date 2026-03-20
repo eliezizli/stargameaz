@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarGameAze | Admin Control</title>
+    <title>StarGameAze | Full Admin Control</title>
     
     <link rel="icon" type="image/png" href="https://i.postimg.cc/HJLz7PTz/Standard.png">
 
@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        :root { --gold: #FFD700; --red: #e31e24; --dark: #0a0a0a; --blue: #3498db; }
+        :root { --gold: #FFD700; --red: #e31e24; --dark: #0a0a0a; --blue: #3498db; --green: #2ecc71; --purple: #9b59b6; }
         body { background: var(--dark); color: #fff; font-family: 'Poppins', sans-serif; padding: 15px; margin: 0; }
         
         .header { border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
@@ -25,81 +25,91 @@
         .auth-box { background: #111; padding: 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 350px; }
         .auth-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #050505; color: #fff; text-align: center; font-size: 1rem; margin-bottom: 15px; box-sizing: border-box; }
         
-        /* Yeni İdarəetmə Panelləri (Status və Maya) */
-        .admin-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        /* İdarəetmə Alətləri Grid */
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         
         /* Kartlar */
-        .order-card { background: #151515; border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid #222; transition: 0.3s; }
-        .order-card:hover { border-color: var(--gold); }
-        .order-info { margin-bottom: 12px; font-size: 0.85rem; line-height: 1.7; }
-        .order-info b { color: var(--gold); }
+        .card { background: #151515; border-radius: 15px; padding: 15px; border: 1px solid #222; transition: 0.3s; }
+        .card:hover { border-color: var(--gold); }
+        .card-title { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; margin-bottom: 10px; text-align: center; display: block; }
         
         /* Düymələr */
-        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
-        button { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; transition: 0.2s; }
+        .btn-group { display: flex; gap: 5px; flex-wrap: wrap; }
+        button { flex: 1; padding: 8px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.65rem; text-transform: uppercase; transition: 0.2s; }
         button:active { transform: scale(0.95); }
         
-        .btn-approve { background: #2ecc71; color: #000; }
+        .btn-approve { background: var(--green); color: #000; }
         .btn-reject { background: var(--red); color: #fff; }
-        .btn-receipt { background: var(--blue); color: #fff; }
-        .btn-delete { background: #333; color: #fff; flex: 0.3; }
+        .btn-blue { background: var(--blue); color: #fff; }
+        .btn-purple { background: var(--purple); color: #fff; }
         .btn-logout { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; font-size: 0.6rem; }
         
-        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; color: #000; }
-        .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; }
+        .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; font-size: 0.8rem; }
+        .link-box { display: block; text-decoration: none; background: #222; padding: 8px; border-radius: 6px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.65rem; font-weight: bold; }
+        .link-box:hover { background: #333; }
 
-        /* Modal */
+        /* Sifariş Kartları */
+        .order-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--gold); font-size: 0.8rem; }
+        .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; color: #000; }
+
         #imgModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 10px; }
         #imgModal img { max-width: 100%; max-height: 85vh; border-radius: 10px; border: 1px solid var(--gold); }
-        .close-modal { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div id="imgModal">
-    <span class="close-modal" onclick="document.getElementById('imgModal').style.display='none'">&times;</span>
+    <span onclick="document.getElementById('imgModal').style.display='none'" style="position:absolute; top:20px; right:20px; color:#fff; font-size:2rem; cursor:pointer;">&times;</span>
     <img id="modalImg" src="">
 </div>
 
 <div id="adminAuth">
     <div class="auth-box">
-        <img src="https://i.postimg.cc/HJLz7PTz/Standard.png" style="width: 60px; margin-bottom: 10px;">
-        <h3 style="color:var(--gold); font-family: 'Orbitron'; margin-bottom: 20px;">ADMIN PANEL</h3>
+        <img src="https://i.postimg.cc/HJLz7PTz/Standard.png" style="width: 50px; margin-bottom: 10px;">
+        <h3 style="color:var(--gold); font-family: 'Orbitron';">ADMIN LOGIN</h3>
         <input type="password" id="adminPass" class="auth-input" placeholder="Parol">
-        <button onclick="checkPass()" style="background:var(--gold); color:#000; width: 100%; border-radius: 10px;">GİRİŞ ET</button>
+        <button onclick="checkPass()" style="background:var(--gold); color:#000; width:100%; border-radius:8px;">GİRİŞ</button>
     </div>
 </div>
 
 <div class="header">
     <div>
         <h2>STARGAMEAZE</h2>
-        <small id="stats" style="color: #888; font-size: 0.75rem;">Yüklənir...</small>
+        <small id="stats" style="color: #888; font-size: 0.7rem;">Yüklənir...</small>
     </div>
-    <div style="display: flex; gap: 8px;">
-        <button onclick="location.reload()" style="background:#222; color:#fff; width: auto; font-size: 0.6rem;">🔄</button>
-        <button onclick="logoutAdmin()" class="btn-logout">ÇIXIŞ</button>
-    </div>
+    <button onclick="logoutAdmin()" class="btn-logout">ÇIXIŞ</button>
 </div>
 
-<div class="admin-tools">
-    <div class="order-card" style="margin-bottom: 0; text-align: center; border-color: var(--gold);">
-        <h3 style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--gold); margin-bottom: 10px;">CANLI DƏSTƏK</h3>
-        <div style="font-size: 0.7rem; margin-bottom: 10px;">Status: <span id="current-status" style="font-weight:bold;">...</span></div>
+<div class="admin-grid">
+    <div class="card">
+        <span class="card-title" style="color: var(--gold);">CANLI DƏSTƏK</span>
+        <div style="text-align:center; font-size:0.7rem; margin-bottom:10px;">Status: <span id="current-status">...</span></div>
         <div class="btn-group">
-            <button class="btn-approve" onclick="changeAdminStatus('online')" style="font-size: 0.6rem;">ONLAYN</button>
-            <button class="btn-reject" onclick="changeAdminStatus('offline')" style="font-size: 0.6rem;">OFLAYN</button>
+            <button class="btn-approve" onclick="changeAdminStatus('online')">ONLAYN</button>
+            <button class="btn-reject" onclick="changeAdminStatus('offline')">OFLAYN</button>
         </div>
     </div>
 
-    <div class="order-card" style="margin-bottom: 0; border-color: var(--blue);">
-        <h3 style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--blue); margin-bottom: 10px; text-align: center;">MAYA (USD)</h3>
+    <div class="card">
+        <span class="card-title" style="color: var(--blue);">MAYA (Midasbuy)</span>
         <input type="number" id="usdInput" placeholder="$ Məbləğ" class="calc-input">
-        <button onclick="calculateMaya()" style="background: var(--blue); color: #fff; width: 100%; font-size: 0.6rem;">HESABLA</button>
+        <button onclick="calculateMaya()" class="btn-blue" style="width:100%">HESABLA</button>
+        <div id="resBox" style="display:none; margin-top:8px; font-size:0.7rem; color:var(--green); font-weight:bold; text-align:center;">
+            Maya: <span id="resTotal">0</span> AZN
+        </div>
     </div>
-</div>
 
-<div id="resBox" class="order-card" style="display:none; border-color: #2ecc71; font-size: 0.8rem; background: #0a1a0a; margin-bottom: 20px;">
-    <div style="display: flex; justify-content: space-between;"><span>Yekun Maya (Bank + ƏDV):</span> <span id="resTotal" style="color: #2ecc71; font-weight: bold;">0.00 AZN</span></div>
+    <div class="card">
+        <span class="card-title" style="color: var(--purple);">RƏQİB QİYMƏTLƏRİ</span>
+        <a href="https://epin.az/pubg-mobile-uc" target="_blank" class="link-box">EPIN.AZ</a>
+        <a href="https://kodu.az/product/pubg-mobile-uc/" target="_blank" class="link-box">KODU.AZ</a>
+    </div>
+
+    <div class="card">
+        <span class="card-title" style="color: var(--green);">UCUZ ALIŞ (TR)</span>
+        <a href="https://www.mtcgame.com/az-AZ/public/razer-gold-turkiye" target="_blank" class="link-box" style="border-color:var(--green)">RAZER GOLD TR</a>
+        <a href="https://www.midasbuy.com/midasbuy/tr/buy/pubgm" target="_blank" class="link-box" style="border-color:var(--green)">MIDASBUY TR</a>
+    </div>
 </div>
 
 <div id="adminOrders"></div>
@@ -119,7 +129,14 @@
     const db = firebase.firestore();
     const rtdb = firebase.database();
 
-    // AVTOMATİK GİRİŞ
+    function checkPass() {
+        if (document.getElementById('adminPass').value === "eliezizli") {
+            localStorage.setItem('admin_session', 'active_stargame');
+            document.getElementById('adminAuth').style.display = 'none';
+            initAdmin();
+        } else { alert("Yanlış parol!"); }
+    }
+
     window.onload = function() {
         if (localStorage.getItem('admin_session') === 'active_stargame') {
             document.getElementById('adminAuth').style.display = 'none';
@@ -127,88 +144,58 @@
         }
     }
 
-    function checkPass() {
-        if (document.getElementById('adminPass').value === "eliezizli") {
-            localStorage.setItem('admin_session', 'active_stargame');
-            document.getElementById('adminAuth').style.display = 'none';
-            initAdmin();
-        } else { alert("❌ Yanlış parol!"); }
-    }
-
-    function logoutAdmin() {
-        if(confirm("Çıxış edilsin?")) {
-            localStorage.removeItem('admin_session');
-            location.reload();
-        }
-    }
-
     function initAdmin() {
-        loadAllOrders();
         listenStatus();
+        loadOrders();
     }
 
-    // --- STATUS İDARƏETMƏSİ ---
-    function changeAdminStatus(s) {
-        rtdb.ref('admin_settings/status').set(s);
-    }
+    function changeAdminStatus(s) { rtdb.ref('admin_settings/status').set(s); }
 
     function listenStatus() {
         rtdb.ref('admin_settings/status').on('value', (snap) => {
-            const status = snap.val();
+            const s = snap.val();
             const el = document.getElementById('current-status');
-            if(status === 'online') {
-                el.innerText = "ONLAYN 🟢"; el.style.color = "#2ecc71";
-            } else {
-                el.innerText = "OFLAYN 🔴"; el.style.color = "#e74c3c";
-            }
+            el.innerText = (s === 'online') ? "ONLAYN 🟢" : "OFLAYN 🔴";
+            el.style.color = (s === 'online') ? "#2ecc71" : "#e74c3c";
         });
     }
 
-    // --- MAYA HESABLAMA ---
     function calculateMaya() {
         const usd = document.getElementById('usdInput').value;
         if(!usd) return;
-        const final = (usd * 1.70) * 1.195; // 18% ƏDV + 1.5% Bank
-        document.getElementById('resTotal').innerText = final.toFixed(2) + " AZN";
+        const final = (usd * 1.70) * 1.195; // 18% ƏDV + Bank fərqi
+        document.getElementById('resTotal').innerText = final.toFixed(2);
         document.getElementById('resBox').style.display = 'block';
     }
 
-    // --- SİFARİŞLƏRİN YÜKLƏNMƏSİ ---
-    function loadAllOrders() {
+    function loadOrders() {
         db.collection("orders").orderBy("date", "desc").onSnapshot(snap => {
             const list = document.getElementById('adminOrders');
-            document.getElementById('stats').innerText = `📊 Cəmi ${snap.size} sifariş`;
+            document.getElementById('stats').innerText = `📊 ${snap.size} Sifariş`;
             list.innerHTML = "";
-            if(snap.empty) { list.innerHTML = "<p style='text-align:center; color:#555;'>Sifariş yoxdur.</p>"; return; }
-
             snap.forEach(doc => {
                 const d = doc.data();
                 const id = doc.id;
-                const sColor = getStatusColor(d.status);
                 list.innerHTML += `
-                    <div class="order-card" style="border-left: 4px solid ${sColor}">
-                        <div class="order-info">
-                            <b>📦 Paket:</b> ${d.uc}<br>
-                            <b>💰 Ödəniş:</b> ${d.price}<br>
-                            <b>🆔 PUBG ID:</b> <span style="background:#222; padding:2px 5px; border-radius:4px;">${d.playerID}</span><br>
-                            <b>👤 Müştəri:</b> ${d.userName || 'Naməlum'}<br>
-                            <b>📅 Tarix:</b> ${d.date}<br>
-                            <b>🔔 Status:</b> <span class="status-badge" style="background:${sColor}">${d.status}</span>
-                        </div>
-                        <div class="btn-group">
-                            ${d.receipt ? `<button class="btn-receipt" onclick="viewReceipt('${d.receipt}')">🖼️ Çek</button>` : ''}
-                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">Təsdiq</button>
-                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">İnkar</button>
-                            <button class="btn-delete" onclick="deleteOrder('${id}')">🗑️</button>
+                    <div class="order-card" style="border-left-color: ${getStatusColor(d.status)}">
+                        <b>📦 ${d.uc}</b> | 💰 ${d.price}<br>
+                        🆔 ID: ${d.playerID} | 👤 ${d.userName || 'Adsız'}<br>
+                        📅 ${d.date} | <span class="status-badge" style="background:${getStatusColor(d.status)}">${d.status}</span>
+                        <div class="btn-group" style="margin-top:10px;">
+                            ${d.receipt ? `<button class="btn-blue" onclick="viewReceipt('${d.receipt}')">ÇEK</button>` : ''}
+                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">OK</button>
+                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">X</button>
+                            <button onclick="deleteOrder('${id}')" style="background:#333; color:#fff; flex:0.3">🗑️</button>
                         </div>
                     </div>`;
             });
         });
     }
 
+    function updateStatus(id, s) { db.collection("orders").doc(id).update({ status: s }); }
+    function deleteOrder(id) { if(confirm("Silinsin?")) db.collection("orders").doc(id).delete(); }
     function viewReceipt(src) { document.getElementById('modalImg').src = src; document.getElementById('imgModal').style.display = 'flex'; }
-    function updateStatus(docId, newStatus) { db.collection("orders").doc(docId).update({ status: newStatus }); }
-    function deleteOrder(docId) { if(confirm("Silinsin?")) db.collection("orders").doc(docId).delete(); }
+    function logoutAdmin() { localStorage.removeItem('admin_session'); location.reload(); }
     function getStatusColor(s) {
         if(s === "Təsdiqləndi") return "#2ecc71";
         if(s === "İnkar edildi") return "#e74c3c";
