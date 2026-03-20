@@ -41,8 +41,8 @@
         .btn-logout { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; font-size: 0.6rem; }
         
         .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; font-size: 0.75rem; }
-        .link-box { display: block; text-decoration: none; background: #222; padding: 8px; border-radius: 6px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.65rem; font-weight: bold; transition: 0.2s; }
-        .link-box:hover { background: #333; border-color: var(--gold); }
+        .link-box { display: block; text-decoration: none; background: #222; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.7rem; font-weight: bold; transition: 0.2s; }
+        .link-box:hover { background: #333; border-color: var(--gold); transform: translateY(-2px); }
 
         .order-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--gold); font-size: 0.8rem; }
         .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; color: #000; }
@@ -86,7 +86,7 @@
     </div>
 
     <div class="card">
-        <span class="card-title" style="color: var(--blue);">MAYA (MIDASBUY)</span>
+        <span class="card-title" style="color: var(--blue);">MAYA KALKULYATORU</span>
         <input type="number" id="usdInput" placeholder="$ Məbləğ" class="calc-input">
         <button onclick="calculateMaya()" class="btn-blue" style="width:100%">HESABLA</button>
         <div id="resBox" style="display:none; margin-top:8px; font-size:0.65rem; color:var(--green); font-weight:bold; text-align:center;">
@@ -95,29 +95,27 @@
     </div>
 
     <div class="card">
-        <span class="card-title" style="color: var(--purple);">RƏQİB İZLƏMƏ</span>
-        <a href="https://epin.az/pubg-mobile-uc" target="_blank" class="link-box">EPIN.AZ</a>
-        <a href="https://samogame.az/categories.php?game=pubgmobile&subcategory=%C4%B0D+y%C3%BCkl%C9%99m%C9%99" target="_blank" class="link-box" style="border-color:var(--blue)">SAMOGAME ID</a>
+        <span class="card-title" style="color: var(--purple);">RƏQİB: SAMOGAME</span>
+        <a href="https://samogame.az/categories.php?game=pubgmobile&subcategory=%C4%B0D+y%C3%BCkl%C9%99m%C9%99" target="_blank" class="link-box" style="border-color:var(--purple)">🆔 ID YÜKLƏMƏ</a>
     </div>
 
     <div class="card">
-        <span class="card-title" style="color: var(--green);">UCUZ ALIŞ (E-PİN)</span>
-        <a href="https://skygames.az/category/pubg-mobile-e-pin" target="_blank" class="link-box" style="border-color:var(--purple)">SKYGAMES E-PİN</a>
-        <a href="https://www.midasbuy.com/midasbuy/tr/buy/pubgm" target="_blank" class="link-box" style="border-color:var(--green)">MIDASBUY TR</a>
+        <span class="card-title" style="color: var(--orange);">RƏQİB: SKYGAMES</span>
+        <a href="https://skygames.az/category/pubg-mobile-e-pin" target="_blank" class="link-box" style="border-color:var(--orange)">📦 E-PİN QİYMƏTLƏRİ</a>
     </div>
 
-    <div class="card" style="grid-column: span 2; border-color: var(--orange);">
-        <span class="card-title" style="color: var(--orange);">📡 PROFESSIONAL API CONTROL (ANA MƏNBƏ)</span>
+    <div class="card" style="grid-column: span 2; border-color: var(--green);">
+        <span class="card-title" style="color: var(--green);">📡 PROFESSIONAL API CONTROL (ANA MƏNBƏ)</span>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div>
                 <select id="apiProvider" class="calc-input" style="text-align: left;">
                     <option value="sega">Sega-Pın (Global Partner)</option>
                     <option value="sanalpin">Sanalpin (Direct TR)</option>
-                    <option value="midasbuy">Midasbuy Merchant API</option>
+                    <option value="unipin">UniPin Worldwide</option>
                 </select>
                 <input type="text" id="apiKey" placeholder="API KEY" class="calc-input">
                 <input type="password" id="apiSecret" placeholder="SECRET KEY" class="calc-input">
-                <button onclick="saveApiSettings()" class="btn-orange" style="width:100%">SİSTEMİ QOŞ</button>
+                <button onclick="saveApiSettings()" class="btn-approve" style="width:100%; background: var(--green); color: #000;">SİSTEMİ QOŞ</button>
             </div>
             <div style="text-align: center; background: #000; padding: 10px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center;">
                 <div id="apiStatus" style="font-size: 0.65rem; color: var(--red); margin-bottom: 5px;">SİSTEM: BAĞLI DEYİL</div>
