@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarGameAze | Full Admin Control</title>
+    <title>StarGameAze | Professional Admin Panel</title>
     
     <link rel="icon" type="image/png" href="https://i.postimg.cc/HJLz7PTz/Standard.png">
 
@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        :root { --gold: #FFD700; --red: #e31e24; --dark: #0a0a0a; --blue: #3498db; --green: #2ecc71; --purple: #9b59b6; }
+        :root { --gold: #FFD700; --red: #e31e24; --dark: #0a0a0a; --blue: #3498db; --green: #2ecc71; --purple: #9b59b6; --orange: #e67e22; }
         body { background: var(--dark); color: #fff; font-family: 'Poppins', sans-serif; padding: 15px; margin: 0; }
         
         .header { border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
@@ -25,13 +25,13 @@
         .auth-box { background: #111; padding: 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 350px; }
         .auth-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #050505; color: #fff; text-align: center; font-size: 1rem; margin-bottom: 15px; box-sizing: border-box; }
         
-        /* İdarəetmə Alətləri Grid */
+        /* Admin Grid Layout */
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         
         /* Kartlar */
         .card { background: #151515; border-radius: 15px; padding: 15px; border: 1px solid #222; transition: 0.3s; }
         .card:hover { border-color: var(--gold); }
-        .card-title { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; margin-bottom: 10px; text-align: center; display: block; }
+        .card-title { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; margin-bottom: 10px; text-align: center; display: block; letter-spacing: 1px; }
         
         /* Düymələr */
         .btn-group { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -41,14 +41,13 @@
         .btn-approve { background: var(--green); color: #000; }
         .btn-reject { background: var(--red); color: #fff; }
         .btn-blue { background: var(--blue); color: #fff; }
-        .btn-purple { background: var(--purple); color: #fff; }
+        .btn-orange { background: var(--orange); color: #fff; }
         .btn-logout { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; font-size: 0.6rem; }
         
-        .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; font-size: 0.8rem; }
+        .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; font-size: 0.75rem; }
         .link-box { display: block; text-decoration: none; background: #222; padding: 8px; border-radius: 6px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.65rem; font-weight: bold; }
-        .link-box:hover { background: #333; }
 
-        /* Sifariş Kartları */
+        /* Sifarişlər */
         .order-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--gold); font-size: 0.8rem; }
         .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; color: #000; }
 
@@ -75,7 +74,7 @@
 <div class="header">
     <div>
         <h2>STARGAMEAZE</h2>
-        <small id="stats" style="color: #888; font-size: 0.7rem;">Yüklənir...</small>
+        <small id="stats" style="color: #888; font-size: 0.7rem;">Sistem yüklənir...</small>
     </div>
     <button onclick="logoutAdmin()" class="btn-logout">ÇIXIŞ</button>
 </div>
@@ -91,10 +90,10 @@
     </div>
 
     <div class="card">
-        <span class="card-title" style="color: var(--blue);">MAYA (Midasbuy)</span>
+        <span class="card-title" style="color: var(--blue);">MAYA (MIDASBUY)</span>
         <input type="number" id="usdInput" placeholder="$ Məbləğ" class="calc-input">
         <button onclick="calculateMaya()" class="btn-blue" style="width:100%">HESABLA</button>
-        <div id="resBox" style="display:none; margin-top:8px; font-size:0.7rem; color:var(--green); font-weight:bold; text-align:center;">
+        <div id="resBox" style="display:none; margin-top:8px; font-size:0.65rem; color:var(--green); font-weight:bold; text-align:center;">
             Maya: <span id="resTotal">0</span> AZN
         </div>
     </div>
@@ -109,6 +108,27 @@
         <span class="card-title" style="color: var(--green);">UCUZ ALIŞ (TR)</span>
         <a href="https://www.mtcgame.com/az-AZ/public/razer-gold-turkiye" target="_blank" class="link-box" style="border-color:var(--green)">RAZER GOLD TR</a>
         <a href="https://www.midasbuy.com/midasbuy/tr/buy/pubgm" target="_blank" class="link-box" style="border-color:var(--green)">MIDASBUY TR</a>
+    </div>
+
+    <div class="card" style="grid-column: span 2; border-color: var(--orange);">
+        <span class="card-title" style="color: var(--orange);">📡 PROFESSIONAL API CONTROL (ANA MƏNBƏ)</span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div>
+                <select id="apiProvider" class="calc-input" style="text-align: left;">
+                    <option value="sega">Sega-Pın (Global Partner)</option>
+                    <option value="sanalpin">Sanalpin (Direct TR)</option>
+                    <option value="midasbuy">Midasbuy Merchant API</option>
+                </select>
+                <input type="text" id="apiKey" placeholder="API KEY" class="calc-input">
+                <input type="password" id="apiSecret" placeholder="SECRET KEY" class="calc-input">
+                <button onclick="saveApiSettings()" class="btn-orange" style="width:100%">SİSTEMİ QOŞ</button>
+            </div>
+            <div style="text-align: center; background: #000; padding: 10px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center;">
+                <div id="apiStatus" style="font-size: 0.65rem; color: var(--red); margin-bottom: 5px;">SİSTEM: BAĞLI DEYİL</div>
+                <small style="color: #666; font-size: 0.55rem;">ANA ANBAR BALANSI:</small>
+                <div id="apiBalance" style="font-size: 1.1rem; font-weight: bold; color: #fff;">0.00 $</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -129,14 +149,7 @@
     const db = firebase.firestore();
     const rtdb = firebase.database();
 
-    function checkPass() {
-        if (document.getElementById('adminPass').value === "eliezizli") {
-            localStorage.setItem('admin_session', 'active_stargame');
-            document.getElementById('adminAuth').style.display = 'none';
-            initAdmin();
-        } else { alert("Yanlış parol!"); }
-    }
-
+    // GİRİŞ YOXLAMASI
     window.onload = function() {
         if (localStorage.getItem('admin_session') === 'active_stargame') {
             document.getElementById('adminAuth').style.display = 'none';
@@ -144,9 +157,18 @@
         }
     }
 
+    function checkPass() {
+        if (document.getElementById('adminPass').value === "eliezizli") {
+            localStorage.setItem('admin_session', 'active_stargame');
+            document.getElementById('adminAuth').style.display = 'none';
+            initAdmin();
+        } else { alert("❌ Yanlış parol!"); }
+    }
+
     function initAdmin() {
         listenStatus();
         loadOrders();
+        checkApiConnection();
     }
 
     function changeAdminStatus(s) { rtdb.ref('admin_settings/status').set(s); }
@@ -160,10 +182,29 @@
         });
     }
 
+    function saveApiSettings() {
+        const p = document.getElementById('apiProvider').value;
+        const k = document.getElementById('apiKey').value;
+        const s = document.getElementById('apiSecret').value;
+        if(!k || !s) return alert("Məlumatları daxil edin!");
+        rtdb.ref('admin_settings/api_config').set({ provider: p, key: k, secret: s, connected: true })
+        .then(() => { alert("API Sistemə Qoşuldu!"); checkApiConnection(); });
+    }
+
+    function checkApiConnection() {
+        rtdb.ref('admin_settings/api_config').once('value', (snap) => {
+            if(snap.exists()){
+                document.getElementById('apiStatus').innerText = "SİSTEM: AKTİV 🟢";
+                document.getElementById('apiStatus').style.color = "#2ecc71";
+                document.getElementById('apiBalance').innerText = "API Hazırdır";
+            }
+        });
+    }
+
     function calculateMaya() {
         const usd = document.getElementById('usdInput').value;
         if(!usd) return;
-        const final = (usd * 1.70) * 1.195; // 18% ƏDV + Bank fərqi
+        const final = (usd * 1.70) * 1.195;
         document.getElementById('resTotal').innerText = final.toFixed(2);
         document.getElementById('resBox').style.display = 'block';
     }
@@ -171,7 +212,7 @@
     function loadOrders() {
         db.collection("orders").orderBy("date", "desc").onSnapshot(snap => {
             const list = document.getElementById('adminOrders');
-            document.getElementById('stats').innerText = `📊 ${snap.size} Sifariş`;
+            document.getElementById('stats').innerText = `📊 ${snap.size} Sifariş Var`;
             list.innerHTML = "";
             snap.forEach(doc => {
                 const d = doc.data();
@@ -179,12 +220,12 @@
                 list.innerHTML += `
                     <div class="order-card" style="border-left-color: ${getStatusColor(d.status)}">
                         <b>📦 ${d.uc}</b> | 💰 ${d.price}<br>
-                        🆔 ID: ${d.playerID} | 👤 ${d.userName || 'Adsız'}<br>
+                        🆔 ID: <span style="background:#222; padding:0 5px;">${d.playerID}</span> | 👤 ${d.userName || 'Naməlum'}<br>
                         📅 ${d.date} | <span class="status-badge" style="background:${getStatusColor(d.status)}">${d.status}</span>
                         <div class="btn-group" style="margin-top:10px;">
                             ${d.receipt ? `<button class="btn-blue" onclick="viewReceipt('${d.receipt}')">ÇEK</button>` : ''}
-                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">OK</button>
-                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">X</button>
+                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">Təsdiq</button>
+                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">İnkar</button>
                             <button onclick="deleteOrder('${id}')" style="background:#333; color:#fff; flex:0.3">🗑️</button>
                         </div>
                     </div>`;
