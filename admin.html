@@ -1,53 +1,79 @@
-<div class="admin-chat-manager">
-    <h3>Canlı Dəstək İdarəetməsi</h3>
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>StarGameAze | Admin Panel</title>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #0f0f0f; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .admin-card { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #FFD700; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 350px; }
+        h2 { color: #FFD700; margin-bottom: 20px; }
+        .status-box { margin: 20px 0; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); }
+        .btn { border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; width: 100%; margin: 10px 0; }
+        .btn-online { background: #2ecc71; color: white; }
+        .btn-offline { background: #e74c3c; color: white; }
+        .btn:hover { opacity: 0.8; transform: scale(1.02); }
+        #current-status { font-weight: bold; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="admin-card">
+    <h2>StarGameAze Admin</h2>
+    <div class="status-box">
+        Hazırkı Status: <br>
+        <span id="current-status">Yoxlanılır...</span>
+    </div>
     
-    <div class="status-switch">
-        <span>Statusunuz: </span>
-        <label class="switch">
-            <input type="checkbox" id="adminStatus" onchange="updateStatus()">
-            <span class="slider round"></span>
-        </label>
-        <b id="statusText">Oflayn</b>
-    </div>
-
-    <hr>
-
-    <div class="chat-container">
-        <div class="user-list" id="userList">
-            <p>Mesaj gözlənilir...</p>
-        </div>
-
-        <div class="chat-window">
-            <div id="chatMessages" class="messages-area">
-                <p style="text-align:center; color:#888;">Söhbətə başlamaq üçün istifadəçi seçin</p>
-            </div>
-            <div class="input-area">
-                <input type="text" id="adminReply" placeholder="Mesajınızı yazın...">
-                <button onclick="sendReply()">Göndər</button>
-            </div>
-        </div>
-    </div>
+    <button class="btn btn-online" onclick="changeStatus('online')">Onlayn Ol</button>
+    <button class="btn btn-offline" onclick="changeStatus('offline')">Oflayn Ol</button>
+    
+    <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">
+        Statusu dəyişdikdə saytdakı "Canlı Dəstək" düyməsi anında yenilənəcək.
+    </p>
 </div>
 
-<style>
-/* Sadə və funksional dizayn */
-.admin-chat-manager { background: #f4f7f6; padding: 20px; border-radius: 10px; }
-.status-switch { margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+<script>
+    // Firebase Konfiqurasiyası (Əsas saytdakı ilə eyni olmalıdır)
+    const firebaseConfig = {
+        apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHjOsgtgcHQLg",
+        authDomain: "stargameaz.firebaseapp.com",
+        projectId: "stargameaz",
+        databaseURL: "https://stargameaz-default-rtdb.firebaseio.com",
+        storageBucket: "stargameaz.firebasestorage.app",
+        messagingSenderId: "929443246287",
+        appId: "1:929443246287:web:59a2f842455111194047ba"
+    };
 
-/* Switch (Düymə) Dizaynı */
-.switch { position: relative; display: inline-block; width: 50px; height: 24px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-.slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-input:checked + .slider { background-color: #25D366; }
-input:checked + .slider:before { transform: translateX(26px); }
+    firebase.initializeApp(firebaseConfig);
+    const rtdb = firebase.database();
 
-/* Çat İnterfeysi */
-.chat-container { display: flex; gap: 20px; height: 400px; }
-.user-list { width: 30%; background: white; border: 1px solid #ddd; overflow-y: auto; padding: 10px; }
-.chat-window { width: 70%; background: white; border: 1px solid #ddd; display: flex; flex-direction: column; }
-.messages-area { flex-grow: 1; padding: 15px; overflow-y: auto; background: #e5ddd5; }
-.input-area { display: flex; padding: 10px; border-top: 1px solid #ddd; }
-.input-area input { flex-grow: 1; padding: 8px; border: 1px solid #ddd; outline: none; }
-.input-area button { background: #007bff; color: white; border: none; padding: 0 15px; cursor: pointer; }
-</style>
+    // Statusu Firebase-dən oxu və ekranda göstər
+    rtdb.ref('admin_settings/status').on('value', (snapshot) => {
+        const status = snapshot.val();
+        const display = document.getElementById('current-status');
+        if(status === 'online') {
+            display.innerText = "Onlayndır 🟢";
+            display.style.color = "#2ecc71";
+        } else {
+            display.innerText = "Oflayndır 🔴";
+            display.style.color = "#e74c3c";
+        }
+    });
+
+    // Statusu Firebase-də dəyiş
+    function changeStatus(newStatus) {
+        rtdb.ref('admin_settings/status').set(newStatus)
+        .then(() => {
+            console.log("Status yeniləndi: " + newStatus);
+        })
+        .catch((error) => {
+            alert("Xəta baş verdi: " + error.message);
+        });
+    }
+</script>
+
+</body>
+</html>
