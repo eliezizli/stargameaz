@@ -20,20 +20,16 @@
         .header { border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
         .header h2 { font-family: 'Orbitron', sans-serif; color: var(--gold); margin: 0; font-size: 1.2rem; }
         
-        /* Giriş Ekranı */
         #adminAuth { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 15px; }
         .auth-box { background: #111; padding: 30px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 350px; }
         .auth-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #050505; color: #fff; text-align: center; font-size: 1rem; margin-bottom: 15px; box-sizing: border-box; }
         
-        /* Admin Grid Layout */
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         
-        /* Kartlar */
         .card { background: #151515; border-radius: 15px; padding: 15px; border: 1px solid #222; transition: 0.3s; }
         .card:hover { border-color: var(--gold); }
         .card-title { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; margin-bottom: 10px; text-align: center; display: block; letter-spacing: 1px; }
         
-        /* Düymələr */
         .btn-group { display: flex; gap: 5px; flex-wrap: wrap; }
         button { flex: 1; padding: 8px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.65rem; text-transform: uppercase; transition: 0.2s; }
         button:active { transform: scale(0.95); }
@@ -45,9 +41,9 @@
         .btn-logout { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; font-size: 0.6rem; }
         
         .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; font-size: 0.75rem; }
-        .link-box { display: block; text-decoration: none; background: #222; padding: 8px; border-radius: 6px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.65rem; font-weight: bold; }
+        .link-box { display: block; text-decoration: none; background: #222; padding: 8px; border-radius: 6px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.65rem; font-weight: bold; transition: 0.2s; }
+        .link-box:hover { background: #333; border-color: var(--gold); }
 
-        /* Sifarişlər */
         .order-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--gold); font-size: 0.8rem; }
         .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; color: #000; }
 
@@ -99,14 +95,14 @@
     </div>
 
     <div class="card">
-        <span class="card-title" style="color: var(--purple);">RƏQİB QİYMƏTLƏRİ</span>
+        <span class="card-title" style="color: var(--purple);">RƏQİB İZLƏMƏ</span>
         <a href="https://epin.az/pubg-mobile-uc" target="_blank" class="link-box">EPIN.AZ</a>
-        <a href="https://kodu.az/product/pubg-mobile-uc/" target="_blank" class="link-box">KODU.AZ</a>
+        <a href="https://samogame.az/categories.php?game=pubgmobile&subcategory=%C4%B0D+y%C3%BCkl%C9%99m%C9%99" target="_blank" class="link-box" style="border-color:var(--blue)">SAMOGAME ID</a>
     </div>
 
     <div class="card">
-        <span class="card-title" style="color: var(--green);">UCUZ ALIŞ (TR)</span>
-        <a href="https://www.mtcgame.com/az-AZ/public/razer-gold-turkiye" target="_blank" class="link-box" style="border-color:var(--green)">RAZER GOLD TR</a>
+        <span class="card-title" style="color: var(--green);">UCUZ ALIŞ (E-PİN)</span>
+        <a href="https://skygames.az/category/pubg-mobile-e-pin" target="_blank" class="link-box" style="border-color:var(--purple)">SKYGAMES E-PİN</a>
         <a href="https://www.midasbuy.com/midasbuy/tr/buy/pubgm" target="_blank" class="link-box" style="border-color:var(--green)">MIDASBUY TR</a>
     </div>
 
@@ -149,7 +145,6 @@
     const db = firebase.firestore();
     const rtdb = firebase.database();
 
-    // GİRİŞ YOXLAMASI
     window.onload = function() {
         if (localStorage.getItem('admin_session') === 'active_stargame') {
             document.getElementById('adminAuth').style.display = 'none';
