@@ -9,7 +9,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     
@@ -32,23 +31,27 @@
         
         .btn-group { display: flex; gap: 5px; flex-wrap: wrap; }
         button { flex: 1; padding: 8px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.65rem; text-transform: uppercase; transition: 0.2s; }
-        button:active { transform: scale(0.95); }
         
         .btn-approve { background: var(--green); color: #000; }
         .btn-reject { background: var(--red); color: #fff; }
         .btn-blue { background: var(--blue); color: #fff; }
-        .btn-orange { background: var(--orange); color: #fff; }
         .btn-logout { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; font-size: 0.6rem; }
         
-        .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; font-size: 0.75rem; }
-        .link-box { display: block; text-decoration: none; background: #222; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.7rem; font-weight: bold; transition: 0.2s; }
-        .link-box:hover { background: #333; border-color: var(--gold); transform: translateY(-2px); }
+        /* Çat Bölməsi */
+        .chat-admin-card { background: #111; border: 1px solid var(--gold); border-radius: 15px; margin-top: 20px; height: 500px; display: flex; flex-direction: column; }
+        .chat-list { flex: 0.4; border-right: 1px solid #222; overflow-y: auto; padding: 10px; }
+        .chat-main { flex: 1; display: flex; flex-direction: column; }
+        .chat-messages-box { flex: 1; overflow-y: auto; padding: 15px; background: rgba(0,0,0,0.5); }
+        .chat-user-item { padding: 10px; background: #222; border-radius: 8px; margin-bottom: 8px; cursor: pointer; font-size: 0.7rem; }
+        .chat-user-item.active { background: var(--gold); color: #000; }
+        
+        .msg { padding: 8px 12px; border-radius: 10px; margin-bottom: 5px; max-width: 80%; font-size: 0.75rem; }
+        .msg.admin { background: var(--gold); color: #000; align-self: flex-end; }
+        .msg.user { background: #333; color: #fff; align-self: flex-start; }
 
         .order-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--gold); font-size: 0.8rem; }
-        .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; color: #000; }
-
-        #imgModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 10px; }
-        #imgModal img { max-width: 100%; max-height: 85vh; border-radius: 10px; border: 1px solid var(--gold); }
+        #imgModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; }
+        #imgModal img { max-width: 90%; max-height: 80vh; border: 1px solid var(--gold); }
     </style>
 </head>
 <body>
@@ -60,7 +63,6 @@
 
 <div id="adminAuth">
     <div class="auth-box">
-        <img src="https://i.postimg.cc/HJLz7PTz/Standard.png" style="width: 50px; margin-bottom: 10px;">
         <h3 style="color:var(--gold); font-family: 'Orbitron';">ADMIN LOGIN</h3>
         <input type="password" id="adminPass" class="auth-input" placeholder="Parol">
         <button onclick="checkPass()" style="background:var(--gold); color:#000; width:100%; border-radius:8px;">GİRİŞ</button>
@@ -69,63 +71,44 @@
 
 <div class="header">
     <div>
-        <h2>STARGAMEAZE</h2>
-        <small id="stats" style="color: #888; font-size: 0.7rem;">Sistem yüklənir...</small>
+        <h2>ADMIN PANEL</h2>
+        <small id="stats" style="color: #888;">Yüklənir...</small>
     </div>
     <button onclick="logoutAdmin()" class="btn-logout">ÇIXIŞ</button>
 </div>
 
 <div class="admin-grid">
     <div class="card">
-        <span class="card-title" style="color: var(--gold);">CANLI DƏSTƏK</span>
-        <div style="text-align:center; font-size:0.7rem; margin-bottom:10px;">Status: <span id="current-status">...</span></div>
+        <span class="card-title">SAYT STATUSU</span>
+        <div style="text-align:center; font-size:0.8rem; margin-bottom:10px;" id="current-status">Yüklənir...</div>
         <div class="btn-group">
-            <button class="btn-approve" onclick="changeAdminStatus('online')">ONLAYN</button>
-            <button class="btn-reject" onclick="changeAdminStatus('offline')">OFLAYN</button>
+            <button class="btn-approve" onclick="updateSiteStatus(true)">ONLAYN ET</button>
+            <button class="btn-reject" onclick="updateSiteStatus(false)">OFLAYN ET</button>
         </div>
     </div>
-
     <div class="card">
-        <span class="card-title" style="color: var(--blue);">MAYA KALKULYATORU</span>
-        <input type="number" id="usdInput" placeholder="$ Məbləğ" class="calc-input">
-        <button onclick="calculateMaya()" class="btn-blue" style="width:100%">HESABLA</button>
-        <div id="resBox" style="display:none; margin-top:8px; font-size:0.65rem; color:var(--green); font-weight:bold; text-align:center;">
-            Maya: <span id="resTotal">0</span> AZN
-        </div>
+        <span class="card-title">SİFARİŞ STATİSTİKASI</span>
+        <div style="text-align:center; font-size:1.1rem; font-weight:bold; color:var(--gold)" id="totalOrders">0</div>
+        <div style="text-align:center; font-size:0.6rem; color:#888;">Ümumi Sifariş</div>
     </div>
+</div>
 
-    <div class="card">
-        <span class="card-title" style="color: var(--purple);">RƏQİB: SAMOGAME</span>
-        <a href="https://samogame.az/categories.php?game=pubgmobile&subcategory=%C4%B0D+y%C3%BCkl%C9%99m%C9%99" target="_blank" class="link-box" style="border-color:var(--purple)">🆔 ID YÜKLƏMƏ</a>
+<h3 style="font-family:'Orbitron'; font-size:0.8rem; color:var(--gold); margin-top:20px;">💬 CANLI ÇAT (DƏSTƏK)</h3>
+<div class="chat-admin-card" style="flex-direction: row;">
+    <div class="chat-list" id="chatUserList">
+        <div style="font-size:0.6rem; color:#666;">İstifadəçilər...</div>
     </div>
-
-    <div class="card">
-        <span class="card-title" style="color: var(--orange);">RƏQİB: SKYGAMES</span>
-        <a href="https://skygames.az/category/pubg-mobile-e-pin" target="_blank" class="link-box" style="border-color:var(--orange)">📦 E-PİN QİYMƏTLƏRİ</a>
-    </div>
-
-    <div class="card" style="grid-column: span 2; border-color: var(--green);">
-        <span class="card-title" style="color: var(--green);">📡 PROFESSIONAL API CONTROL (ANA MƏNBƏ)</span>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div>
-                <select id="apiProvider" class="calc-input" style="text-align: left;">
-                    <option value="sega">Sega-Pın (Global Partner)</option>
-                    <option value="sanalpin">Sanalpin (Direct TR)</option>
-                    <option value="unipin">UniPin Worldwide</option>
-                </select>
-                <input type="text" id="apiKey" placeholder="API KEY" class="calc-input">
-                <input type="password" id="apiSecret" placeholder="SECRET KEY" class="calc-input">
-                <button onclick="saveApiSettings()" class="btn-approve" style="width:100%; background: var(--green); color: #000;">SİSTEMİ QOŞ</button>
-            </div>
-            <div style="text-align: center; background: #000; padding: 10px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center;">
-                <div id="apiStatus" style="font-size: 0.65rem; color: var(--red); margin-bottom: 5px;">SİSTEM: BAĞLI DEYİL</div>
-                <small style="color: #666; font-size: 0.55rem;">ANA ANBAR BALANSI:</small>
-                <div id="apiBalance" style="font-size: 1.1rem; font-weight: bold; color: #fff;">0.00 $</div>
-            </div>
+    <div class="chat-main">
+        <div id="activeUserTitle" style="padding:10px; font-size:0.7rem; border-bottom:1px solid #222; color:var(--gold);">Söhbət seçilməyib</div>
+        <div class="chat-messages-box" id="chatMessages" style="display:flex; flex-direction:column;"></div>
+        <div style="padding:10px; display:flex; gap:5px;">
+            <input type="text" id="adminMsgInput" style="flex:1; background:#000; border:1px solid #333; color:#fff; padding:8px; border-radius:5px;" placeholder="Cavab yazın...">
+            <button onclick="sendAdminReply()" class="btn-approve" style="flex:0.2">GÖNDƏR</button>
         </div>
     </div>
 </div>
 
+<h3 style="font-family:'Orbitron'; font-size:0.8rem; color:var(--gold); margin-top:30px;">📋 SON SİFARİŞLƏR</h3>
 <div id="adminOrders"></div>
 
 <script>
@@ -133,7 +116,6 @@
         apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHjOsgtgcHQLg",
         authDomain: "stargameaz.firebaseapp.com",
         projectId: "stargameaz",
-        databaseURL: "https://stargameaz-default-rtdb.firebaseio.com",
         storageBucket: "stargameaz.firebasestorage.app",
         messagingSenderId: "929443246287",
         appId: "1:929443246287:web:59a2f842455111194047ba"
@@ -141,10 +123,11 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    const rtdb = firebase.database();
+
+    let selectedUserEmail = null;
 
     window.onload = function() {
-        if (localStorage.getItem('admin_session') === 'active_stargame') {
+        if (localStorage.getItem('admin_session') === 'active') {
             document.getElementById('adminAuth').style.display = 'none';
             initAdmin();
         }
@@ -152,74 +135,53 @@
 
     function checkPass() {
         if (document.getElementById('adminPass').value === "eliezizli") {
-            localStorage.setItem('admin_session', 'active_stargame');
+            localStorage.setItem('admin_session', 'active');
             document.getElementById('adminAuth').style.display = 'none';
             initAdmin();
-        } else { alert("❌ Yanlış parol!"); }
+        } else { alert("Yanlış parol!"); }
     }
 
     function initAdmin() {
-        listenStatus();
+        listenToSiteStatus();
         loadOrders();
-        checkApiConnection();
+        loadChatUsers();
     }
 
-    function changeAdminStatus(s) { rtdb.ref('admin_settings/status').set(s); }
-
-    function listenStatus() {
-        rtdb.ref('admin_settings/status').on('value', (snap) => {
-            const s = snap.val();
-            const el = document.getElementById('current-status');
-            el.innerText = (s === 'online') ? "ONLAYN 🟢" : "OFLAYN 🔴";
-            el.style.color = (s === 'online') ? "#2ecc71" : "#e74c3c";
-        });
-    }
-
-    function saveApiSettings() {
-        const p = document.getElementById('apiProvider').value;
-        const k = document.getElementById('apiKey').value;
-        const s = document.getElementById('apiSecret').value;
-        if(!k || !s) return alert("Məlumatları daxil edin!");
-        rtdb.ref('admin_settings/api_config').set({ provider: p, key: k, secret: s, connected: true })
-        .then(() => { alert("API Sistemə Qoşuldu!"); checkApiConnection(); });
-    }
-
-    function checkApiConnection() {
-        rtdb.ref('admin_settings/api_config').once('value', (snap) => {
-            if(snap.exists()){
-                document.getElementById('apiStatus').innerText = "SİSTEM: AKTİV 🟢";
-                document.getElementById('apiStatus').style.color = "#2ecc71";
-                document.getElementById('apiBalance').innerText = "API Hazırdır";
+    // Site Online/Offline Status
+    function listenToSiteStatus() {
+        db.collection("settings").doc("adminStatus").onSnapshot(doc => {
+            if(doc.exists) {
+                const online = doc.data().online;
+                const el = document.getElementById('current-status');
+                el.innerText = online ? "🟢 SAYT ONLAYNDIR" : "🔴 SAYT OFLAYNDIR";
+                el.style.color = online ? "#2ecc71" : "#e74c3c";
             }
         });
     }
 
-    function calculateMaya() {
-        const usd = document.getElementById('usdInput').value;
-        if(!usd) return;
-        const final = (usd * 1.70) * 1.195;
-        document.getElementById('resTotal').innerText = final.toFixed(2);
-        document.getElementById('resBox').style.display = 'block';
+    function updateSiteStatus(val) {
+        db.collection("settings").doc("adminStatus").set({ online: val });
     }
 
+    // Orders Management
     function loadOrders() {
         db.collection("orders").orderBy("date", "desc").onSnapshot(snap => {
             const list = document.getElementById('adminOrders');
-            document.getElementById('stats').innerText = `📊 ${snap.size} Sifariş Var`;
+            document.getElementById('totalOrders').innerText = snap.size;
             list.innerHTML = "";
             snap.forEach(doc => {
                 const d = doc.data();
                 const id = doc.id;
                 list.innerHTML += `
-                    <div class="order-card" style="border-left-color: ${getStatusColor(d.status)}">
-                        <b>📦 ${d.uc}</b> | 💰 ${d.price}<br>
-                        🆔 ID: <span style="background:#222; padding:0 5px;">${d.playerID}</span> | 👤 ${d.userName || 'Naməlum'}<br>
-                        📅 ${d.date} | <span class="status-badge" style="background:${getStatusColor(d.status)}">${d.status}</span>
+                    <div class="order-card" style="border-left-color: ${d.status === 'Təsdiqləndi' ? '#2ecc71' : '#e31e24'}">
+                        <b>📦 ${d.uc}</b> | ${d.playerID}<br>
+                        <small>${d.userName} (${d.email})</small><br>
+                        <small>${d.date} | Status: ${d.status}</small>
                         <div class="btn-group" style="margin-top:10px;">
-                            ${d.receipt ? `<button class="btn-blue" onclick="viewReceipt('${d.receipt}')">ÇEK</button>` : ''}
-                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">Təsdiq</button>
-                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">İnkar</button>
-                            <button onclick="deleteOrder('${id}')" style="background:#333; color:#fff; flex:0.3">🗑️</button>
+                            <button class="btn-blue" onclick="viewReceipt('${d.receipt}')">ÇEK</button>
+                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">TƏSDİQ</button>
+                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">İNKAR</button>
+                            <button onclick="deleteOrder('${id}')" style="background:#222; color:#fff;">🗑️</button>
                         </div>
                     </div>`;
             });
@@ -229,12 +191,58 @@
     function updateStatus(id, s) { db.collection("orders").doc(id).update({ status: s }); }
     function deleteOrder(id) { if(confirm("Silinsin?")) db.collection("orders").doc(id).delete(); }
     function viewReceipt(src) { document.getElementById('modalImg').src = src; document.getElementById('imgModal').style.display = 'flex'; }
-    function logoutAdmin() { localStorage.removeItem('admin_session'); location.reload(); }
-    function getStatusColor(s) {
-        if(s === "Təsdiqləndi") return "#2ecc71";
-        if(s === "İnkar edildi") return "#e74c3c";
-        return "#FFD700";
+
+    // --- CHAT SYSTEM ---
+    function loadChatUsers() {
+        db.collection("chats").onSnapshot(snap => {
+            const users = {};
+            snap.forEach(doc => {
+                const d = doc.data();
+                users[d.email] = d.userName || d.email;
+            });
+            const listEl = document.getElementById('chatUserList');
+            listEl.innerHTML = "";
+            for (let email in users) {
+                const div = document.createElement('div');
+                div.className = 'chat-user-item';
+                div.innerText = users[email];
+                div.onclick = () => selectUserChat(email, users[email]);
+                listEl.appendChild(div);
+            }
+        });
     }
+
+    function selectUserChat(email, name) {
+        selectedUserEmail = email;
+        document.getElementById('activeUserTitle').innerText = "Söhbət: " + name;
+        db.collection("chats").where("email", "==", email).orderBy("timestamp", "asc")
+        .onSnapshot(snap => {
+            const box = document.getElementById('chatMessages');
+            box.innerHTML = "";
+            snap.forEach(doc => {
+                const d = doc.data();
+                const div = document.createElement('div');
+                div.className = `msg ${d.sender}`;
+                div.innerText = d.message;
+                box.appendChild(div);
+            });
+            box.scrollTop = box.scrollHeight;
+        });
+    }
+
+    function sendAdminReply() {
+        const input = document.getElementById('adminMsgInput');
+        if(!input.value || !selectedUserEmail) return;
+        db.collection("chats").add({
+            email: selectedUserEmail,
+            message: input.value,
+            sender: "admin",
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        input.value = "";
+    }
+
+    function logoutAdmin() { localStorage.removeItem('admin_session'); location.reload(); }
 </script>
 </body>
 </html>
