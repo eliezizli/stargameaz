@@ -14,11 +14,12 @@
     <meta property="og:description" content="PUBG ID-ni yaz, ödənişini et və UC anında hesabına gəlsin!">
     <meta property="og:image" content="https://i.postimg.cc/HJLz7PTz/Standard.png">
     <meta property="og:type" content="website">
-
+    <meta name="thumbnail" content="https://i.postimg.cc/HJLz7PTz/Standard.png">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
@@ -87,19 +88,28 @@
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 15px; }
         .modal-box { background: #111; width: 100%; max-width: 340px; padding: 30px 20px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; box-shadow: 0 10px 40px rgba(255, 215, 0, 0.2); }
         .modal-box h2 { font-family: 'Orbitron'; color: var(--gold); margin-bottom: 20px; font-size: 1.3rem; }
+        .modal-box p { font-size: 0.8rem; color: #bbb; margin-top: 15px; line-height: 1.4; }
 
         .whatsapp-float {
-            position: fixed; bottom: 20px; right: 15px; background-color: #25d366;
-            color: #fff; border-radius: 50px; display: flex; align-items: center;
-            padding: 10px 16px; gap: 8px; z-index: 999; text-decoration: none;
-            font-weight: 600; font-size: 0.8rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); border: 2px solid rgba(255, 255, 255, 0.1);
+            position: fixed; bottom: 20px; right: 15px; background-color: #25d366; color: #fff;
+            border-radius: 50px; display: flex; align-items: center; padding: 10px 16px;
+            gap: 8px; z-index: 999; text-decoration: none; font-weight: 600; font-size: 0.8rem;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); transition: 0.3s; border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .whatsapp-float:active { transform: scale(0.9) translateY(2px); }
+        .whatsapp-float img { width: 22px; height: 22px; }
+
+        @media screen and (max-width: 400px) {
+            .logo { font-size: 1.1rem; }
+            .card-number { font-size: 1rem; }
+            .uc-title { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
 <a href="https://wa.me/994503482470?text=Salam,%20StarGameAz%20saytından%20yazıram." class="whatsapp-float" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="22">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     <span>Canlı Dəstək</span>
 </a>
 
@@ -109,7 +119,7 @@
         <h3 style="font-family: 'Orbitron'; color: var(--gold); font-size: 0.9rem;">📋 SİFARİŞLƏRİM</h3>
         <span onclick="toggleOrders()" style="cursor:pointer; font-size: 1.8rem; color: #fff; line-height:1;">&times;</span>
     </div>
-    <div id="ordersList" style="overflow-y: auto; height: calc(100% - 50px);"></div>
+    <div id="ordersList" style="overflow-y: auto; height: calc(100% - 50px); padding-right:5px;"></div>
 </div>
 
 <div id="loginModal" class="modal">
@@ -119,9 +129,9 @@
              data-client_id="512841497901-215itq61u0rv1e1ho8fin2jceestn0am.apps.googleusercontent.com"
              data-callback="handleCredentialResponse">
         </div>
-        <div class="g_id_signin" data-type="standard" data-theme="filled_blue" data-shape="rectangular"></div>
-        <p style="font-size: 0.8rem; color: #bbb; margin-top: 15px;">Sifarişlərinizi izləmək üçün daxil olun.</p>
-        <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline;">Bağla</button>
+        <div class="g_id_signin" data-type="standard" data-theme="filled_blue" data-shape="rectangular" data-logo_alignment="left"></div>
+        <p>Sifarişlərinizi izləmək üçün daxil olun.</p>
+        <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline; font-size:0.8rem;">Bağla</button>
     </div>
 </div>
 
@@ -145,14 +155,17 @@
     </div>
 
     <div class="glass-panel">
-        <input type="tel" id="playerID" class="main-input" placeholder="🆔 PUBG ID-nizi yazın">
-        <label for="receiptInput" id="fileLabel" class="file-upload-label">📸 Ödəniş Çekini Yüklə</label>
+        <input type="tel" id="playerID" class="main-input" placeholder="🆔 PUBG ID-nizi yazın" inputmode="numeric">
+        <label for="receiptInput" id="fileLabel" class="file-upload-label">
+            📸 Ödəniş Çekini Yüklə (Mütləq!)
+        </label>
         <input type="file" id="receiptInput" accept="image/*" style="display:none;" onchange="handleFile(this)">
-        <button id="verifyBtn" class="btn-premium" style="width: 100%; background: #fff; color: #000;" onclick="verifyID()">🔍 ID YOXLA</button>
+        <button id="verifyBtn" class="btn-premium" style="width: 100%; background: #fff; color: #000; border-radius:10px;" onclick="verifyID()">🔍 ID YOXLA</button>
         <div id="idStatus" style="margin-top: 12px; text-align: center; font-weight: 700; font-size:0.85rem;"></div>
     </div>
 
     <div class="uc-grid" id="productGrid"></div>
+    <div style="height: 70px;"></div>
 </div>
 
 <script>
@@ -168,16 +181,21 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    const rtdb = firebase.database();
+    const rtdb = firebase.database(); // Realtime Database aktiv edildi
     
-    // --- CANLI İZLƏMƏ SİSTEMİ ---
-    const userStatusRef = rtdb.ref('online_users/' + Date.now());
-    userStatusRef.set({ last_seen: firebase.database.ServerValue.TIMESTAMP, device: navigator.platform });
-    userStatusRef.onDisconnect().remove();
-
     let currentUser = null;
     let receiptBase64 = "";
     let verified = false;
+
+    // --- CANLI İZLƏMƏ SİSTEMİ ---
+    // Sayta girən hər kəsi Realtime Database-ə əlavə edir
+    const onlineUserRef = rtdb.ref('online_users').push();
+    onlineUserRef.set({ 
+        enter_time: new Date().toLocaleString(),
+        device: navigator.platform 
+    });
+    // Saytdan çıxanda avtomatik silinir
+    onlineUserRef.onDisconnect().remove();
 
     const products = [
         {u: "30 UC", p: "1.00 AZN"}, {u: "60 UC", p: "2.00 AZN"},
@@ -187,7 +205,8 @@
         {u: "385 UC", p: "11.00 AZN"}, {u: "660 UC", p: "16.00 AZN"},
         {u: "720 UC", p: "18.00 AZN"}, {u: "780 UC", p: "20.00 AZN"},
         {u: "985 UC", p: "25.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"},
-        {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "155.00 AZN"}
+        {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "155.00 AZN"},
+        {u: "16200 UC", p: "310.00 AZN"}
     ];
 
     window.onload = function() {
@@ -198,19 +217,17 @@
             listenStatus();
         }
         const savedID = localStorage.getItem('stargame_player_id');
-        if (savedID) { document.getElementById('playerID').value = savedID; verifyID(); }
-        
-        const grid = document.getElementById('productGrid');
-        products.forEach(item => {
-            grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
-        });
+        if (savedID) {
+            document.getElementById('playerID').value = savedID;
+            verifyID();
+        }
     };
 
     function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
     
     function logout() {
-        if(confirm("Çıxmaq istəyirsiniz?")) {
+        if(confirm("Hesabdan çıxmaq istəyirsiniz?")) {
             localStorage.removeItem('stargame_user');
             location.reload();
         }
@@ -230,45 +247,56 @@
         document.getElementById('orderHistoryBtn').style.display = 'block';
         document.getElementById('userChip').style.display = 'flex';
         document.getElementById('userNameDisplay').innerText = user.name + " ❌";
-        if(user.picture) document.getElementById('userIcon').style.backgroundImage = `url('${user.picture}')`;
+        const icon = document.getElementById('userIcon');
+        if(user.picture) icon.style.backgroundImage = `url('${user.picture}')`;
     }
 
     function handleFile(input) {
+        const file = input.files[0];
         const reader = new FileReader();
-        reader.onloadend = () => {
+        reader.onloadend = function() {
             receiptBase64 = reader.result;
             document.getElementById('fileLabel').innerHTML = "✅ Çek yükləndi!";
             document.getElementById('fileLabel').style.color = "#2ecc71";
         }
-        if(input.files[0]) reader.readAsDataURL(input.files[0]);
+        if(file) reader.readAsDataURL(file);
     }
 
     function verifyID() {
         const id = document.getElementById('playerID').value;
-        if(id.length < 5) return;
+        if(id.length < 5) return alert("❌ Düzgün ID daxil edin");
         verified = true;
         localStorage.setItem('stargame_player_id', id);
-        document.getElementById('idStatus').innerHTML = "✅ ID Təsdiqləndi: " + id;
+        document.getElementById('idStatus').innerHTML = "✅ Oyunçu Tapıldı: " + id;
         document.getElementById('idStatus').style.color = "#2ecc71";
     }
+
+    const grid = document.getElementById('productGrid');
+    products.forEach(item => {
+        grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
+    });
 
     function order(uc, price) {
         if(!verified) return alert("⚠️ Öncə ID yoxlayın");
         if(!currentUser) return showLogin();
-        if(!receiptBase64) return alert("📸 Ödəniş çekini yükləyin!");
+        if(!receiptBase64) return alert("📸 Zəhmət olmasa ödəniş çekini yükləyin!");
         
-        db.collection("orders").add({
+        const playerID = document.getElementById('playerID').value;
+        const orderData = {
             email: currentUser.email,
             userName: currentUser.name,
-            uc: uc, price: price,
-            playerID: document.getElementById('playerID').value,
+            uc: uc,
+            price: price,
+            playerID: playerID,
             receipt: receiptBase64,
             date: new Date().toLocaleString('az-AZ'),
             status: "Gözlənilir"
-        }).then(() => {
-            alert("🚀 Sifariş göndərildi!");
-            receiptBase64 = "";
-            document.getElementById('fileLabel').innerHTML = "📸 Ödəniş Çekini Yüklə";
+        };
+
+        db.collection("orders").add(orderData).then(() => {
+            alert("🚀 Sifariş qəbul edildi!");
+            receiptBase64 = ""; 
+            document.getElementById('fileLabel').innerHTML = "📸 Ödəniş Çekini Yüklə (Mütləq!)";
             document.getElementById('fileLabel').style.color = "#fff";
         });
     }
@@ -286,10 +314,13 @@
     }
 
     function listenStatus() {
-        db.collection("orders").where("email", "==", currentUser.email).onSnapshot(snap => {
+        if(!currentUser) return;
+        db.collection("orders").where("email", "==", currentUser.email)
+          .onSnapshot(snap => {
             snap.docChanges().forEach(change => {
                 if (change.type === "modified") {
-                    alert(`Sifariş Yeniləndi: ${change.doc.data().status}`);
+                    const data = change.doc.data();
+                    alert(`Sifariş Statusu: ${data.status}\nPaket: ${data.uc}`);
                 }
             });
         });
@@ -299,8 +330,10 @@
         db.collection("orders").where("email", "==", currentUser.email).get().then(snap => {
             const list = document.getElementById('ordersList');
             let html = "";
-            snap.forEach(doc => {
-                const d = doc.data();
+            let items = [];
+            snap.forEach(doc => items.push(doc.data()));
+            items.sort((a,b) => new Date(b.date) - new Date(a.date));
+            items.forEach(d => {
                 let sColor = d.status === "Təsdiqləndi" ? "#2ecc71" : (d.status === "İnkar edildi" ? "#e74c3c" : "#FFD700");
                 html += `
                     <div class="order-item" style="border-left-color: ${sColor}">
