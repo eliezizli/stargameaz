@@ -89,40 +89,67 @@
         .modal-box p { font-size: 0.8rem; color: #bbb; margin-top: 15px; line-height: 1.4; }
 
         .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 15px;
-            background-color: #25d366;
-            color: #fff;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            padding: 10px 16px;
-            gap: 8px;
-            z-index: 999;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.8rem;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            transition: 0.3s;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: fixed; bottom: 20px; left: 15px; background-color: #25d366;
+            color: #fff; border-radius: 50px; display: flex; align-items: center;
+            padding: 10px 16px; gap: 8px; z-index: 999; text-decoration: none;
+            font-weight: 600; font-size: 0.8rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: 0.3s; border: 2px solid rgba(255, 255, 255, 0.1);
         }
-        .whatsapp-float:active { transform: scale(0.9) translateY(2px); }
-        .whatsapp-float img { width: 22px; height: 22px; }
+
+        /* --- Çat Sistemi Stilləri --- */
+        .chat-widget { position: fixed; bottom: 20px; right: 15px; z-index: 1000; font-family: 'Poppins', sans-serif; }
+        .chat-btn { background: var(--gold); color: #000; padding: 10px 18px; border-radius: 50px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); border: none; }
+        .chat-dot { width: 10px; height: 10px; border-radius: 50%; background: #2ecc71; border: 2px solid #fff; }
+        .chat-dot.offline { background: #95a5a6; }
+
+        .chat-window { 
+            position: fixed; bottom: 80px; right: 15px; width: 300px; height: 400px; 
+            background: #111; border: 1px solid var(--gold); border-radius: 15px; 
+            display: none; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+        }
+        .chat-header { background: var(--gold); color: #000; padding: 12px; font-weight: 700; display: flex; justify-content: space-between; font-size: 0.9rem; }
+        .chat-messages { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.3); }
+        .msg { padding: 8px 12px; border-radius: 10px; max-width: 80%; font-size: 0.8rem; line-height: 1.4; word-wrap: break-word; }
+        .msg.admin { background: var(--gold); color: #000; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg.user { background: rgba(255,255,255,0.1); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-input-area { padding: 10px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 5px; }
+        .chat-input-area input { flex: 1; background: #222; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; font-size: 0.85rem; }
+        .chat-send-btn { background: var(--gold); border: none; padding: 0 15px; border-radius: 5px; cursor: pointer; font-weight: 700; }
 
         @media screen and (max-width: 400px) {
             .logo { font-size: 1.1rem; }
             .card-number { font-size: 1rem; }
             .uc-title { font-size: 1rem; }
+            .chat-window { width: calc(100% - 30px); right: 15px; }
         }
     </style>
 </head>
 <body>
 
 <a href="https://wa.me/994503482470?text=Salam,%20StarGameAz%20saytından%20yazıram." class="whatsapp-float" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-    <span>Canlı Dəstək</span>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="22">
+    <span>WP Dəstək</span>
 </a>
+
+<div class="chat-widget" id="chatWidget">
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>💬 Canlı Dəstək</span>
+            <span onclick="toggleChat()" style="cursor:pointer">✕</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="msg admin">Salam! Sizə necə kömək edə bilərik?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Mesaj yazın...">
+            <button class="chat-send-btn" onclick="sendChatMessage()">></button>
+        </div>
+    </div>
+    <button class="chat-btn" onclick="toggleChat()">
+        <div class="chat-dot" id="statusDot"></div>
+        <span id="statusText">Online</span>
+    </button>
+</div>
 
 <div class="overlay" id="overlay" onclick="toggleOrders()"></div>
 <div class="order-panel" id="orderPanel">
@@ -176,7 +203,7 @@
     </div>
 
     <div class="uc-grid" id="productGrid"></div>
-    <div style="height: 70px;"></div>
+    <div style="height: 100px;"></div>
 </div>
 
 <script>
@@ -209,19 +236,19 @@
     ];
 
     window.onload = function() {
-        // İstifadəçi məlumatını yoxla
         const savedUser = localStorage.getItem('stargame_user');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
             updateUserUI(currentUser);
             listenStatus();
+            loadChatMessages();
         }
+        checkAdminStatus();
 
-        // PUBG ID-ni yaddaşdan gətir
         const savedID = localStorage.getItem('stargame_player_id');
         if (savedID) {
             document.getElementById('playerID').value = savedID;
-            verifyID(); // Avtomatik yoxlanılmış kimi qeyd et
+            verifyID();
         }
     };
 
@@ -242,6 +269,7 @@
         closeModal();
         updateUserUI(payload);
         listenStatus();
+        loadChatMessages();
     }
 
     function updateUserUI(user) {
@@ -253,6 +281,62 @@
         if(user.picture) icon.style.backgroundImage = `url('${user.picture}')`;
     }
 
+    // --- Çat Funksiyaları ---
+    function toggleChat() {
+        const win = document.getElementById('chatWindow');
+        if(!currentUser) return showLogin();
+        win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function checkAdminStatus() {
+        db.collection("settings").doc("adminStatus").onSnapshot((doc) => {
+            if (doc.exists) {
+                const isOnline = doc.data().online;
+                document.getElementById('statusDot').className = isOnline ? 'chat-dot' : 'chat-dot offline';
+                document.getElementById('statusText').innerText = isOnline ? 'Online' : 'Offline';
+            }
+        });
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const msg = input.value.trim();
+        if(!msg || !currentUser) return;
+
+        db.collection("chats").add({
+            email: currentUser.email,
+            userName: currentUser.name,
+            message: msg,
+            sender: "user",
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        input.value = "";
+    }
+
+    function loadChatMessages() {
+        if(!currentUser) return;
+        db.collection("chats")
+            .where("email", "==", currentUser.email)
+            .orderBy("timestamp", "asc")
+            .onSnapshot((snapshot) => {
+                const container = document.getElementById('chatMessages');
+                container.innerHTML = '<div class="msg admin">Salam! Sizə necə kömək edə bilərik?</div>';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const div = document.createElement('div');
+                    div.className = `msg ${data.sender}`;
+                    div.innerText = data.message;
+                    container.appendChild(div);
+                });
+                container.scrollTop = container.scrollHeight;
+            });
+    }
+
+    document.getElementById('chatInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendChatMessage();
+    });
+
+    // --- Digər Funksiyalar ---
     function handleFile(input) {
         const file = input.files[0];
         const reader = new FileReader();
@@ -266,12 +350,9 @@
 
     function verifyID() {
         const id = document.getElementById('playerID').value;
-        if(id.length < 5) return alert("❌ Düzgün ID daxil edin");
-        
+        if(id.length < 5) return;
         verified = true;
-        // ID-ni brauzer yaddaşına yaz
         localStorage.setItem('stargame_player_id', id);
-        
         document.getElementById('idStatus').innerHTML = "✅ Oyunçu Tapıldı: " + id;
         document.getElementById('idStatus').style.color = "#2ecc71";
     }
