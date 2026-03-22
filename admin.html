@@ -46,12 +46,14 @@
         .order-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--gold); font-size: 0.8rem; }
         .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; color: #000; }
 
-        /* Toast Bildiriş Stili */
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 12px 25px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; z-index: 10001; animation: fadeInUp 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         @keyframes fadeInUp { from { bottom: -50px; opacity: 0; } to { bottom: 20px; opacity: 1; } }
 
         #imgModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 10px; }
         #imgModal img { max-width: 100%; max-height: 85vh; border-radius: 10px; border: 1px solid var(--gold); }
+        
+        /* Onlayn sayğac stili */
+        .online-badge { background: rgba(46, 204, 113, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(46, 204, 113, 0.3); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -73,7 +75,10 @@
 <div class="header">
     <div>
         <h2>STARGAMEAZE</h2>
-        <small id="stats" style="color: #888; font-size: 0.7rem;">📊 Yüklenir...</small>
+        <div style="margin-top: 5px; display: flex; align-items: center; gap: 10px;">
+            <div class="online-badge">🟢 <span id="onlineCount">0</span> ONLAYN</div>
+            <small id="stats" style="color: #888; font-size: 0.7rem;">Sifarişləri Yoxla</small>
+        </div>
     </div>
     <button onclick="logoutAdmin()" class="btn-logout">ÇIXIŞ</button>
 </div>
@@ -118,7 +123,6 @@
     const db = firebase.firestore();
     const rtdb = firebase.database();
     
-    // Bildiriş səsi
     const notificationSound = new Audio('https://www.soundjay.com/buttons/beep-07a.mp3');
 
     window.onload = function() {
@@ -141,18 +145,18 @@
         trackOnlineUsers();
     }
 
-    // --- CANLI İZLƏMƏ VƏ BİLDİRİŞ FUNKSİYASI ---
+    // --- ONLAYN SAYĞAC VƏ BİLDİRİŞ ---
     function trackOnlineUsers() {
         const onlineRef = rtdb.ref('online_users');
         let initialLoad = true;
 
-        // Canlı sayğac
+        // Canlı Sayı İzləmə
         onlineRef.on('value', (snapshot) => {
             const count = snapshot.numChildren();
-            document.getElementById('stats').innerHTML = `📊 <span style="color:var(--green)">${count} Onlayn</span> | Sifarişləri Yoxla`;
+            document.getElementById('onlineCount').innerText = count;
         });
 
-        // Yeni adam girəndə səs və yazı çıxsın
+        // Yeni adam girəndə səs və Toast bildiriş
         onlineRef.on('child_added', (snapshot) => {
             if (!initialLoad) {
                 notificationSound.play().catch(() => {});
@@ -160,7 +164,6 @@
             }
         });
 
-        // İlk yüklənmədə köhnə datalara görə səs çıxmasın deyə
         onlineRef.once('value', () => { initialLoad = false; });
     }
 
