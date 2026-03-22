@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>StarGameAz | Ucuz PUBG Mobile UC Satışı (Birbank & m10)</title>
-    <meta name="description" content="StarGameAz - Azərbaycanda ən sürətli PUBG UC yükləmə mərkəzi. Birbank və m10 ilə 7/24 təhlükəsiz ödəniş, anında təslim və sərfəli qiymətlər!">
-    <meta name="keywords" content="pubg uc al, stargameaz, ucuz uc azerbaycan, uc yukleme, stargameaz">
+    <title>StarGameAze | Ucuz PUBG Mobile UC Satışı (Birbank & m10)</title>
+    <meta name="description" content="StarGameAze - Azərbaycanda ən sürətli PUBG UC yükləmə mərkəzi. Birbank və m10 ilə 7/24 təhlükəsiz ödəniş, anında təslim və sərfəli qiymətlər!">
+    <meta name="keywords" content="pubg uc al, stargameaz, ucuz uc azerbaycan, uc yukleme, stargameaze">
     
     <link rel="icon" type="image/png" href="https://i.postimg.cc/HJLz7PTz/Standard.png">
     
-    <meta property="og:title" content="StarGameAz | Ucuz UC Satışı">
+    <meta property="og:title" content="StarGameAze | Ucuz UC Satışı">
     <meta property="og:description" content="PUBG ID-ni yaz, ödənişini et və UC anında hesabına gəlsin!">
     <meta property="og:image" content="https://i.postimg.cc/HJLz7PTz/Standard.png">
     <meta property="og:type" content="website">
-    
+    <meta name="thumbnail" content="https://i.postimg.cc/HJLz7PTz/Standard.png">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
@@ -62,6 +61,8 @@
 
         .glass-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; backdrop-filter: blur(15px); margin-bottom: 20px; }
         .main-input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-size: 1rem; margin-bottom: 12px; outline: none; }
+        .main-input::placeholder { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+
         .file-upload-label { display: block; padding: 14px; background: rgba(255,255,255,0.05); border: 1px dashed var(--gold); border-radius: 10px; text-align: center; cursor: pointer; margin-bottom: 12px; font-size: 0.8rem; transition: 0.3s; color: #fff; }
 
         .uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -70,56 +71,58 @@
         .uc-title { font-weight: 700; font-size: 1.1rem; display: block; margin-bottom: 4px; color: #fff; }
         .uc-price { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; }
 
-        /* YENİ WHATSAPP MENYUSU STİLLƏRİ */
-        .whatsapp-container { position: fixed; bottom: 20px; right: 15px; z-index: 999; display: flex; flex-direction: column; align-items: flex-end; }
-        
-        .wa-menu { 
-            display: none; background: #1a1a1a; border: 1px solid var(--gold); border-radius: 15px; 
-            padding: 12px; margin-bottom: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            width: 190px; animation: slideUp 0.3s ease;
+        .order-panel {
+            position: fixed; bottom: -110%; left: 0; width: 100%; height: 85vh;
+            background: #0f0f0f; border-radius: 20px 20px 0 0; z-index: 1001;
+            transition: 0.5s cubic-bezier(0.3, 0.8, 0.4, 1); padding: 20px 15px; border-top: 2px solid var(--gold);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
         }
-        .wa-menu.active { display: flex; flex-direction: column; gap: 8px; }
-        
-        .wa-option { 
-            background: #25d366; color: white; text-decoration: none; padding: 10px; 
-            border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-align: center;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-        }
-        .wa-option:active { transform: scale(0.95); }
-
-        .whatsapp-float {
-            background-color: #25d366; color: #fff; border-radius: 50px; display: flex; 
-            align-items: center; padding: 10px 16px; gap: 8px; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-        .whatsapp-float img { width: 22px; height: 22px; }
-        .whatsapp-float span { font-weight: 600; font-size: 0.8rem; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Digər elementlər */
-        .order-panel { position: fixed; bottom: -110%; left: 0; width: 100%; height: 85vh; background: #0f0f0f; border-radius: 20px 20px 0 0; z-index: 1001; transition: 0.5s; padding: 20px 15px; border-top: 2px solid var(--gold); }
         .order-panel.active { bottom: 0; }
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px); }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 15px; }
-        .modal-box { background: #111; width: 100%; max-width: 340px; padding: 30px 20px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+        
         .order-item { background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--gold); font-size: 0.8rem; }
         .status-badge { font-size: 0.6rem; padding: 4px 8px; border-radius: 5px; font-weight: 700; text-transform: uppercase; }
+
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 15px; }
+        .modal-box { background: #111; width: 100%; max-width: 340px; padding: 30px 20px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; box-shadow: 0 10px 40px rgba(255, 215, 0, 0.2); }
+        .modal-box h2 { font-family: 'Orbitron'; color: var(--gold); margin-bottom: 20px; font-size: 1.3rem; }
+        .modal-box p { font-size: 0.8rem; color: #bbb; margin-top: 15px; line-height: 1.4; }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 15px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            gap: 8px;
+            z-index: 999;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .whatsapp-float:active { transform: scale(0.9) translateY(2px); }
+        .whatsapp-float img { width: 22px; height: 22px; }
+
+        @media screen and (max-width: 400px) {
+            .logo { font-size: 1.1rem; }
+            .card-number { font-size: 1rem; }
+            .uc-title { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
 
-<div class="whatsapp-container">
-    <div class="wa-menu" id="waMenu">
-        <div style="font-size: 0.65rem; color: var(--gold); margin-bottom: 5px; text-align: center; font-weight: bold;">DƏSTƏK XƏTTİ SEÇİN</div>
-        <a href="https://wa.me/994503482470?text=Salam, StarGameAz dəstək." class="wa-option" target="_blank">🟢 Dəstək 1 (Əsas)</a>
-        <a href="https://wa.me/994507665112?text=Salam, StarGameAz dəstək." class="wa-option" target="_blank">🟢 Dəstək 2 (Yeni)</a>
-    </div>
-    <div class="whatsapp-float" onclick="toggleWaMenu()">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-        <span>Canlı Dəstək</span>
-    </div>
-</div>
+<a href="https://wa.me/994503482470?text=Salam,%20StarGameAz%20saytından%20yazıram." class="whatsapp-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    <span>Canlı Dəstək</span>
+</a>
 
 <div class="overlay" id="overlay" onclick="toggleOrders()"></div>
 <div class="order-panel" id="orderPanel">
@@ -132,16 +135,20 @@
 
 <div id="loginModal" class="modal">
     <div class="modal-box">
-        <h2 style="font-family: 'Orbitron'; color: var(--gold); margin-bottom: 20px;">🔑 GİRİŞ</h2>
-        <div id="g_id_onload" data-client_id="512841497901-215itq61u0rv1e1ho8fin2jceestn0am.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
-        <div class="g_id_signin" data-type="standard"></div>
-        <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline;">Bağla</button>
+        <h2>🔑 GİRİŞ</h2>
+        <div id="g_id_onload"
+             data-client_id="512841497901-215itq61u0rv1e1ho8fin2jceestn0am.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-theme="filled_blue" data-shape="rectangular" data-logo_alignment="left"></div>
+        <p>Sifarişlərinizi izləmək üçün daxil olun.</p>
+        <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; cursor:pointer; text-decoration:underline; font-size:0.8rem;">Bağla</button>
     </div>
 </div>
 
 <div class="container">
     <div class="header">
-        <div class="logo">STARGAMEAZ</div>
+        <div class="logo">STARGAMEAZE</div>
         <div class="auth-section">
             <button id="orderHistoryBtn" class="btn-orders-toggle" onclick="toggleOrders()">🛒 Tarixçə</button>
             <button id="loginBtn" class="btn-premium" onclick="showLogin()">👤 GİRİŞ</button>
@@ -160,7 +167,9 @@
 
     <div class="glass-panel">
         <input type="tel" id="playerID" class="main-input" placeholder="🆔 PUBG ID-nizi yazın" inputmode="numeric">
-        <label for="receiptInput" id="fileLabel" class="file-upload-label">📸 Ödəniş Çekini Yüklə (Mütləq!)</label>
+        <label for="receiptInput" id="fileLabel" class="file-upload-label">
+            📸 Ödəniş Çekini Yüklə (Mütləq!)
+        </label>
         <input type="file" id="receiptInput" accept="image/*" style="display:none;" onchange="handleFile(this)">
         <button id="verifyBtn" class="btn-premium" style="width: 100%; background: #fff; color: #000; border-radius:10px;" onclick="verifyID()">🔍 ID YOXLA</button>
         <div id="idStatus" style="margin-top: 12px; text-align: center; font-weight: 700; font-size:0.85rem;"></div>
@@ -175,7 +184,6 @@
         apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHjOsgtgcHQLg",
         authDomain: "stargameaz.firebaseapp.com",
         projectId: "stargameaz",
-        databaseURL: "https://stargameaz-default-rtdb.firebaseio.com",
         storageBucket: "stargameaz.firebasestorage.app",
         messagingSenderId: "929443246287",
         appId: "1:929443246287:web:59a2f842455111194047ba"
@@ -183,28 +191,10 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    const rtdb = firebase.database();
     
     let currentUser = null;
     let receiptBase64 = "";
     let verified = false;
-
-    // WhatsApp Menyusu funksiyası
-    function toggleWaMenu() {
-        const menu = document.getElementById('waMenu');
-        menu.classList.toggle('active');
-        // Kənara basanda bağlansın
-        if(menu.classList.contains('active')) {
-            setTimeout(() => {
-                window.onclick = function(e) {
-                    if (!e.target.closest('.whatsapp-container')) {
-                        menu.classList.remove('active');
-                        window.onclick = null;
-                    }
-                };
-            }, 100);
-        }
-    }
 
     const products = [
         {u: "30 UC", p: "1.00 AZN"}, {u: "60 UC", p: "2.00 AZN"},
@@ -219,23 +209,20 @@
     ];
 
     window.onload = function() {
+        // İstifadəçi məlumatını yoxla
         const savedUser = localStorage.getItem('stargame_user');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
             updateUserUI(currentUser);
             listenStatus();
         }
+
+        // PUBG ID-ni yaddaşdan gətir
         const savedID = localStorage.getItem('stargame_player_id');
         if (savedID) {
             document.getElementById('playerID').value = savedID;
-            verifyID();
+            verifyID(); // Avtomatik yoxlanılmış kimi qeyd et
         }
-        
-        // Qiymətləri doldur
-        const grid = document.getElementById('productGrid');
-        products.forEach(item => {
-            grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
-        });
     };
 
     function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
@@ -262,43 +249,61 @@
         document.getElementById('orderHistoryBtn').style.display = 'block';
         document.getElementById('userChip').style.display = 'flex';
         document.getElementById('userNameDisplay').innerText = user.name + " ❌";
-        if(user.picture) document.getElementById('userIcon').style.backgroundImage = `url('${user.picture}')`;
+        const icon = document.getElementById('userIcon');
+        if(user.picture) icon.style.backgroundImage = `url('${user.picture}')`;
     }
 
     function handleFile(input) {
+        const file = input.files[0];
         const reader = new FileReader();
-        reader.onloadend = () => {
+        reader.onloadend = function() {
             receiptBase64 = reader.result;
             document.getElementById('fileLabel').innerHTML = "✅ Çek yükləndi!";
             document.getElementById('fileLabel').style.color = "#2ecc71";
         }
-        if(input.files[0]) reader.readAsDataURL(input.files[0]);
+        if(file) reader.readAsDataURL(file);
     }
 
     function verifyID() {
         const id = document.getElementById('playerID').value;
         if(id.length < 5) return alert("❌ Düzgün ID daxil edin");
+        
         verified = true;
+        // ID-ni brauzer yaddaşına yaz
         localStorage.setItem('stargame_player_id', id);
+        
         document.getElementById('idStatus').innerHTML = "✅ Oyunçu Tapıldı: " + id;
         document.getElementById('idStatus').style.color = "#2ecc71";
     }
+
+    const grid = document.getElementById('productGrid');
+    products.forEach(item => {
+        grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
+    });
 
     function order(uc, price) {
         if(!verified) return alert("⚠️ Öncə ID yoxlayın");
         if(!currentUser) return showLogin();
         if(!receiptBase64) return alert("📸 Zəhmət olmasa ödəniş çekini yükləyin!");
         
-        db.collection("orders").add({
+        const playerID = document.getElementById('playerID').value;
+        const orderData = {
             email: currentUser.email,
             userName: currentUser.name,
             uc: uc,
             price: price,
-            playerID: document.getElementById('playerID').value,
+            playerID: playerID,
             receipt: receiptBase64,
             date: new Date().toLocaleString('az-AZ'),
             status: "Gözlənilir"
-        }).then(() => alert("🚀 Sifariş qəbul edildi!"));
+        };
+
+        db.collection("orders").add(orderData).then(() => {
+            alert("🚀 Sifariş qəbul edildi!");
+            receiptBase64 = ""; 
+            document.getElementById('fileLabel').innerHTML = "📸 Ödəniş Çekini Yüklə (Mütləq!)";
+            document.getElementById('fileLabel').style.color = "#fff";
+        });
     }
 
     function toggleOrders() {
@@ -314,10 +319,13 @@
     }
 
     function listenStatus() {
-        db.collection("orders").where("email", "==", currentUser.email).onSnapshot(snap => {
+        if(!currentUser) return;
+        db.collection("orders").where("email", "==", currentUser.email)
+          .onSnapshot(snap => {
             snap.docChanges().forEach(change => {
                 if (change.type === "modified") {
-                    alert(`Sifariş Statusu: ${change.doc.data().status}\nPaket: ${change.doc.data().uc}`);
+                    const data = change.doc.data();
+                    alert(`Sifariş Statusu: ${data.status}\nPaket: ${data.uc}`);
                 }
             });
         });
@@ -332,7 +340,11 @@
             items.sort((a,b) => new Date(b.date) - new Date(a.date));
             items.forEach(d => {
                 let sColor = d.status === "Təsdiqləndi" ? "#2ecc71" : (d.status === "İnkar edildi" ? "#e74c3c" : "#FFD700");
-                html += `<div class="order-item" style="border-left-color: ${sColor}"><div><b>${d.uc}</b><br><small>${d.date}</small></div><div class="status-badge" style="background:${sColor}">${d.status}</div></div>`;
+                html += `
+                    <div class="order-item" style="border-left-color: ${sColor}">
+                        <div><b>${d.uc}</b><br><small>${d.date}</small></div>
+                        <div class="status-badge" style="background:${sColor}">${d.status}</div>
+                    </div>`;
             });
             list.innerHTML = html || "<p style='text-align:center;'>Sifariş yoxdur.</p>";
         });
