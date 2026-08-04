@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: http: data: blob: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; connect-src 'self' https: http: wss:;">
     <title>StarGameAze | Professional Admin Panel</title>
     
     <link rel="icon" type="image/png" href="https://i.postimg.cc/HJLz7PTz/Standard.png">
@@ -25,7 +26,6 @@
         .auth-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #050505; color: #fff; text-align: center; font-size: 1rem; margin-bottom: 15px; box-sizing: border-box; }
         
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        
         .card { background: #151515; border-radius: 15px; padding: 15px; border: 1px solid #222; transition: 0.3s; }
         .card:hover { border-color: var(--gold); }
         .card-title { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; margin-bottom: 10px; text-align: center; display: block; letter-spacing: 1px; }
@@ -40,9 +40,7 @@
         .btn-logout { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; font-size: 0.6rem; }
         
         .calc-input { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 8px; font-size: 0.75rem; }
-        .link-box { display: block; text-decoration: none; background: #222; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.7rem; font-weight: bold; transition: 0.2s; }
-        .link-box:hover { background: #333; border-color: var(--gold); }
-
+        .link-box { display: block; text-decoration: none; background: #222; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 5px; border: 1px solid #333; color: #fff; font-size: 0.7rem; font-weight: bold; }
         .order-card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid var(--gold); font-size: 0.8rem; }
         .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; color: #000; }
 
@@ -62,7 +60,7 @@
 
 <div id="adminAuth">
     <div class="auth-box">
-        <img src="https://i.postimg.cc/HJLz7PTz/Standard.png" style="width: 50px; margin-bottom: 10px;">
+        <img src="https://i.postimg.cc/HJLz7PTz/Standard.png" style="width: 50px; margin-bottom: 10px;" alt="Logo">
         <h3 style="color:var(--gold); font-family: 'Orbitron';">ADMIN LOGIN</h3>
         <input type="password" id="adminPass" class="auth-input" placeholder="Parol" onkeydown="if(event.key === 'Enter') checkPass()">
         <button onclick="checkPass()" style="background:var(--gold); color:#000; width:100%; border-radius:8px;">GİRİŞ</button>
@@ -148,7 +146,7 @@
             document.getElementById('stats').innerHTML = `📊 <span style="color:var(--green)">${count} Onlayn</span> | Sifarişlər`;
         });
 
-        onlineRef.on('child_added', (snapshot) => {
+        onlineRef.on('child_added', () => {
             if (!initialLoad) {
                 notificationSound.play().catch(() => {});
                 showToast("🔔 Sayta yeni istifadəçi daxil oldu!");
@@ -175,12 +173,18 @@
     }
 
     function loadOrders() {
-        db.collection("orders").orderBy("timestamp", "desc").onSnapshot(snap => {
+        db.collection("orders").onSnapshot(snap => {
             const list = document.getElementById('adminOrders');
             list.innerHTML = "";
+            let orders = [];
             snap.forEach(doc => {
-                const d = doc.data();
-                const id = doc.id;
+                orders.push({ id: doc.id, ...doc.data() });
+            });
+            
+            // Timestamp-ə görə sıralama (əgər timestamp yoxdursa cari vaxt götürülür)
+            orders.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            orders.forEach(d => {
                 list.innerHTML += `
                     <div class="order-card" style="border-left-color: ${getStatusColor(d.status)}">
                         <b>📦 ${d.uc}</b> | 💰 ${d.price}<br>
@@ -188,9 +192,9 @@
                         📅 ${d.date} | <span class="status-badge" style="background:${getStatusColor(d.status)}">${d.status}</span>
                         <div class="btn-group" style="margin-top:10px;">
                             ${d.receipt ? `<button class="btn-blue" onclick="viewReceipt('${d.receipt}')">ÇEK</button>` : ''}
-                            <button class="btn-approve" onclick="updateStatus('${id}', 'Təsdiqləndi')">Təsdiq</button>
-                            <button class="btn-reject" onclick="updateStatus('${id}', 'İnkar edildi')">İnkar</button>
-                            <button onclick="deleteOrder('${id}')" style="background:#333; color:#fff; flex:0.3">🗑️</button>
+                            <button class="btn-approve" onclick="updateStatus('${d.id}', 'Təsdiqləndi')">Təsdiq</button>
+                            <button class="btn-reject" onclick="updateStatus('${d.id}', 'İnkar edildi')">İnkar</button>
+                            <button onclick="deleteOrder('${d.id}')" style="background:#333; color:#fff; flex:0.3">🗑️</button>
                         </div>
                     </div>`;
             });
