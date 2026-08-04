@@ -33,7 +33,6 @@
         body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); z-index: -1; }
         .container { max-width: 480px; margin: auto; padding: 15px; }
         
-        /* Yenilənmiş Logo CSS */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; gap: 10px; }
         .logo { 
             font-family: 'Orbitron', sans-serif; 
@@ -124,7 +123,7 @@
             <button id="loginBtn" class="btn-premium" onclick="showLogin()">👤 GİRİŞ</button>
             <div id="userChip" class="user-chip">
                 <div class="avatar-circle" id="userIcon">🎮</div>
-                <span id="userNameDisplay" onclick="logout()">Oyunçu ❌</span>
+                <span id="userNameDisplay" onclick="logout()" title="Çıxış etmək üçün toxun">Oyunçu</span>
             </div>
         </div>
     </div>
@@ -147,7 +146,6 @@
 </div>
 
 <script>
-    // Firebase və Digər JS kodların olduğu kimi qalır...
     const firebaseConfig = {
         apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHjOsgtgcHQLg",
         authDomain: "stargameaz.firebaseapp.com",
@@ -221,20 +219,49 @@
         document.getElementById('loginBtn').style.display = 'none';
         document.getElementById('orderHistoryBtn').style.display = 'block';
         document.getElementById('userChip').style.display = 'flex';
-        document.getElementById('userNameDisplay').innerText = user.name + " ❌";
+        document.getElementById('userNameDisplay').innerText = user.name;
         const icon = document.getElementById('userIcon');
         if(user.picture) icon.style.backgroundImage = `url('${user.picture}')`;
     }
 
+    // Şəkli sıxlaşdıraraq Firestore 1MB limitini aşmağın qarşısını alırıq
     function handleFile(input) {
         const file = input.files[0];
+        if (!file) return;
         const reader = new FileReader();
-        reader.onloadend = () => {
-            receiptBase64 = reader.result;
-            document.getElementById('fileLabel').innerHTML = "✅ Çek yükləndi!";
-            document.getElementById('fileLabel').style.color = "#2ecc71";
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 800;
+                const MAX_HEIGHT = 800;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                receiptBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                document.getElementById('fileLabel').innerHTML = "✅ Çek yükləndi!";
+                document.getElementById('fileLabel').style.color = "#2ecc71";
+            }
+            img.src = e.target.result;
         }
-        if(file) reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
     }
 
     function verifyID() {
@@ -263,11 +290,15 @@
             playerID: document.getElementById('playerID').value,
             receipt: receiptBase64,
             date: new Date().toLocaleString('az-AZ'),
+            timestamp: Date.now(),
             status: "Gözlənilir"
         }).then(() => {
             alert("🚀 Sifariş qəbul edildi!");
             receiptBase64 = "";
             document.getElementById('fileLabel').innerHTML = "📸 Ödəniş Çekini Yüklə";
+            document.getElementById('fileLabel').style.color = "#fff";
+        }).catch(err => {
+            alert("❌ Xəta baş verdi: " + err.message);
         });
     }
 
@@ -290,7 +321,7 @@
             snap.docChanges().forEach(change => {
                 if (change.type === "modified") {
                     const data = change.doc.data();
-                    alert(`Sifariş: ${data.status}\nPaket: ${data.uc}`);
+                    alert(`Sifariş statusu yeniləndi: ${data.status}\nPaket: ${data.uc}`);
                 }
             });
         });
@@ -303,11 +334,12 @@
             snap.forEach(doc => {
                 const d = doc.data();
                 let sColor = d.status === "Təsdiqləndi" ? "#2ecc71" : (d.status === "İnkar edildi" ? "#e74c3c" : "#FFD700");
-                html += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:5px; border-left:3px solid ${sColor}; border-radius:5px;">
-                            <b>${d.uc}</b> - <span style="color:${sColor}">${d.status}</span><br><small>${d.date}</small>
-                         </div>`;
+                html += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-left:3px solid ${sColor}; border-radius:5px;">
+                            <b>${d.uc}</b> - <span style="color:${sColor}">${d.status}</span><br>
+                            <small style="color:#aaa;">ID: ${d.playerID} | ${d.date}</small>
+                       </div>`;
             });
-            list.innerHTML = html || "Sifariş yoxdur.";
+            list.innerHTML = html || "<p style='text-align:center; color:#888; margin-top:20px;'>Sifariş yoxdur.</p>";
         });
     }
 </script>
