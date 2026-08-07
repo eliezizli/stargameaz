@@ -411,7 +411,6 @@
             opacity: 0.9;
         }
 
-        /* İzləmə Səhifəsi Cədvəlləri */
         .track-section {
             background-color: #131822;
             border: 1px solid #1f293d;
@@ -626,7 +625,7 @@
 
         if (!localStorage.getItem('pubg_orders')) {
             localStorage.setItem('pubg_orders', JSON.stringify([
-                { orderNo: 1042, userName: "Qonaq", playerId: "5123456789", package: "325 UC", price: "8.50 AZN", status: "Təsdiqləndi" }
+                { orderNo: 1042, userName: "Elvin Məmmədov", playerId: "5123456789", package: "325 UC", price: "8.50 AZN", status: "Təsdiqləndi" }
             ]));
         }
 
@@ -667,13 +666,15 @@
         }
 
         function loginWithGoogle() {
-            const name = prompt("Google hesabınızın adını daxil edin:", "Elvin Məmmədov");
-            if (name) {
-                const user = { name: name, email: name.toLowerCase().replace(/\s+/g, '') + '@gmail.com', balance: 0.00 };
-                localStorage.setItem('pubg_logged_user', JSON.stringify(user));
-                checkUserAuth();
-                alert("Uğurla Google hesabı ilə daxil oldunuz!");
-            }
+            // Avtomatik Google hesabı ilə daxil olma simulyasiyası
+            const googleUser = {
+                name: "Elvin Məmmədov",
+                email: "elvin.mammadov@gmail.com",
+                balance: 0.00
+            };
+            localStorage.setItem('pubg_logged_user', JSON.stringify(googleUser));
+            checkUserAuth();
+            alert("Google hesabı ilə uğurla daxil olundu: " + googleUser.name);
         }
 
         function logout() {
@@ -798,7 +799,6 @@
                 return;
             }
 
-            // Sifarişlər
             let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
             let userOrders = orders.filter(o => o.userName === user.name);
             ordersTbody.innerHTML = '';
@@ -818,7 +818,6 @@
                 });
             }
 
-            // Balans Sorğuları
             let balanceReqs = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
             let userReqs = balanceReqs.filter(r => r.userName === user.name);
             balanceTbody.innerHTML = '';
