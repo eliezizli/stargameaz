@@ -3,199 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - İdarəetmə</title>
+    <title>Admin Panel - PUBG UC Mağazası</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: #0b0e14; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background-color: #0f131c; border-bottom: 1px solid #1a2233; }
-        .logo { font-weight: 800; font-size: 1.2rem; color: #f59e0b; }
-        nav a { color: #cbd5e1; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-        .admin-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; }
-        .admin-header { margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .admin-header h1 { font-size: 1.6rem; color: #f59e0b; text-transform: uppercase; }
-        .section-box { background-color: #131822; border: 1px solid #1f293d; border-radius: 12px; margin-bottom: 30px; overflow: hidden; }
-        .box-heading { padding: 15px 20px; background-color: #0f131c; border-bottom: 1px solid #1f293d; font-weight: 700; color: #f59e0b; }
-        .admin-table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
-        th, td { padding: 15px 20px; border-bottom: 1px solid #1f293d; }
-        th { background-color: #0f131c; color: #f59e0b; font-size: 0.8rem; text-transform: uppercase; }
+        body { background-color: #0b0e14; color: #ffffff; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        h1 { color: #f59e0b; margin-bottom: 25px; font-size: 1.8rem; text-transform: uppercase; }
+        .admin-section { background-color: #131822; border: 1px solid #1f293d; border-radius: 12px; padding: 20px; margin-bottom: 30px; }
+        .admin-section h2 { color: #f59e0b; font-size: 1.1rem; margin-bottom: 15px; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; white-space: nowrap; }
+        th, td { padding: 12px; border-bottom: 1px solid #1f293d; }
+        th { color: #94a3b8; }
         td { color: #cbd5e1; }
-        .btn-approve { background-color: #22c55e; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; }
-        .btn-delete { background-color: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; }
-        .btn-refresh { background-color: #f59e0b; color: #0b0e14; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; }
-        .receipt-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #1f293d; cursor: pointer; }
-        footer { background-color: #0f131c; border-top: 1px solid #1a2233; text-align: center; padding: 20px; color: #64748b; font-size: 0.8rem; margin-top: auto; }
+        .btn-approve { background-color: #22c55e; color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; margin-right: 5px; }
+        .btn-reject { background-color: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; }
+        .btn-approve:hover, .btn-reject:hover { opacity: 0.85; }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1><i class="fa-solid fa-shield-halved"></i> Admin İdarəetmə Paneli</h1>
 
-    <header>
-        <div class="logo">PUBG UC Admin Panel</div>
-        <nav>
-            <a href="index.html"><i class="fa-solid fa-house"></i> Ana Səhifəyə Qayıt</a>
-        </nav>
-    </header>
-
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1>İdarəetmə Paneli</h1>
-            <button class="btn-refresh" onclick="loadAllData()"><i class="fa-solid fa-rotate"></i> Yenilə</button>
-        </div>
-
-        <!-- Balans Artırma Sorğuları -->
-        <div class="section-box">
-            <div class="box-heading">
-                <span><i class="fa-solid fa-wallet"></i> Balans Artırma Sorğuları (m10 / Birbank)</span>
-            </div>
-            <div class="admin-table-wrapper">
+        <!-- Balans Sorğuları -->
+        <div class="admin-section">
+            <h2><i class="fa-solid fa-wallet"></i> Balans Artırma Sorğuları</h2>
+            <div style="overflow-x: auto;">
                 <table>
                     <thead>
                         <tr>
-                            <th>Sorğu #</th>
-                            <th>İstifadəçi</th>
+                            <th>Sorğu №</th>
+                            <th>İstifadəçi (Gmail)</th>
                             <th>Məbləğ</th>
                             <th>Üsul</th>
-                            <th>Ödəniş Çeki</th>
                             <th>Status</th>
-                            <th>Əməliyyatlar</th>
+                            <th>Əməliyyat</th>
                         </tr>
                     </thead>
-                    <tbody id="balanceTableBody"></tbody>
+                    <tbody id="adminBalanceTable"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- UC Sifarişləri -->
-        <div class="section-box">
-            <div class="box-heading">
-                <span><i class="fa-solid fa-box"></i> UC Sifarişləri</span>
-            </div>
-            <div class="admin-table-wrapper">
+        <!-- Sifarişlər -->
+        <div class="admin-section">
+            <h2><i class="fa-solid fa-box"></i> İstifadəçi Sifarişləri</h2>
+            <div style="overflow-x: auto;">
                 <table>
                     <thead>
                         <tr>
-                            <th>Sifariş #</th>
+                            <th>Sifariş №</th>
                             <th>İstifadəçi</th>
                             <th>Oyunçu ID</th>
                             <th>Paket</th>
                             <th>Qiymət</th>
                             <th>Status</th>
-                            <th>Əməliyyatlar</th>
+                            <th>Əməliyyat</th>
                         </tr>
                     </thead>
-                    <tbody id="ordersTableBody"></tbody>
+                    <tbody id="adminOrdersTable"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>© 2026 PUBG UC Mağazası - Admin Panel</p>
-    </footer>
-
     <script>
-        function loadAllData() {
-            loadBalanceRequests();
-            loadOrders();
-        }
+        function loadAdminData() {
+            let users = JSON.parse(localStorage.getItem('pubg_users') || '{}');
+            let balanceRequests = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
+            let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
 
-        function loadBalanceRequests() {
-            const tbody = document.getElementById('balanceTableBody');
-            let requests = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
-            tbody.innerHTML = '';
-
-            if (requests.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #64748b;">Balans artım sorğusu yoxdur.</td></tr>`;
-                return;
-            }
-
-            requests.forEach((req, index) => {
-                let receiptView = req.receipt ? `<a href="${req.receipt}" target="_blank"><img src="${req.receipt}" class="receipt-thumb" title="Böyütmək üçün klikləyin"></a>` : 'Yoxdur';
-                tbody.innerHTML += `
+            // Balans Sorğuları Cədvəli
+            let balTbody = document.getElementById('adminBalanceTable');
+            balTbody.innerHTML = balanceRequests.length === 0 ? `<tr><td colspan="6" style="text-align: center; color: #64748b;">Sorğu yoxdur.</td></tr>` : '';
+            balanceRequests.forEach((req, index) => {
+                balTbody.innerHTML += `
                     <tr>
                         <td>#${req.reqNo}</td>
-                        <td>${req.userName}</td>
-                        <td style="color: #22c55e; font-weight: 700;">${req.amount}</td>
+                        <td>${req.userName} (${req.email})</td>
+                        <td style="color: #22c55e; font-weight: 700;">+${req.amount.toFixed(2)} AZN</td>
                         <td>${req.method}</td>
-                        <td>${receiptView}</td>
-                        <td><span style="color: ${req.status.includes('Təsdiqləndi') ? '#22c55e' : '#f59e0b'};">${req.status}</span></td>
+                        <td style="color: ${req.status.includes('Təsdiqləndi') ? '#22c55e' : (req.status.includes('Ləğv') ? '#ef4444' : '#f59e0b')}">${req.status}</td>
                         <td>
-                            <div style="display: flex; gap: 6px;">
-                                <button class="btn-approve" onclick="approveBalance(${index})">Təsdiqlə</button>
-                                <button class="btn-delete" onclick="deleteBalanceReq(${index})">Sil</button>
-                            </div>
+                            ${req.status === 'Təsdiq Gözləyir' ? `
+                                <button class="btn-approve" onclick="approveBalance(${index})">Təsdiq Et</button>
+                                <button class="btn-reject" onclick="rejectBalance(${index})">Ləğv Et</button>
+                            ` : 'Tamamlanıb'}
                         </td>
                     </tr>
                 `;
             });
-        }
 
-        function approveBalance(index) {
-            let requests = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
-            requests[index].status = "Təsdiqləndi";
-            localStorage.setItem('pubg_balance_requests', JSON.stringify(requests));
-            loadBalanceRequests();
-            alert("Balans sorğusu təsdiqləndi!");
-        }
-
-        function deleteBalanceReq(index) {
-            if(confirm('Silmək istədiyinizdən əminsiniz?')) {
-                let requests = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
-                requests.splice(index, 1);
-                localStorage.setItem('pubg_balance_requests', JSON.stringify(requests));
-                loadBalanceRequests();
-            }
-        }
-
-        function loadOrders() {
-            const tbody = document.getElementById('ordersTableBody');
-            let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
-            tbody.innerHTML = '';
-
-            if (orders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #64748b;">Sifariş yoxdur.</td></tr>`;
-                return;
-            }
-
+            // Sifarişlər Cədvəli
+            let ordTbody = document.getElementById('adminOrdersTable');
+            ordTbody.innerHTML = orders.length === 0 ? `<tr><td colspan="7" style="text-align: center; color: #64748b;">Sifariş yoxdur.</td></tr>` : '';
             orders.forEach((ord, index) => {
-                tbody.innerHTML += `
+                ordTbody.innerHTML += `
                     <tr>
                         <td>#${ord.orderNo}</td>
-                        <td>${ord.userName || 'Qonaq'}</td>
+                        <td>${ord.userName}</td>
                         <td>${ord.playerId}</td>
                         <td>${ord.package}</td>
-                        <td>${ord.price}</td>
-                        <td><span style="color: ${ord.status.includes('Təsdiqləndi') ? '#22c55e' : '#f59e0b'};">${ord.status}</span></td>
+                        <td>${ord.priceStr}</td>
+                        <td style="color: ${ord.status.includes('Təsdiqləndi') ? '#22c55e' : (ord.status.includes('Ləğv') ? '#ef4444' : '#f59e0b')}">${ord.status}</td>
                         <td>
-                            <div style="display: flex; gap: 6px;">
-                                <button class="btn-approve" onclick="approveOrder(${index})">Təsdiqlə</button>
-                                <button class="btn-delete" onclick="deleteOrder(${index})">Sil</button>
-                            </div>
+                            ${ord.status === 'Təsdiq Gözləyir' ? `
+                                <button class="btn-approve" onclick="approveOrder(${index})">Təsdiq Et</button>
+                                <button class="btn-reject" onclick="rejectOrder(${index})">Ləğv Et</button>
+                            ` : 'Tamamlanıb'}
                         </td>
                     </tr>
                 `;
             });
         }
 
+        // Balans sorğusunu təsdiqlə (İstifadəçinin balansına əlavə edilir)
+        function approveBalance(index) {
+            let balanceRequests = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
+            let users = JSON.parse(localStorage.getItem('pubg_users') || '{}');
+            let req = balanceRequests[index];
+
+            if (users[req.email]) {
+                users[req.email].balance += req.amount;
+                localStorage.setItem('pubg_users', JSON.stringify(users));
+            }
+
+            req.status = "Təsdiqləndi";
+            localStorage.setItem('pubg_balance_requests', JSON.stringify(balanceRequests));
+            loadAdminData();
+            alert("Balans artım sorğusu təsdiqləndi və istifadəçiyə yükləndi!");
+        }
+
+        function rejectBalance(index) {
+            let balanceRequests = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
+            balanceRequests[index].status = "Ləğv edildi";
+            localStorage.setItem('pubg_balance_requests', JSON.stringify(balanceRequests));
+            loadAdminData();
+        }
+
+        // Sifarişi təsdiqlə (Balansdan məbləğ çıxılır)
         function approveOrder(index) {
             let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
-            orders[index].status = "Təsdiqləndi və Yükləndi";
-            localStorage.setItem('pubg_orders', JSON.stringify(orders));
-            loadOrders();
-        }
+            let users = JSON.parse(localStorage.getItem('pubg_users') || '{}');
+            let ord = orders[index];
 
-        function deleteOrder(index) {
-            if(confirm('Bu sifarişi silmək istədiyinizdən əminsiniz?')) {
-                let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
-                orders.splice(index, 1);
-                localStorage.setItem('pubg_orders', JSON.stringify(orders));
-                loadOrders();
+            if (users[ord.email]) {
+                if (users[ord.email].balance < ord.priceNum) {
+                    alert("XƏTA: İstifadəçinin balansı kifayət etmir!");
+                    return;
+                }
+                users[ord.email].balance -= ord.priceNum;
+                localStorage.setItem('pubg_users', JSON.stringify(users));
             }
+
+            ord.status = "Təsdiqləndi";
+            localStorage.setItem('pubg_orders', JSON.stringify(orders));
+            loadAdminData();
+            alert("Sifariş təsdiqləndi və istifadəçi balansından məbləğ çıxıldı!");
         }
 
-        window.onload = loadAllData;
+        function rejectOrder(index) {
+            let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
+            orders[index].status = "Ləğv edildi";
+            localStorage.setItem('pubg_orders', JSON.stringify(orders));
+            loadAdminData();
+        }
+
+        window.onload = loadAdminData;
     </script>
 </body>
 </html>
