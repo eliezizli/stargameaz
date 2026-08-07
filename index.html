@@ -2,320 +2,845 @@
 <html lang="az">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: http: data: blob: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; connect-src 'self' https: http: wss:;">
-    
-    <title>StarGameAze | Ucuz PUBG Mobile UC Satışı (Birbank & m10)</title>
-    <meta name="description" content="StarGameAze - Azərbaycanda ən sürətli PUBG UC yükləmə mərkəzi. Birbank və m10 ilə 7/24 təhlükəsiz ödəniş, anında təslim və sərfəli qiymətlər!">
-    
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/T3m8M38m/stargame-fav.png">
-    <link rel="apple-touch-icon" href="https://i.postimg.cc/T3m8M38m/stargame-fav.png">
-
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUBG UC Mağazası</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --gold: #FFD700; --red: #e31e24; --dark: #0f0f0f; --glass: rgba(255, 255, 255, 0.05); }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { background: url('https://w0.peakpx.com/wallpaper/453/147/HD-wallpaper-pubg-mobile-season-13-battle-royale-games-pubg.jpg') no-repeat center center fixed; background-size: cover; color: #fff; font-family: 'Poppins', sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); z-index: -1; }
-        .container { max-width: 480px; margin: auto; padding: 15px; }
-        
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; gap: 10px; }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
-        .logo img { height: 32px; width: auto; border-radius: 4px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-        .auth-section { display: flex; align-items: center; gap: 8px; flex-shrink: 1; }
-        .user-chip { display: none; background: var(--glass); border: 1px solid var(--gold); padding: 4px 10px; border-radius: 50px; backdrop-filter: blur(10px); align-items: center; gap: 6px; max-width: 160px; overflow: hidden; }
-        .avatar-circle { width: 26px; height: 26px; background: var(--gold); border-radius: 50%; background-size: cover; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 1rem; background-position: center; flex-shrink: 0; }
-        #userNameDisplay { font-weight: 600; font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
-        .btn-premium { background: linear-gradient(45deg, var(--gold), #ffaa00); color: #000; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; transition: 0.2s; }
-        .btn-orders-toggle { display: none; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 9px 12px; border-radius: 9px; font-size: 0.7rem; cursor: pointer; text-transform: uppercase; font-weight: 600; }
-        .payment-card { background: linear-gradient(135deg, #1a1a1a 0%, #e31e24 100%); padding: 20px 15px; border-radius: 15px; margin: 15px 0; box-shadow: 0 8px 25px rgba(227, 30, 36, 0.2); border: 1px solid rgba(255,255,255,0.1); }
-        .card-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; color: #fff; margin-bottom: 8px; text-transform: uppercase; opacity: 0.8; }
-        .card-number { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; letter-spacing: 2px; margin: 10px 0; display: block; color: #fff; text-align: center; }
-        .btn-copy-card { background: #fff; border: none; color: #e31e24; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; }
-        .glass-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; backdrop-filter: blur(15px); margin-bottom: 20px; }
-        .main-input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-size: 1rem; margin-bottom: 12px; outline: none; }
-        .file-upload-label { display: block; padding: 14px; background: rgba(255,255,255,0.05); border: 1px dashed var(--gold); border-radius: 10px; text-align: center; cursor: pointer; margin-bottom: 12px; font-size: 0.8rem; transition: 0.3s; color: #fff; }
-        .uc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .uc-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .uc-card:active { transform: scale(0.95); border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
-        .uc-title { font-weight: 700; font-size: 1.1rem; display: block; margin-bottom: 4px; color: #fff; }
-        .uc-price { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; }
-        .order-panel { position: fixed; bottom: -110%; left: 0; width: 100%; height: 85vh; background: #0f0f0f; border-radius: 20px 20px 0 0; z-index: 1001; transition: 0.5s cubic-bezier(0.3, 0.8, 0.4, 1); padding: 20px 15px; border-top: 2px solid var(--gold); box-shadow: 0 -10px 40px rgba(0,0,0,0.8); }
-        .order-panel.active { bottom: 0; }
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px); }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1100; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 15px; }
-        .modal-box { background: #111; width: 100%; max-width: 340px; padding: 30px 20px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; }
-        
-        .wp-group { position: fixed; bottom: 20px; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 999; }
-        .whatsapp-float { background-color: #25d366; color: #fff; border-radius: 50px; display: flex; align-items: center; padding: 10px 16px; gap: 8px; text-decoration: none; font-weight: 600; font-size: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255, 255, 255, 0.1); }
-        .whatsapp-float.alt { background-color: #128C7E; }
+        body {
+            background-color: #0b0e14;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #0f131c;
+            border-bottom: 1px solid #1a2233;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #f59e0b;
+            letter-spacing: 0.5px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo span {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            color: #f59e0b;
+        }
+
+        .user-auth-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #131822;
+            border: 1px solid #1f293d;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .google-login-btn {
+            background: #ffffff;
+            color: #0b0e14;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .google-login-btn:hover {
+            opacity: 0.9;
+        }
+
+        .user-profile-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .user-balance-badge {
+            color: #22c55e;
+            font-weight: 700;
+            background: rgba(34, 197, 94, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, #0f131c 0%, #0b0e14 100%);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #ffffff 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            max-width: 650px;
+            margin: 0 auto 30px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .feature-badge {
+            background-color: #131822;
+            border: 1px solid #1f293d;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-badge i {
+            color: #f59e0b;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f59e0b;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .package-card {
+            background-color: #131822;
+            border: 1px solid #1f293d;
+            border-radius: 12px;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .package-card:hover {
+            transform: translateY(-3px);
+            border-color: #f59e0b;
+        }
+
+        .package-card.featured {
+            border-color: #f59e0b;
+        }
+
+        .badge-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .uc-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: radial-gradient(circle, rgba(245,158,11,0.2) 0%, rgba(19,24,34,0) 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .uc-icon i {
+            font-size: 2rem;
+            color: #f59e0b;
+        }
+
+        .uc-amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .uc-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #f59e0b;
+            margin-bottom: 20px;
+        }
+
+        .buy-btn {
+            background-color: #1a2233;
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .package-card:hover .buy-btn {
+            background-color: #f59e0b;
+            color: #0b0e14;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .page-header h1 i {
+            color: #f59e0b;
+        }
+
+        .page-header p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .form-card-box {
+            background-color: #131822;
+            border: 1px solid #1f293d;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .box-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f59e0b;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 14px;
+            background-color: #0b0e14;
+            border: 1px solid #1f293d;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper input:focus, .input-wrapper select:focus {
+            outline: none;
+            border-color: #f59e0b;
+        }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media(max-width: 600px) {
+            .payment-methods-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pay-option-card {
+            background-color: #0b0e14;
+            border: 1px solid #1f293d;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .pay-option-card.selected {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .pay-option-title {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .pay-option-detail {
+            font-size: 0.9rem;
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .complete-btn {
+            background-color: #f59e0b;
+            color: #0b0e14;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .complete-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* İzləmə Səhifəsi Cədvəlləri */
+        .track-section {
+            background-color: #131822;
+            border: 1px solid #1f293d;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .track-section h3 {
+            color: #f59e0b;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .track-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        .track-table th, .track-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #1f293d;
+        }
+
+        .track-table th {
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .track-table td {
+            color: #cbd5e1;
+        }
+
+        footer {
+            background-color: #0f131c;
+            border-top: 1px solid #1a2233;
+            text-align: center;
+            padding: 25px 20px;
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
 
-<div class="wp-group">
-    <a href="https://wa.me/994507453771?text=Salam, StarGameAz saytından yazıram." class="whatsapp-float" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width:18px;">
-        <span>Dəstək 1</span>
-    </a>
-    <a href="https://wa.me/994507665112?text=Salam, StarGameAz saytından yazıram." class="whatsapp-float alt" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width:18px;">
-        <span>Dəstək 2</span>
-    </a>
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleOrders()"></div>
-<div class="order-panel" id="orderPanel">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-        <h3 style="font-family: 'Orbitron'; color: var(--gold); font-size: 0.9rem;">📋 SİFARİŞLƏRİM</h3>
-        <span onclick="toggleOrders()" style="cursor:pointer; font-size: 1.8rem; color: #fff;">&times;</span>
-    </div>
-    <div id="ordersList" style="overflow-y: auto; height: calc(100% - 50px);"></div>
-</div>
-
-<div id="loginModal" class="modal">
-    <div class="modal-box">
-        <h2>🔑 GİRİŞ</h2>
-        <div id="g_id_onload"
-             data-client_id="512841497901-215itq61u0rv1e1ho8fin2jceestn0am.apps.googleusercontent.com"
-             data-callback="handleCredentialResponse">
-        </div>
-        <div class="g_id_signin" data-type="standard" data-theme="filled_blue"></div>
-        <p style="font-size: 0.8rem; color: #bbb; margin-top: 15px;">Sifarişlərinizi izləmək üçün daxil olun.</p>
-        <button onclick="closeModal()" style="background:none; border:none; color:#fff; margin-top:15px; text-decoration:underline; cursor:pointer;">Bağla</button>
-    </div>
-</div>
-
-<div class="container">
-    <div class="header">
+    <header>
         <div class="logo">
-            <img src="https://i.postimg.cc/T3m8M38m/stargame-fav.png" alt="SG">
-            STARGAMEAZE
+            PUBG UC
+            <span>Mağazası</span>
         </div>
-        <div class="auth-section">
-            <button id="orderHistoryBtn" class="btn-orders-toggle" onclick="toggleOrders()">🛒 Tarixçə</button>
-            <button id="loginBtn" class="btn-premium" onclick="showLogin()">👤 GİRİŞ</button>
-            <div id="userChip" class="user-chip">
-                <div class="avatar-circle" id="userIcon">🎮</div>
-                <span id="userNameDisplay" onclick="logout()" title="Çıxış">Oyunçu</span>
+        <nav>
+            <a id="navHome" class="active" onclick="switchView('home')"><i class="fa-solid fa-house"></i> Ana Səhifə</a>
+            <a id="navOrder" onclick="switchView('order')"><i class="fa-solid fa-cart-shopping"></i> Sifariş Ver</a>
+            <a id="navBalance" onclick="switchView('balance')"><i class="fa-solid fa-wallet"></i> Balans Artır</a>
+            <a id="navTrack" onclick="switchView('track')"><i class="fa-solid fa-clock-rotate-left"></i> Sifarişlərim / İzlə</a>
+            <a href="admin.html" target="_blank"><i class="fa-solid fa-gear"></i> Admin</a>
+        </nav>
+        <div id="authContainer">
+            <button class="google-login-btn" onclick="loginWithGoogle()">
+                <i class="fa-brands fa-google"></i> Google ilə Giriş
+            </button>
+        </div>
+    </header>
+
+    <!-- ANA SƏHİFƏ -->
+    <div id="homeView">
+        <section class="hero">
+            <h1>Zəfərə Gedən Yolda Gücünü Artır</h1>
+            <p>PUBG Mobile UC yükləmələrinizi ən münasib qiymətlərlə, saniyələr ərzində və etibarlı şəkildə həyata keçirin.</p>
+            <div class="features">
+                <div class="feature-badge"><i class="fa-solid fa-bolt"></i> Dərhal Çatdırılma</div>
+                <div class="feature-badge"><i class="fa-solid fa-shield-halved"></i> %100 Etibarlı</div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="section-title">
+                <h2><i class="fa-solid fa-coins"></i> UC Paketləri</h2>
+            </div>
+            <div class="packages-grid" id="packageGrid"></div>
+        </div>
+    </div>
+
+    <!-- SİFARİŞ VER -->
+    <div id="orderView" style="display: none;" class="page-container">
+        <div class="page-header">
+            <h1><i class="fa-solid fa-cart-shopping"></i> Sifariş Ver</h1>
+            <p>Oyunçu ID-nizi daxil edin və paket seçiminizi tamamlayın.</p>
+        </div>
+        <div class="form-card-box">
+            <div class="box-title"><i class="fa-solid fa-user"></i> Oyunçu ID</div>
+            <div class="input-wrapper">
+                <input type="text" id="orderPlayerId" placeholder="Nümunə: 5123456789">
+            </div>
+        </div>
+        <div class="form-card-box">
+            <div class="box-title"><i class="fa-solid fa-box"></i> Seçilmiş Paket</div>
+            <div id="selectedPkgInfo" style="color: #f59e0b; font-weight: 700;">Paket seçilməyib. Zəhmət olmasa Ana səhifədən paket seçin.</div>
+        </div>
+        <button class="complete-btn" onclick="completeOrder()">Sifarişi Təsdiqlə</button>
+    </div>
+
+    <!-- BALANS ARTIR SƏHİFƏSİ -->
+    <div id="balanceView" style="display: none;" class="page-container">
+        <div class="page-header">
+            <h1><i class="fa-solid fa-wallet"></i> Balans Artırma</h1>
+            <p>Hesabınıza balans yükləmək üçün ödəniş üsulunu seçin, ödəniş edin və çəki yükləyin.</p>
+        </div>
+
+        <div class="form-card-box">
+            <div class="box-title"><i class="fa-solid fa-manat-sign"></i> Artırılacaq Məbləğ (AZN)</div>
+            <div class="input-wrapper">
+                <input type="number" id="topupAmount" placeholder="Məbləğ daxil edin (Məs: 10)">
+            </div>
+        </div>
+
+        <div class="form-card-box">
+            <div class="box-title"><i class="fa-solid fa-credit-card"></i> Ödəniş Üsulu Seçin</div>
+            <div class="payment-methods-grid">
+                <div class="pay-option-card selected" id="methodM10" onclick="selectPaymentMethod('m10')">
+                    <div class="pay-option-title"><i class="fa-solid fa-wallet"></i> m10 (Cüzdan)</div>
+                    <div class="pay-option-detail">+994 50 123 45 67</div>
+                </div>
+                <div class="pay-option-card" id="methodBirbank" onclick="selectPaymentMethod('birbank')">
+                    <div class="pay-option-title"><i class="fa-solid fa-credit-card"></i> Birbank Kartı</div>
+                    <div class="pay-option-detail">4169 7388 6262 7472</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card-box">
+            <div class="box-title"><i class="fa-solid fa-receipt"></i> Ödəniş Çeki (Qəbz) Yüklə</div>
+            <div class="input-wrapper">
+                <input type="file" id="topupReceipt" accept="image/*">
+            </div>
+            <div class="input-hint">Ödəniş etdikdən sonra çəkinin şəklini yükləyin.</div>
+        </div>
+
+        <button class="complete-btn" onclick="submitBalanceRequest()">Balans Artımını Göndər</button>
+    </div>
+
+    <!-- SİFARİŞLƏRİM / İZLƏ -->
+    <div id="trackView" style="display: none;" class="page-container">
+        <div class="page-header">
+            <h1><i class="fa-solid fa-clock-rotate-left"></i> Sifarişlərim və Balans Sorğularım</h1>
+            <p>Hesabınız üzrə verilən bütün sifarişlər və balans artım sorğuları aşağıda göstərilir.</p>
+        </div>
+
+        <div class="track-section">
+            <h3><i class="fa-solid fa-box"></i> Sifarişlərim</h3>
+            <div style="overflow-x: auto;">
+                <table class="track-table">
+                    <thead>
+                        <tr>
+                            <th>Sifariş #</th>
+                            <th>Oyunçu ID</th>
+                            <th>Paket</th>
+                            <th>Qiymət</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userOrdersTable">
+                        <tr><td colspan="5" style="text-align: center; color: #64748b;">Məlumat yoxdur.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="track-section">
+            <h3><i class="fa-solid fa-wallet"></i> Balans Artırma Sorğularım</h3>
+            <div style="overflow-x: auto;">
+                <table class="track-table">
+                    <thead>
+                        <tr>
+                            <th>Sorğu #</th>
+                            <th>Məbləğ</th>
+                            <th>Üsul</th>
+                            <th>Çek</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userBalanceTable">
+                        <tr><td colspan="5" style="text-align: center; color: #64748b;">Məlumat yoxdur.</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="payment-card">
-        <div class="card-label">💳 Birbank / Kart Hesabı</div>
-        <div class="card-number">4169 7388 6262 7472</div>
-        <button class="btn-copy-card" onclick="copyCard()">📄 KART NÖMRƏSİNİ KOPYALA</button>
-    </div>
+    <footer>
+        <p>© 2026 PUBG UC Mağazası. Bütün hüquqlar qorunur.</p>
+    </footer>
 
-    <div class="glass-panel">
-        <input type="tel" id="playerID" class="main-input" placeholder="🆔 PUBG ID-nizi yazın" inputmode="numeric">
-        <label for="receiptInput" id="fileLabel" class="file-upload-label">📸 Ödəniş Çekini Yüklə (Mütləq!)</label>
-        <input type="file" id="receiptInput" accept="image/*" style="display:none;" onchange="handleFile(this)">
-        <button id="verifyBtn" class="btn-premium" style="width: 100%; background: #fff; color: #000;" onclick="verifyID()">🔍 ID YOXLA</button>
-        <div id="idStatus" style="margin-top: 12px; text-align: center; font-weight: 700;"></div>
-    </div>
+    <script>
+        const packages = [
+            { uc: 30, price: "1.00 AZN" },
+            { uc: 60, price: "2.00 AZN" },
+            { uc: 325, price: "8.50 AZN", tag: "Populyar", featured: true },
+            { uc: 985, price: "25.00 AZN", tag: "Ən Çox Satan", featured: true },
+            { uc: 8100, price: "158.00 AZN", tag: "Ən Yüksək Dəyər", featured: true }
+        ];
 
-    <div class="uc-grid" id="productGrid"></div>
-</div>
+        let selectedPackage = null;
+        let selectedPayMethod = 'm10';
 
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyCc0LyknaZkKUwa0RonU0HHjOsgtgcHQLg",
-        authDomain: "stargameaz.firebaseapp.com",
-        projectId: "stargameaz",
-        databaseURL: "https://stargameaz-default-rtdb.firebaseio.com",
-        storageBucket: "stargameaz.firebasestorage.app",
-        messagingSenderId: "929443246287",
-        appId: "1:929443246287:web:59a2f842455111194047ba"
-    };
+        if (!localStorage.getItem('pubg_orders')) {
+            localStorage.setItem('pubg_orders', JSON.stringify([
+                { orderNo: 1042, userName: "Qonaq", playerId: "5123456789", package: "325 UC", price: "8.50 AZN", status: "Təsdiqləndi" }
+            ]));
+        }
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const rtdb = firebase.database();
-    
-    let currentUser = null;
-    let receiptBase64 = "";
-    let verified = false;
-
-    function trackPresence() {
-        const myPresenceRef = rtdb.ref('online_users').push();
-        myPresenceRef.set({
-            email: (currentUser && currentUser.email) ? currentUser.email : "Qonaq",
-            device: navigator.userAgent.includes("Mobi") ? "Mobil" : "PC",
-            enter_time: new Date().toLocaleTimeString('az-AZ')
+        const grid = document.getElementById('packageGrid');
+        packages.forEach(pkg => {
+            const card = document.createElement('div');
+            card.className = `package-card ${pkg.featured ? 'featured' : ''}`;
+            card.innerHTML = `
+                ${pkg.tag ? `<div class="badge-tag"><i class="fa-solid fa-star"></i> ${pkg.tag}</div>` : ''}
+                <div class="uc-icon"><i class="fa-solid fa-coins"></i></div>
+                <div class="uc-amount">${pkg.uc} UC</div>
+                <div class="uc-price">${pkg.price}</div>
+                <button class="buy-btn" onclick="selectAndGoOrder('${pkg.uc} UC', '${pkg.price}')">SATIN AL</button>
+            `;
+            grid.appendChild(card);
         });
-        myPresenceRef.onDisconnect().remove();
-    }
 
-    const products = [
-        {u: "30 UC", p: "1.00 AZN"}, {u: "60 UC", p: "2.00 AZN"},
-        {u: "90 UC", p: "3.00 AZN"}, {u: "120 UC", p: "4.00 AZN"},
-        {u: "180 UC", p: "5.00 AZN"}, {u: "210 UC", p: "6.00 AZN"},
-        {u: "325 UC", p: "8.50 AZN"}, {u: "355 UC", p: "9.50 AZN"},
-        {u: "385 UC", p: "10.00 AZN"}, {u: "660 UC", p: "16.00 AZN"},
-        {u: "720 UC", p: "18.00 AZN"}, {u: "780 UC", p: "20.00 AZN"},
-        {u: "985 UC", p: "25.00 AZN"}, {u: "1800 UC", p: "41.00 AZN"},
-        {u: "3850 UC", p: "81.00 AZN"}, {u: "8100 UC", p: "158.00 AZN"},
-        {u: "16200 UC", p: "313.50 AZN"}
-    ];
-
-    window.onload = function() {
-        const savedUser = localStorage.getItem('stargame_user');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
-            updateUserUI(currentUser);
-            listenStatus();
-        }
-        trackPresence();
-        const savedID = localStorage.getItem('stargame_player_id');
-        if (savedID) {
-            document.getElementById('playerID').value = savedID;
-            verifyID();
-        }
-    };
-
-    function handleCredentialResponse(response) {
-        const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        currentUser = payload;
-        localStorage.setItem('stargame_user', JSON.stringify(payload));
-        closeModal();
-        updateUserUI(payload);
-        listenStatus();
-        trackPresence();
-    }
-
-    function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
-    function logout() { if(confirm("Çıxmaq istəyirsiniz?")) { localStorage.removeItem('stargame_user'); location.reload(); } }
-    
-    function updateUserUI(user) {
-        document.getElementById('loginBtn').style.display = 'none';
-        document.getElementById('orderHistoryBtn').style.display = 'block';
-        document.getElementById('userChip').style.display = 'flex';
-        document.getElementById('userNameDisplay').innerText = user.name;
-        const icon = document.getElementById('userIcon');
-        if(user.picture) icon.style.backgroundImage = `url('${user.picture}')`;
-    }
-
-    function handleFile(input) {
-        const file = input.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = new Image();
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 800;
-                const MAX_HEIGHT = 800;
-                let width = img.width;
-                let height = img.height;
-
-                if (width > height) {
-                    if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                } else {
-                    if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                }
-
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                
-                receiptBase64 = canvas.toDataURL('image/jpeg', 0.7);
-                document.getElementById('fileLabel').innerHTML = "✅ Çek yükləndi!";
-                document.getElementById('fileLabel').style.color = "#2ecc71";
+        function checkUserAuth() {
+            const user = JSON.parse(localStorage.getItem('pubg_logged_user'));
+            const authContainer = document.getElementById('authContainer');
+            if (user) {
+                authContainer.innerHTML = `
+                    <div class="user-auth-box">
+                        <div class="user-profile-info">
+                            <span><i class="fa-solid fa-user-circle"></i> ${user.name}</span>
+                            <span class="user-balance-badge">${user.balance.toFixed(2)} AZN</span>
+                        </div>
+                        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    </div>
+                `;
+            } else {
+                authContainer.innerHTML = `
+                    <button class="google-login-btn" onclick="loginWithGoogle()">
+                        <i class="fa-brands fa-google"></i> Google ilə Giriş
+                    </button>
+                `;
             }
-            img.src = e.target.result;
         }
-        reader.readAsDataURL(file);
-    }
 
-    function verifyID() {
-        const id = document.getElementById('playerID').value;
-        if(id.length < 5) return alert("❌ Düzgün ID daxil edin");
-        verified = true;
-        localStorage.setItem('stargame_player_id', id);
-        document.getElementById('idStatus').innerHTML = "✅ Oyunçu Tapıldı: " + id;
-        document.getElementById('idStatus').style.color = "#2ecc71";
-    }
+        function loginWithGoogle() {
+            const name = prompt("Google hesabınızın adını daxil edin:", "Elvin Məmmədov");
+            if (name) {
+                const user = { name: name, email: name.toLowerCase().replace(/\s+/g, '') + '@gmail.com', balance: 0.00 };
+                localStorage.setItem('pubg_logged_user', JSON.stringify(user));
+                checkUserAuth();
+                alert("Uğurla Google hesabı ilə daxil oldunuz!");
+            }
+        }
 
-    const grid = document.getElementById('productGrid');
-    products.forEach(item => {
-        grid.innerHTML += `<div class="uc-card" onclick="order('${item.u}', '${item.p}')"><span class="uc-title">${item.u}</span><span class="uc-price">${item.p}</span></div>`;
-    });
+        function logout() {
+            localStorage.removeItem('pubg_logged_user');
+            checkUserAuth();
+            switchView('home');
+        }
 
-    function order(uc, price) {
-        if(!verified) return alert("⚠️ Öncə ID yoxlayın");
-        if(!currentUser) return showLogin();
-        if(!receiptBase64) return alert("📸 Çeki yükləyin!");
-        
-        db.collection("orders").add({
-            email: currentUser.email,
-            userName: currentUser.name,
-            uc: uc, price: price,
-            playerID: document.getElementById('playerID').value,
-            receipt: receiptBase64,
-            date: new Date().toLocaleString('az-AZ'),
-            timestamp: Date.now(),
-            status: "Gözlənilir"
-        }).then(() => {
-            alert("🚀 Sifariş qəbul edildi!");
-            receiptBase64 = "";
-            document.getElementById('fileLabel').innerHTML = "📸 Ödəniş Çekini Yüklə";
-            document.getElementById('fileLabel').style.color = "#fff";
-        }).catch(err => {
-            alert("❌ Xəta baş verdi: " + err.message);
-        });
-    }
+        function switchView(view) {
+            window.scrollTo(0, 0);
+            document.getElementById('homeView').style.display = view === 'home' ? 'block' : 'none';
+            document.getElementById('orderView').style.display = view === 'order' ? 'block' : 'none';
+            document.getElementById('balanceView').style.display = view === 'balance' ? 'block' : 'none';
+            document.getElementById('trackView').style.display = view === 'track' ? 'block' : 'none';
 
-    function toggleOrders() {
-        const panel = document.getElementById('orderPanel');
-        panel.classList.toggle('active');
-        document.getElementById('overlay').style.display = panel.classList.contains('active') ? 'block' : 'none';
-        if(currentUser && panel.classList.contains('active')) loadOrders();
-    }
+            document.getElementById('navHome').classList.toggle('active', view === 'home');
+            document.getElementById('navOrder').classList.toggle('active', view === 'order');
+            document.getElementById('navBalance').classList.toggle('active', view === 'balance');
+            document.getElementById('navTrack').classList.toggle('active', view === 'track');
 
-    function copyCard() {
-        navigator.clipboard.writeText("4169738862627472");
-        alert("✅ Kopyalandı!");
-    }
+            if (view === 'track') {
+                loadUserHistory();
+            }
+        }
 
-    function listenStatus() {
-        if(!currentUser) return;
-        db.collection("orders").where("email", "==", currentUser.email)
-          .onSnapshot(snap => {
-            snap.docChanges().forEach(change => {
-                if (change.type === "modified") {
-                    const data = change.doc.data();
-                    alert(`Sifariş statusu yeniləndi: ${data.status}\nPaket: ${data.uc}`);
-                }
+        function selectAndGoOrder(uc, price) {
+            const user = JSON.parse(localStorage.getItem('pubg_logged_user'));
+            if (!user) {
+                alert("Sifariş vermək üçün əvvəlcə Google ilə giriş etməlisiniz!");
+                loginWithGoogle();
+                return;
+            }
+            switchView('order');
+            selectedPackage = { uc, price };
+            document.getElementById('selectedPkgInfo').innerHTML = `Seçilən: ${uc} - Qiymət: ${price}`;
+        }
+
+        function completeOrder() {
+            const user = JSON.parse(localStorage.getItem('pubg_logged_user'));
+            const pid = document.getElementById('orderPlayerId').value.trim();
+            if(!pid) { alert('Oyunçu ID daxil edin!'); return; }
+            if(!selectedPackage) { alert('Paket seçilməyib!'); return; }
+
+            const orderNo = Math.floor(1000 + Math.random() * 9000);
+            const newOrder = {
+                orderNo, 
+                userName: user ? user.name : "Naməlum", 
+                playerId: pid, 
+                package: selectedPackage.uc, 
+                price: selectedPackage.price, 
+                status: "Təsdiq Gözləyir"
+            };
+
+            let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
+            orders.push(newOrder);
+            localStorage.setItem('pubg_orders', JSON.stringify(orders));
+
+            alert(`Sifariş yaradıldı! Nömrə: #${orderNo}`);
+            switchView('track');
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPayMethod = method;
+            document.getElementById('methodM10').classList.toggle('selected', method === 'm10');
+            document.getElementById('methodBirbank').classList.toggle('selected', method === 'birbank');
+        }
+
+        function submitBalanceRequest() {
+            const user = JSON.parse(localStorage.getItem('pubg_logged_user'));
+            if (!user) {
+                alert("Balans artırmaq üçün əvvəlcə Google ilə giriş etməlisiniz!");
+                loginWithGoogle();
+                return;
+            }
+            const amount = document.getElementById('topupAmount').value.trim();
+            const fileInput = document.getElementById('topupReceipt');
+            
+            if(!amount || isNaN(amount) || Number(amount) <= 0) {
+                alert('Zəhmət olmasa düzgün məbləğ daxil edin!');
+                return;
+            }
+
+            const reqNo = Math.floor(1000 + Math.random() * 9000);
+
+            if (fileInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    saveBalanceReqToStorage(reqNo, user.name, amount, selectedPayMethod, e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveBalanceReqToStorage(reqNo, user.name, amount, selectedPayMethod, null);
+            }
+        }
+
+        function saveBalanceReqToStorage(reqNo, userName, amount, method, receiptData) {
+            let balanceRequests = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
+            balanceRequests.push({
+                reqNo,
+                userName: userName,
+                amount: Number(amount).toFixed(2) + ' AZN',
+                method: method.toUpperCase(),
+                receipt: receiptData,
+                status: "Təsdiq Gözləyir"
             });
-        });
-    }
+            localStorage.setItem('pubg_balance_requests', JSON.stringify(balanceRequests));
 
-    function loadOrders() {
-        db.collection("orders").where("email", "==", currentUser.email).get().then(snap => {
-            const list = document.getElementById('ordersList');
-            let html = "";
-            snap.forEach(doc => {
-                const d = doc.data();
-                let sColor = d.status === "Təsdiqləndi" ? "#2ecc71" : (d.status === "İnkar edildi" ? "#e74c3c" : "#FFD700");
-                html += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-left:3px solid ${sColor}; border-radius:5px;">
-                            <b>${d.uc}</b> - <span style="color:${sColor}">${d.status}</span><br>
-                            <small style="color:#aaa;">ID: ${d.playerID} | ${d.date}</small>
-                       </div>`;
-            });
-            list.innerHTML = html || "<p style='text-align:center; color:#888; margin-top:20px;'>Sifariş yoxdur.</p>";
-        });
-    }
-</script>
+            alert(`Balans artım sorğunuz göndərildi! Sorğu Nömrəsi: #${reqNo}`);
+            document.getElementById('topupAmount').value = '';
+            document.getElementById('topupReceipt').value = '';
+            switchView('track');
+        }
+
+        function loadUserHistory() {
+            const user = JSON.parse(localStorage.getItem('pubg_logged_user'));
+            const ordersTbody = document.getElementById('userOrdersTable');
+            const balanceTbody = document.getElementById('userBalanceTable');
+
+            if (!user) {
+                ordersTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444;">Giriş etməmisiniz. Zəhmət olmasa Google ilə giriş edin.</td></tr>`;
+                balanceTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444;">Giriş etməmisiniz.</td></tr>`;
+                return;
+            }
+
+            // Sifarişlər
+            let orders = JSON.parse(localStorage.getItem('pubg_orders') || '[]');
+            let userOrders = orders.filter(o => o.userName === user.name);
+            ordersTbody.innerHTML = '';
+            if (userOrders.length === 0) {
+                ordersTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748b;">Heç bir sifarişiniz yoxdur.</td></tr>`;
+            } else {
+                userOrders.forEach(ord => {
+                    ordersTbody.innerHTML += `
+                        <tr>
+                            <td>#${ord.orderNo}</td>
+                            <td>${ord.playerId}</td>
+                            <td>${ord.package}</td>
+                            <td>${ord.price}</td>
+                            <td><span style="color: ${ord.status.includes('Təsdiqləndi') ? '#22c55e' : '#f59e0b'};">${ord.status}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // Balans Sorğuları
+            let balanceReqs = JSON.parse(localStorage.getItem('pubg_balance_requests') || '[]');
+            let userReqs = balanceReqs.filter(r => r.userName === user.name);
+            balanceTbody.innerHTML = '';
+            if (userReqs.length === 0) {
+                balanceTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748b;">Balans sorğunuz yoxdur.</td></tr>`;
+            } else {
+                userReqs.forEach(req => {
+                    let receiptHTML = req.receipt ? `<a href="${req.receipt}" target="_blank" style="color:#f59e0b;">Çeki Gör</a>` : 'Yoxdur';
+                    balanceTbody.innerHTML += `
+                        <tr>
+                            <td>#${req.reqNo}</td>
+                            <td style="color: #22c55e; font-weight: 700;">${req.amount}</td>
+                            <td>${req.method}</td>
+                            <td>${receiptHTML}</td>
+                            <td><span style="color: ${req.status.includes('Təsdiqləndi') ? '#22c55e' : '#f59e0b'};">${req.status}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        window.onload = checkUserAuth;
+    </script>
 </body>
 </html>
