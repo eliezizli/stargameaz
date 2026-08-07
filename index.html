@@ -20,18 +20,21 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
+            padding: 15px 5%;
             background-color: #0f131c;
             border-bottom: 1px solid #1a2233;
             position: sticky;
             top: 0;
             z-index: 100;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
@@ -52,19 +55,21 @@
         nav {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         nav a {
             color: #cbd5e1;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             transition: color 0.2s;
+            padding: 5px 0;
         }
 
         nav a:hover, nav a.active {
@@ -74,10 +79,10 @@
         .user-auth-box {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background: #131822;
             border: 1px solid #1f293d;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
         }
 
@@ -85,14 +90,14 @@
             background: #ffffff;
             color: #202124;
             border: none;
-            padding: 9px 16px;
+            padding: 8px 14px;
             border-radius: 6px;
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             transition: background-color 0.2s;
         }
@@ -104,7 +109,7 @@
         .user-profile-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-size: 0.85rem;
         }
 
@@ -112,7 +117,7 @@
             color: #22c55e;
             font-weight: 700;
             background: rgba(34, 197, 94, 0.1);
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 6px;
         }
 
@@ -122,19 +127,20 @@
             color: #ef4444;
             cursor: pointer;
             font-size: 0.85rem;
+            padding: 4px;
         }
 
         .hero {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 40px 15px 30px;
             background: linear-gradient(180deg, #0f131c 0%, #0b0e14 100%);
         }
 
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
             font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
             text-transform: uppercase;
             background: linear-gradient(90deg, #ffffff 0%, #f59e0b 100%);
             -webkit-background-clip: text;
@@ -144,29 +150,30 @@
         .hero p {
             color: #94a3b8;
             max-width: 650px;
-            margin: 0 auto 30px;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            margin: 0 auto 20px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            padding: 0 10px;
         }
 
         .features {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         .feature-badge {
             background-color: #131822;
             border: 1px solid #1f293d;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #cbd5e1;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .feature-badge i {
@@ -175,45 +182,45 @@
 
         .section-title {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .section-title h2 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #f59e0b;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-transform: uppercase;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px 60px;
+            padding: 0 15px 40px;
             flex: 1;
             width: 100%;
         }
 
         .packages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
         }
 
         .package-card {
             background-color: #131822;
             border: 1px solid #1f293d;
             border-radius: 12px;
-            padding: 25px 20px;
+            padding: 20px 15px;
             text-align: center;
             position: relative;
             transition: transform 0.2s, border-color 0.2s;
         }
 
         .package-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: #f59e0b;
         }
 
@@ -223,13 +230,13 @@
 
         .badge-tag {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 10px;
+            right: 10px;
             background: rgba(245, 158, 11, 0.15);
             color: #f59e0b;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 6px;
             display: flex;
             align-items: center;
@@ -237,9 +244,9 @@
         }
 
         .uc-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 12px;
             background: radial-gradient(circle, rgba(245,158,11,0.2) 0%, rgba(19,24,34,0) 70%);
             display: flex;
             align-items: center;
@@ -248,22 +255,22 @@
         }
 
         .uc-icon i {
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #f59e0b;
         }
 
         .uc-amount {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .uc-price {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: #f59e0b;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .buy-btn {
@@ -285,25 +292,25 @@
         }
 
         .page-container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 25px auto;
+            padding: 0 15px;
             flex: 1;
             width: 100%;
         }
 
         .page-header {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .page-header h1 {
-            font-size: 1.8rem;
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
             font-weight: 800;
             color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            gap: 10px;
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
 
@@ -313,31 +320,31 @@
 
         .page-header p {
             color: #94a3b8;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .form-card-box {
             background-color: #131822;
             border: 1px solid #1f293d;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
         }
 
         .box-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #f59e0b;
             text-transform: uppercase;
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .input-wrapper input, .input-wrapper select {
             width: 100%;
-            padding: 14px;
+            padding: 12px 14px;
             background-color: #0b0e14;
             border: 1px solid #1f293d;
             border-radius: 8px;
@@ -353,18 +360,34 @@
         .input-hint {
             font-size: 0.75rem;
             color: #64748b;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .payment-methods-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
 
-        @media(max-width: 600px) {
+        @media(max-width: 576px) {
             .payment-methods-grid {
                 grid-template-columns: 1fr;
+            }
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 15px;
+            }
+            .logo {
+                align-items: center;
+            }
+            nav {
+                justify-content: center;
+                gap: 10px;
+            }
+            .user-auth-box {
+                justify-content: center;
             }
         }
 
@@ -372,7 +395,7 @@
             background-color: #0b0e14;
             border: 1px solid #1f293d;
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px 15px;
             cursor: pointer;
             transition: border-color 0.2s;
         }
@@ -385,11 +408,12 @@
         .pay-option-title {
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
         }
 
         .pay-option-detail {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #f59e0b;
             font-weight: 600;
         }
@@ -399,10 +423,10 @@
             color: #0b0e14;
             border: none;
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border-radius: 8px;
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             text-transform: uppercase;
             transition: opacity 0.2s;
@@ -416,14 +440,14 @@
             background-color: #131822;
             border: 1px solid #1f293d;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
+            padding: 18px;
+            margin-bottom: 20px;
         }
 
         .track-section h3 {
             color: #f59e0b;
-            font-size: 1rem;
-            margin-bottom: 15px;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
@@ -433,12 +457,13 @@
         .track-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: left;
+            white-space: nowrap;
         }
 
         .track-table th, .track-table td {
-            padding: 10px 12px;
+            padding: 10px;
             border-bottom: 1px solid #1f293d;
         }
 
@@ -451,7 +476,7 @@
             color: #cbd5e1;
         }
 
-        /* Rəsmi Google OAuth Pəncərəsi (Modal) Dizaynı */
+        /* Google Modal */
         .google-modal-overlay {
             display: none;
             position: fixed;
@@ -464,50 +489,51 @@
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(3px);
+            padding: 15px;
         }
 
         .google-modal-box {
             background: #ffffff;
             color: #202124;
             border-radius: 12px;
-            padding: 32px 28px;
+            padding: 28px 22px;
             width: 100%;
-            max-width: 410px;
+            max-width: 400px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.25);
             text-align: center;
             font-family: 'Roboto', 'Inter', sans-serif;
         }
 
         .google-modal-logo {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
         }
 
         .google-modal-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 500;
             color: #202124;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .google-modal-subtitle {
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: #5f6368;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .google-account-card {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             background: #f8f9fa;
             border: 1px solid #dadce0;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.2s, border-color 0.2s;
             text-align: left;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .google-account-card:hover {
@@ -516,8 +542,8 @@
         }
 
         .google-account-avatar {
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             background: #1a73e8;
             color: #ffffff;
             border-radius: 50%;
@@ -525,7 +551,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .google-account-details {
@@ -535,12 +561,12 @@
 
         .google-account-name {
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #202124;
         }
 
         .google-account-email {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #5f6368;
         }
 
@@ -548,11 +574,11 @@
             background: transparent;
             color: #1a73e8;
             border: none;
-            padding: 10px;
+            padding: 8px;
             font-weight: 500;
             cursor: pointer;
             width: 100%;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-radius: 4px;
         }
 
@@ -564,9 +590,9 @@
             background-color: #0f131c;
             border-top: 1px solid #1a2233;
             text-align: center;
-            padding: 25px 20px;
+            padding: 20px 15px;
             color: #64748b;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             margin-top: auto;
         }
     </style>
@@ -582,7 +608,7 @@
             <a id="navHome" class="active" onclick="switchView('home')"><i class="fa-solid fa-house"></i> Ana Səhifə</a>
             <a id="navOrder" onclick="switchView('order')"><i class="fa-solid fa-cart-shopping"></i> Sifariş Ver</a>
             <a id="navBalance" onclick="switchView('balance')"><i class="fa-solid fa-wallet"></i> Balans Artır</a>
-            <a id="navTrack" onclick="switchView('track')"><i class="fa-solid fa-clock-rotate-left"></i> Sifarişlərim / İzlə</a>
+            <a id="navTrack" onclick="switchView('track')"><i class="fa-solid fa-clock-rotate-left"></i> Sifarişlərim</a>
         </nav>
         <div id="authContainer">
             <button class="google-login-btn" onclick="openGoogleModal()">
@@ -591,11 +617,11 @@
         </div>
     </header>
 
-    <!-- RƏSMİ GOOGLE HESAB SEÇİMİ MODALI -->
+    <!-- GOOGLE HESAB SEÇİMİ MODALI -->
     <div id="googleModalOverlay" class="google-modal-overlay">
         <div class="google-modal-box">
             <div class="google-modal-logo">
-                <svg width="32" height="32" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.08-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+                <svg width="30" height="30" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.08-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
             </div>
             <div class="google-modal-title">Google ilə daxil olun</div>
             <div class="google-modal-subtitle">PUBG UC Mağazası saytına davam etmək üçün hesab seçin</div>
@@ -645,7 +671,7 @@
         </div>
         <div class="form-card-box">
             <div class="box-title"><i class="fa-solid fa-box"></i> Seçilmiş Paket</div>
-            <div id="selectedPkgInfo" style="color: #f59e0b; font-weight: 700;">Paket seçilməyib. Zəhmət olmasa Ana səhifədən paket seçin.</div>
+            <div id="selectedPkgInfo" style="color: #f59e0b; font-weight: 700; font-size: 0.9rem;">Paket seçilməyib. Ana səhifədən seçin.</div>
         </div>
         <button class="complete-btn" onclick="completeOrder()">Sifarişi Təsdiqlə</button>
     </div>
@@ -654,21 +680,21 @@
     <div id="balanceView" style="display: none;" class="page-container">
         <div class="page-header">
             <h1><i class="fa-solid fa-wallet"></i> Balans Artırma</h1>
-            <p>Hesabınıza balans yükləmək üçün ödəniş üsulunu seçin, ödəniş edin və çəki yükləyin.</p>
+            <p>Ödəniş üsulunu seçin, məbləği daxil edin və çeki yükləyin.</p>
         </div>
 
         <div class="form-card-box">
-            <div class="box-title"><i class="fa-solid fa-manat-sign"></i> Artırılacaq Məbləğ (AZN)</div>
+            <div class="box-title"><i class="fa-solid fa-manat-sign"></i> Məbləğ (AZN)</div>
             <div class="input-wrapper">
-                <input type="number" id="topupAmount" placeholder="Məbləğ daxil edin (Məs: 10)">
+                <input type="number" id="topupAmount" placeholder="Məs: 10">
             </div>
         </div>
 
         <div class="form-card-box">
-            <div class="box-title"><i class="fa-solid fa-credit-card"></i> Ödəniş Üsulu Seçin</div>
+            <div class="box-title"><i class="fa-solid fa-credit-card"></i> Ödəniş Üsulu</div>
             <div class="payment-methods-grid">
                 <div class="pay-option-card selected" id="methodM10" onclick="selectPaymentMethod('m10')">
-                    <div class="pay-option-title"><i class="fa-solid fa-wallet"></i> m10 (Cüzdan)</div>
+                    <div class="pay-option-title"><i class="fa-solid fa-wallet"></i> m10 Cüzdan</div>
                     <div class="pay-option-detail">+994 50 123 45 67</div>
                 </div>
                 <div class="pay-option-card" id="methodBirbank" onclick="selectPaymentMethod('birbank')">
@@ -679,21 +705,21 @@
         </div>
 
         <div class="form-card-box">
-            <div class="box-title"><i class="fa-solid fa-receipt"></i> Ödəniş Çeki (Qəbz) Yüklə</div>
+            <div class="box-title"><i class="fa-solid fa-receipt"></i> Ödəniş Çeki (Qəbz)</div>
             <div class="input-wrapper">
                 <input type="file" id="topupReceipt" accept="image/*">
             </div>
-            <div class="input-hint">Ödəniş etdikdən sonra çəkinin şəklini yükləyin.</div>
+            <div class="input-hint">Ödəniş çəkinin şəklini yükləyin.</div>
         </div>
 
-        <button class="complete-btn" onclick="submitBalanceRequest()">Balans Artımını Göndər</button>
+        <button class="complete-btn" onclick="submitBalanceRequest()">Sorğunu Göndər</button>
     </div>
 
     <!-- SİFARİŞLƏRİM / İZLƏ -->
     <div id="trackView" style="display: none;" class="page-container">
         <div class="page-header">
-            <h1><i class="fa-solid fa-clock-rotate-left"></i> Sifarişlərim və Balans Sorğularım</h1>
-            <p>Hesabınız üzrə verilən bütün sifarişlər və balans artım sorğuları aşağıda göstərilir.</p>
+            <h1><i class="fa-solid fa-clock-rotate-left"></i> Sifarişlərim</h1>
+            <p>Verdiyiniz sifarişlər və balans artım sorğuları.</p>
         </div>
 
         <div class="track-section">
@@ -703,7 +729,7 @@
                     <thead>
                         <tr>
                             <th>Sifariş #</th>
-                            <th>Oyunçu ID</th>
+                            <th>ID</th>
                             <th>Paket</th>
                             <th>Qiymət</th>
                             <th>Status</th>
@@ -717,7 +743,7 @@
         </div>
 
         <div class="track-section">
-            <h3><i class="fa-solid fa-wallet"></i> Balans Artırma Sorğularım</h3>
+            <h3><i class="fa-solid fa-wallet"></i> Balans Sorğularım</h3>
             <div style="overflow-x: auto;">
                 <table class="track-table">
                     <thead>
@@ -927,7 +953,7 @@
             const balanceTbody = document.getElementById('userBalanceTable');
 
             if (!user) {
-                ordersTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444;">Giriş etməmisiniz. Zəhmət olmasa Google ilə giriş edin.</td></tr>`;
+                ordersTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444;">Giriş etməmisiniz.</td></tr>`;
                 balanceTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444;">Giriş etməmisiniz.</td></tr>`;
                 return;
             }
@@ -936,7 +962,7 @@
             let userOrders = orders.filter(o => o.userName === user.name);
             ordersTbody.innerHTML = '';
             if (userOrders.length === 0) {
-                ordersTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748b;">Heç bir sifarişiniz yoxdur.</td></tr>`;
+                ordersTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748b;">Sifariş yoxdur.</td></tr>`;
             } else {
                 userOrders.forEach(ord => {
                     ordersTbody.innerHTML += `
@@ -955,7 +981,7 @@
             let userReqs = balanceReqs.filter(r => r.userName === user.name);
             balanceTbody.innerHTML = '';
             if (userReqs.length === 0) {
-                balanceTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748b;">Balans sorğunuz yoxdur.</td></tr>`;
+                balanceTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748b;">Sorğu yoxdur.</td></tr>`;
             } else {
                 userReqs.forEach(req => {
                     let receiptHTML = req.receipt ? `<a href="${req.receipt}" target="_blank" style="color:#f59e0b;">Çeki Gör</a>` : 'Yoxdur';
